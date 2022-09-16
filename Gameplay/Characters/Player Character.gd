@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 
 func physics_tick_client(delta: float) -> void:
 	if is_owned_by_local_player():
-		process_inputs(Network.get_input(owner_id))
+		process_inputs(InputData.new(0))
 		move(delta)
 
 func physics_tick_server(delta: float) -> void:

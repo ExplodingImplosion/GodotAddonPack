@@ -31,12 +31,12 @@ func start() -> void:
 	register_all_spawners()
 	local_player = Network.get_child(0)
 	if is_client():
+		# maybe do on both?
 		Network.notify_ready()
 #	if is_server():
 	else:
-		set_physics_process(true)
 		try_respawning_player(1)
-	
+	set_physics_process(true)
 #	Network.connect("",self,"")
 #	Network.connect("",self,"")
 #	Network.connect("",self,"")
@@ -85,7 +85,7 @@ func register_all_spawners() -> void:
 func register_spawner(script: Script, gameplay_scene_id: int,extra_setup: String) -> void:
 	var scene: PackedScene = Resources.get_gameplay_scene(gameplay_scene_id)
 	var chash: int = Resources.get_chash(gameplay_scene_id)
-	var snapdata: SnapEntityBase = Network.create_snap_entity(script, gameplay_scene_id, chash)
+#	var snapdata: SnapEntityBase = Network.create_snap_entity(script, gameplay_scene_id, chash)
 											# script, class hash, scene spawner, parent, extra setup func
 	Network.snapshot_data.register_spawner(script, chash, NetDefaultSpawner.new(scene), map, funcref(self,extra_setup))
 
@@ -251,7 +251,7 @@ func try_respawning_player(id: int) -> void:
 	printerr("temp spawning logic")
 	var player_node: NetPlayerNode = Network.player_data.get_pnode(id)
 	var player_character: PlayerCharacter = Network.snapshot_data.spawn_node(PlayerSnapData,id,Resources.get_chash(Resources.chashes.PlayerSnapData))
-	player_character.global_transform.origin = Vector3(0,5,0)
+	player_character.global_transform.origin = Vector3(0,40,0)
 #	if is_respawning_allowed():
 #		match Gamemodes.get_team_type(gamemode):
 #			Gamemodes.team_type.FFA:
