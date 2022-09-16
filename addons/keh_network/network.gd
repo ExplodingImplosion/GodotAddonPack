@@ -21,7 +21,6 @@
 ###############################################################################
 
 extends Node
-class_name Network
 
 # TODO:
 # - Method to "cull" objects from snapshots which may lead to *some* bandwidth
