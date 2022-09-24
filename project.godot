@@ -490,6 +490,7 @@ sensitivity=5.0
 
 [physics]
 
+common/physics_jitter_fix=0.0
 common/enable_pause_aware_picking=true
 
 [rendering]

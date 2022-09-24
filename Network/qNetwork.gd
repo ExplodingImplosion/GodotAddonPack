@@ -21,15 +21,17 @@ func clear_map() -> void:
 	map = null
 # ////////////////////////////////////
 
-puppet func client_start(path: String) -> void:
-	setup_map(path)
-	call_deferred("start")
+# should be puppet
+remote func client_start(path: String) -> void:
+	if is_client():
+		setup_map(path)
+		call_deferred("start")
 
 func start() -> void:
 	Inputs.register_all_actions()
 	Inputs.register_custom_input_stuff()
 	register_all_spawners()
-	local_player = Network.get_child(0)
+	assign_local_player()
 	if is_client():
 		# maybe do on both?
 		Network.notify_ready()
@@ -47,6 +49,9 @@ func start() -> void:
 	#server_creation_failed
 	#credentials_requested
 	#custom_property_changed
+
+func assign_local_player() -> void:
+	local_player = Network.player_data.get_pnode(Network.player_data.local_player.net_id)
 
 func setup_connections() -> void:
 # warning-ignore:return_value_discarded
@@ -280,6 +285,7 @@ func add_player_to_respawn_queue(id: int, with_time: int = GET_GAMEMODE_RESPAWN_
 
 func physics_tick_server(delta: float) -> void:
 	poll_for_respawns(delta)
+#		Network.snapshot_data.get_game_node(Network.player_data.get_pnode(id).net_id,PlayerSnapData)
 
 # HOST
 # /////////////

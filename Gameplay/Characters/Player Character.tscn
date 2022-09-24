@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Gameplay/Characters/Player Character.gd" type="Script" id=1]
 [ext_resource path="res://Gameplay/Characters/Player Snap Data.gd" type="Script" id=2]
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 0.15, 0.15, 1 )
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -23,6 +26,10 @@ keep_aspect = 0
 fov = 103.0
 near = 0.01
 far = 5000.0
+
+[node name="MeshInstance" type="MeshInstance" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32 )
+mesh = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )

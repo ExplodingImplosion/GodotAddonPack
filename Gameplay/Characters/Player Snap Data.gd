@@ -17,9 +17,9 @@ var team: int
 const uid = 0
 
 func _init(uid: int, chash: int).(uid,chash) -> void:
-	# idfk
-	set_meta("class_hash",0)
-	set_meta("owner_id",EntityInfo.CTYPE_UINT)
+	pass
+#	set_meta("class_hash",chash)
+#	set_meta("owner_id",EntityInfo.CTYPE_UINT)
 
 # crashes if uncommented
 func apply_state(node: Node) -> void:
@@ -45,7 +45,7 @@ func apply_vars(to: PlayerCharacter) -> void:
 
 func get_vars(from: PlayerCharacter) -> void:
 	owner_id = from.owner_id
-	position = from.position
+	position = from.global_transform.origin
 	velocity = from.velocity
 	input_dir = from.input_dir
 	inputs = from.inputs
