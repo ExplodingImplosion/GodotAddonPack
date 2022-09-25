@@ -69,10 +69,8 @@ static func is_analog_action(action: String) -> bool:
 
 static func register_all_actions() -> void:
 	for action in InputMap.get_actions():
-		if !is_ui_action(action):
-			Network.register_action(action,is_analog_action(action))
-			
-#			prints(action,is_analog_action(action))
+		if !is_ui_action(action) and !is_analog_action(action):
+			Network.register_action(action,false)
 
 static func register_custom_input_stuff() -> void:
 	Network.register_custom_input_vec2("input_dir")

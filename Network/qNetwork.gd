@@ -114,6 +114,7 @@ func reset() -> void:
 #	Network.reset_input()
 	Network.reset_system()
 	local_player = null
+	Quack.change_scene("res://Interface/Menus/Main Menu.tscn")
 
 func reset_if_connected() -> void:
 	print_debug("getting a network peer doesnt work the second time")

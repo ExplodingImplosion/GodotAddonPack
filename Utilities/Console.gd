@@ -220,3 +220,12 @@ func performance_overlay_cmd() -> void:
 		perf_overlay = null
 func perf_overlay_cmd() -> void:
 	performance_overlay_cmd()
+
+func max_fps_cmd(fps: int) -> void:
+	Engine.set_target_fps(fps)
+
+func disconnect_cmd() -> void:
+	qNetwork.disconnect_from_server()
+
+func shutdown_cmd() -> void:
+	qNetwork.shutdown_server()

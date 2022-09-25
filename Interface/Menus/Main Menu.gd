@@ -1,7 +1,7 @@
 extends Menu
 
 func _ready() -> void:
-	Engine.target_fps = 300
+	Engine.target_fps = OS.get_screen_refresh_rate()
 
 
 func on_make_server_pressed() -> void:

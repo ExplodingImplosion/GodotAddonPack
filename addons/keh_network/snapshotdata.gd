@@ -40,6 +40,7 @@ var _entity_name: Dictionary = {}
 
 # Holds the history of snapshots
 var _history: Array = []
+var lifetime_history: Array = []
 
 # These two dictionaries are used to perform easier queries to locate specific
 # snapshots. The first one is from snapshot signature into snapshot and the
@@ -182,6 +183,8 @@ func reset() -> void:
 	
 	_server_state = null
 	_history.clear()
+	Replay.serialize_lifetime_history(lifetime_history)
+	lifetime_history.clear()
 	_ssig_to_snap.clear()
 	_isig_to_snap.clear()
 
@@ -582,6 +585,7 @@ func _add_to_history(snap: NetSnapshot) -> void:
 	_history.push_back(snap)
 	_ssig_to_snap[snap.signature] = snap
 	_isig_to_snap[snap.input_sig] = snap
+	lifetime_history.push_back(snap)
 
 
 func _check_history_size(max_size: int, has_authority: bool) -> void:

@@ -200,6 +200,11 @@ _global_script_classes=[ {
 "path": "res://addons/keh_general/data/quantize.gd"
 }, {
 "base": "Reference",
+"class": "Replay",
+"language": "GDScript",
+"path": "res://Network/Replay.gd"
+}, {
+"base": "Reference",
 "class": "Resources",
 "language": "GDScript",
 "path": "res://Utilities/Resources.gd"
@@ -308,6 +313,7 @@ _global_script_class_icons={
 "PlayerCharacter": "",
 "PlayerSnapData": "",
 "Quantize": "",
+"Replay": "",
 "Resources": "",
 "SampleDataAsset": "",
 "SampleScriptedResource": "",
@@ -483,7 +489,6 @@ most_recent_item={
 
 [keh_addons]
 
-network/use_input_mouse_relative=true
 network/print_debug_info=true
 
 [mouse]
