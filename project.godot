@@ -342,12 +342,14 @@ Quack="*res://Quack.gd"
 Inputs="*res://Utilities/Inputs.gd"
 Network="*res://addons/keh_network/network.gd"
 qNetwork="*res://Network/qNetwork.gd"
-OverlayDebugInfo="*res://addons/keh_dbghelper/overlayinfo.gd"
-DebugLine3D="*res://addons/keh_dbghelper/line3d.gd"
+OverlayDebugInfo="res://addons/keh_dbghelper/overlayinfo.gd"
+DebugLine3D="res://addons/keh_dbghelper/line3d.gd"
+Console="*res://Utilities/Console.gd"
 
 [display]
 
 window/size/height=576
+window/vsync/use_vsync=false
 
 [editor_plugins]
 

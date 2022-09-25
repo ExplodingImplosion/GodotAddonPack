@@ -12,7 +12,7 @@ export var out_of_bounds_distance: float = 1000.0
 export var preferred_spawns := []
 
 static func map_path_from_name(mapname: String) -> String:
-	return "res://Gameplay/Levels/%s.tscn"%[mapname]
+	return "res://Gameplay/Levels/%s/%s.tscn"%[mapname,mapname]
 
 static func map_name_from_path(path: String) -> String:
 	return path.split("Levels/")[1].split(".tscn")[0]

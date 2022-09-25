@@ -1159,6 +1159,9 @@ func _custom_prop_broadcast_requester(pname: String, value) -> void:
 ### to call the "signalers" here, which will then emit the signals to the outside code
 func _ping_signaler(pid: int, ping: float) -> void:
 	emit_signal("ping_updated", pid, ping)
+	if pid == player_data.local_player.net_id:
+		emit_signal("localping",ping)
+signal localping(ping)
 
 func _custom_property_signaler(pid: int, pname: String, value) -> void:
 	emit_signal("custom_property_changed", pid, pname, value)

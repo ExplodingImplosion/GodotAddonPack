@@ -93,6 +93,8 @@ static func get_bool_from_action_just_pressed(action: String) -> bool:
 static func get_movement_from_keyboard() -> Vector2:
 	return Input.get_vector("analog_left","analog_right","analog_forward","analog_back")
 
+static func get_local_cached_inputs() -> Array:
+	return Network.player_data.local_player.get_cached_input_list()
 # depreciated. use bit_has_flag
 #static func is_updown_pressed(updown: int) -> bool:
 #	return true if updown == DOWN else false

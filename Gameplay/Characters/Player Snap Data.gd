@@ -14,7 +14,7 @@ var max_health: float = 100
 var dead: bool = false
 var crouch_amount: float
 var team: int
-const uid = 0
+#const uid = 0
 
 func _init(uid: int, chash: int).(uid,chash) -> void:
 	pass

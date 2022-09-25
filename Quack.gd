@@ -82,7 +82,7 @@ func setup_connections() -> void:
 enum {DEFAULT_WINDOW_SIZE_x = 1920,DEFAULT_WINDOW_SIZE_y = 1080}
 func on_window_resized() -> void:
 	for child in root.get_children():
-		if child is Control:
+		if child is Control and not child is WindowDialog:
 			child.set_scale(Vector2(root.size.x/float(DEFAULT_WINDOW_SIZE_x),
 									root.size.y/float(DEFAULT_WINDOW_SIZE_y)))
 
@@ -174,10 +174,10 @@ static func datetime_string() -> String:
 	return OS.get_datetime_string_from_system(false, true).replace(":", "-")
 
 static func get_tickrate() -> int:
-	return Engine.get_physics_ticks_per_second()
+	return Engine.get_iterations_per_second()
 
 static func set_tickrate(rate: int) -> void:
-	Engine.set_physics_ticks_per_second(rate)
+	Engine.set_iterations_per_second(rate)
 
 static func set_max_fps(fps: int) -> void:
 	Engine.set_target_fps(fps)
@@ -235,10 +235,10 @@ func setup_subwindow_size(subwindow: Popup, size: Vector2) -> void:
 	if root.size.y < size.y:
 		size.y = Quack.root.size.y - 60
 	subwindow.set_size(size)
-	if subwindow.position.x > root.size.x or subwindow.position.x < root.position.x:
-		subwindow.position.x = root.size.x - subwindow.size.x - 20
-	if subwindow.position.y > root.size.y or subwindow.position.y < root.position.y:
-		subwindow.position.y = root.size.y - subwindow.size.y - 20
+	if subwindow.rect_position.x > root.size.x:# or subwindow.rect_position.x < root.position.x:
+		subwindow.rect_position.x = root.size.x - subwindow.rect_size.x - 20
+	if subwindow.rect_position.y > root.size.y:# or subwindow.rect_position.y < root.position.y:
+		subwindow.rect_position.y = root.size.y - subwindow.rect_size.y - 20
 
 static func is_multiple_of(a: int, b: int) -> bool:
 # warning-ignore:integer_division

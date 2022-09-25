@@ -56,7 +56,7 @@ func _physics_process(delta: float) -> void:
 	if has_correction:
 		apply_corrections()
 		if is_owned_by_local_player():
-			for input in get_local_cached_inputs():
+			for input in Inputs.get_local_cached_inputs():
 				process_inputs(input,false)
 				move(delta)
 				Network.correct_in_snapshot(generate_snap_entity(),input)
@@ -122,10 +122,10 @@ func aim(relative: Vector2) -> void:
 
 func set_aim(angle: Vector2) -> void:
 	rotation_degrees.y = angle.x
-	head.rotation_degrees.y = angle.y
+	head.rotation_degrees.x = angle.y
 
 func update_aim_angle() -> void:
-	aim_angle = Vector2(rotation_degrees.y,head.rotation_degrees.y)
+	aim_angle = Vector2(rotation_degrees.y,head.rotation_degrees.x)
 
 func apply_corrections() -> void:
 	for correction in correction_data.keys():
@@ -142,8 +142,10 @@ func process_inputs(input_data: InputData,auth: bool) -> void:
 	if !input_data:
 		return
 	var inputted_jump: bool =  input_data.is_pressed("jump")
-	jumped = !just_jumped and inputted_jump
-	just_jumped = inputted_jump
+#	jumped = !just_jumped and inputted_jump
+#	just_jumped = inputted_jump
+	jumped = inputted_jump
+	
 #	crouch_mod = float(input_data.is_pressed("crouch"))
 #	movement_mod = float(input_data.is_pressed("modify_movement"))
 	if auth:
@@ -155,6 +157,3 @@ func process_inputs(input_data: InputData,auth: bool) -> void:
 		aim_angle = input_data.get_custom_vec2("aim_angle")
 		set_aim(aim_angle)
 		input_dir = input_data.get_custom_vec2("input_dir")
-
-func get_local_cached_inputs() -> Array:
-	return Network.player_data.local_player.get_cached_input_list()

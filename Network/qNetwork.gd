@@ -13,6 +13,7 @@ var local_player: NetPlayerNode
 func setup_map(map_filepath: String) -> void:
 	map_path = map_filepath
 	Quack.change_scene(map_filepath)
+	print(map_filepath)
 	call_deferred("apply_map")
 func apply_map() -> void:
 	map = get_tree().current_scene

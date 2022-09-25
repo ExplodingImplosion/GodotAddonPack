@@ -1,7 +1,7 @@
 extends Menu
 
 func _ready() -> void:
-	pass
+	Engine.target_fps = 300
 
 
 func on_make_server_pressed() -> void:
