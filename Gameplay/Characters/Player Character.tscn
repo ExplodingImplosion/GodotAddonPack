@@ -15,7 +15,7 @@ radius = 0.5
 [node name="PlayerCharacter" type="KinematicBody"]
 script = ExtResource( 1 )
 snap_entity_script = ExtResource( 2 )
-acceleration = 3.0
+acceleration = 2.0
 gravity = 29.4
 
 [node name="Head" type="Spatial" parent="."]

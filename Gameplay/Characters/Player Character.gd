@@ -106,6 +106,8 @@ func move(delta: float) -> void:
 	else:
 		if direction.dot(velocity) > 0:
 			temp_accel = air_control
+		else:
+			temp_accel = 0
 		# apply gravity up until terminal velocity
 		if velocity.y >= -terminal_velocity:
 			velocity.y = clamp(velocity.y - gravity * delta,-terminal_velocity,velocity.y)

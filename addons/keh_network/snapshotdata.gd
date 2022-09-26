@@ -41,6 +41,7 @@ var _entity_name: Dictionary = {}
 # Holds the history of snapshots
 var _history: Array = []
 var lifetime_history: Array = []
+var lifetime_history_buffer := EncDecBuffer.new()
 
 # These two dictionaries are used to perform easier queries to locate specific
 # snapshots. The first one is from snapshot signature into snapshot and the
@@ -184,10 +185,22 @@ func reset() -> void:
 	_server_state = null
 	_history.clear()
 	Replay.save(lifetime_history)
+	# maybe just clear the buffer?
+	lifetime_history_buffer = EncDecBuffer.new()
 	lifetime_history.clear()
 	_ssig_to_snap.clear()
 	_isig_to_snap.clear()
 
+# this might be OD trash for memory... maybe set up streaming func?
+func convert_replay_to_snapshots(replay: Array) -> Array:
+	for idx in replay.size():
+		lifetime_history_buffer.buffer = replay[idx]
+		if idx == 0:
+			replay[idx] = decode_full(lifetime_history_buffer)
+		else:
+			replay[idx] = decode_delta(lifetime_history_buffer)
+	lifetime_history_buffer.buffer = PoolByteArray()
+	return replay
 
 func _instantiate_snap_entity(eclass: Script, uid: int, chash: int) -> SnapEntityBase:
 	var ret: SnapEntityBase = null
@@ -585,7 +598,12 @@ func _add_to_history(snap: NetSnapshot) -> void:
 	_history.push_back(snap)
 	_ssig_to_snap[snap.signature] = snap
 	_isig_to_snap[snap.input_sig] = snap
-	lifetime_history.push_back(snap)
+	if snap.signature == 0:
+		encode_full(snap,lifetime_history_buffer,snap.input_sig)
+	else:
+		encode_delta(snap,_history[-1],lifetime_history_buffer,snap.input_sig)
+	lifetime_history.push_back(lifetime_history_buffer.buffer)
+	lifetime_history_buffer.buffer = PoolByteArray()
 
 
 func _check_history_size(max_size: int, has_authority: bool) -> void:

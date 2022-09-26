@@ -215,6 +215,15 @@ static func is_timer_running(timer: Timer) -> bool:
 static func is_freed_instance(obj: Object) -> bool:
 	return weakref(obj).get_ref() == null
 
+static func return_null_if_freed(obj: Object):
+	return weakref(obj).get_ref()
+
+static func return_null_if_freed_or_will_be(node: Node):
+	node = weakref(node).get_ref()
+	if node != null and node.is_queued_for_deletion():
+		return null
+	return node
+
 static func get_dict_from_array(array: Array) -> Dictionary:
 # warning-ignore:unassigned_variable
 	var dict: Dictionary

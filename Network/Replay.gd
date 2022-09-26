@@ -3,36 +3,6 @@ class_name Replay
 
 const save_path: String = "user://replays/"
 const debug_save_path: String = "res://replays/"
-static func serialize_lifetime_history(history: Array) -> Array:
-	var t1: int = OS.get_ticks_usec()
-	var t2: int
-	# could do this with multiple arrays but like idk ion really feel like it
-	for idx in history.size():
-		history[idx] = serialize_snapshot(history[idx])
-	t2 = OS.get_ticks_usec()
-	prints("serialization completed in ",t2-t1," microseconds")
-	return history
-
-enum {SIGNATURE,INPUT_SIG,ENTITY_DATA}
-static func serialize_snapshot(snapshot: NetSnapshot) -> Array:
-	var serialized_snapshot: Array = [snapshot.signature,snapshot.input_sig,{}]
-	var serialized_entity_data: Dictionary = serialized_snapshot[ENTITY_DATA]
-	var entity_data: Dictionary = snapshot._entity_data
-	for nhash in entity_data.keys():
-		var this_entity_data: Dictionary = entity_data[nhash]
-		var serialized_entities: Dictionary = {}
-		serialized_entity_data[nhash] = serialized_entities
-		for entity_id in this_entity_data.keys():
-			serialized_entities[entity_id] = serialize_entity(this_entity_data[entity_id])
-		assert(serialized_entity_data.hash() == serialized_snapshot[ENTITY_DATA].hash())
-	return serialized_snapshot
-
-static func serialize_entity(entity: SnapEntityBase) -> Array:
-	var serialized_entity: Array
-	for property in entity.get_property_list():
-		if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-			serialized_entity.append(entity[property.name])
-	return serialized_entity
 
 static func replay_to_compressed_buffer(replay: Array) -> PoolByteArray:
 	return var2str(replay).to_ascii().compress(File.COMPRESSION_GZIP)
@@ -86,4 +56,4 @@ static func save_compressed(file: File, replay: Array, title: String) -> void:
 	file.close()
 
 static func save(replay: Array) -> void:
-	save_compressed(File.new(),serialize_lifetime_history(replay),"replay")
+	save_compressed(File.new(),replay,"replay")

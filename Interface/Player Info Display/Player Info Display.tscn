@@ -1,0 +1,357 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Interface/Player Info Display/Player Info Display.gd" type="Script" id=1]
+[ext_resource path="res://Interface/Performance Overlay/Performance Overlay Panel.tres" type="StyleBox" id=2]
+
+[node name="Player Info Display" type="CanvasLayer"]
+script = ExtResource( 1 )
+showvelocity = true
+showinputdir = true
+showaimangle = true
+showdirection = true
+showtempvel = true
+showtarget = true
+showtempaccel = true
+showonfloor = true
+showdirectiondotvel = true
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+margin_top = 66.0
+margin_right = 341.0
+margin_bottom = 549.0
+mouse_filter = 2
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+
+[node name="positioncontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_right = 286.0
+margin_bottom = 20.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/positioncontainer"]
+margin_right = 66.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Position: "
+
+[node name="readout" type="Label" parent="HFlowContainer/positioncontainer"]
+margin_left = 66.0
+margin_right = 286.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="velocitycontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 20.0
+margin_right = 285.0
+margin_bottom = 40.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/velocitycontainer"]
+margin_right = 65.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Velocity: "
+
+[node name="readout" type="Label" parent="HFlowContainer/velocitycontainer"]
+margin_left = 65.0
+margin_right = 285.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="inputdircontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 40.0
+margin_right = 271.0
+margin_bottom = 60.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/inputdircontainer"]
+margin_right = 71.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Input Dir: "
+
+[node name="readout" type="Label" parent="HFlowContainer/inputdircontainer"]
+margin_left = 71.0
+margin_right = 271.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="aimanglecontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 60.0
+margin_right = 280.0
+margin_bottom = 80.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/aimanglecontainer"]
+margin_right = 80.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Aim Angle: "
+
+[node name="readout" type="Label" parent="HFlowContainer/aimanglecontainer"]
+margin_left = 80.0
+margin_right = 280.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="directioncontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 80.0
+margin_right = 293.0
+margin_bottom = 100.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/directioncontainer"]
+margin_right = 73.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Direction: "
+
+[node name="readout" type="Label" parent="HFlowContainer/directioncontainer"]
+margin_left = 73.0
+margin_right = 293.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="tempvelcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 100.0
+margin_right = 294.0
+margin_bottom = 120.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/tempvelcontainer"]
+margin_right = 74.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Temp Vel: "
+
+[node name="readout" type="Label" parent="HFlowContainer/tempvelcontainer"]
+margin_left = 74.0
+margin_right = 294.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="inputscontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 120.0
+margin_right = 115.0
+margin_bottom = 140.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/inputscontainer"]
+margin_right = 55.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Inputs: "
+
+[node name="readout" type="Label" parent="HFlowContainer/inputscontainer"]
+margin_left = 55.0
+margin_right = 115.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="crouchamountcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_left = 115.0
+margin_top = 120.0
+margin_right = 278.0
+margin_bottom = 140.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/crouchamountcontainer"]
+margin_right = 113.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Crouch Amount: "
+
+[node name="readout" type="Label" parent="HFlowContainer/crouchamountcontainer"]
+margin_left = 113.0
+margin_right = 163.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 50, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="hascorrectioncontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 140.0
+margin_right = 143.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/hascorrectioncontainer"]
+margin_right = 108.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Has Correction: "
+
+[node name="readout" type="Label" parent="HFlowContainer/hascorrectioncontainer"]
+margin_left = 108.0
+margin_right = 143.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 35, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="healthcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_left = 143.0
+margin_top = 140.0
+margin_right = 244.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/healthcontainer"]
+margin_right = 56.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Health: "
+
+[node name="readout" type="Label" parent="HFlowContainer/healthcontainer"]
+margin_left = 56.0
+margin_right = 101.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 45, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="teamcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_left = 244.0
+margin_top = 140.0
+margin_right = 313.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/teamcontainer"]
+margin_right = 49.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Team: "
+
+[node name="readout" type="Label" parent="HFlowContainer/teamcontainer"]
+margin_left = 49.0
+margin_right = 69.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="onfloorcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 160.0
+margin_right = 109.0
+margin_bottom = 180.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/onfloorcontainer"]
+margin_right = 69.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "On Floor: "
+
+[node name="readout" type="Label" parent="HFlowContainer/onfloorcontainer"]
+margin_left = 69.0
+margin_right = 109.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 40, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="tempaccelcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_left = 109.0
+margin_top = 160.0
+margin_right = 258.0
+margin_bottom = 180.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/tempaccelcontainer"]
+margin_right = 89.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Temp Accel: "
+
+[node name="readout" type="Label" parent="HFlowContainer/tempaccelcontainer"]
+margin_left = 89.0
+margin_right = 149.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="targetcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 180.0
+margin_right = 273.0
+margin_bottom = 200.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/targetcontainer"]
+margin_right = 53.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Target: "
+
+[node name="readout" type="Label" parent="HFlowContainer/targetcontainer"]
+margin_left = 53.0
+margin_right = 273.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
+[node name="directiondotvelcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 200.0
+margin_right = 213.0
+margin_bottom = 220.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/directiondotvelcontainer"]
+margin_right = 153.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Direction dot Velocity: "
+
+[node name="readout" type="Label" parent="HFlowContainer/directiondotvelcontainer"]
+margin_left = 153.0
+margin_right = 213.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
