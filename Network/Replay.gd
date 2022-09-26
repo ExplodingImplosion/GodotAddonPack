@@ -19,11 +19,11 @@ static func serialize_snapshot(snapshot: NetSnapshot) -> Array:
 	var serialized_entity_data: Dictionary = serialized_snapshot[ENTITY_DATA]
 	var entity_data: Dictionary = snapshot._entity_data
 	for nhash in entity_data.keys():
+		var this_entity_data: Dictionary = entity_data[nhash]
 		var serialized_entities: Dictionary = {}
 		serialized_entity_data[nhash] = serialized_entities
-		for entity_id in entity_data[nhash].keys():
-			pass
-#			serialized_entities[entity_id] = 
+		for entity_id in this_entity_data.keys():
+			serialized_entities[entity_id] = serialize_entity(this_entity_data[entity_id])
 		assert(serialized_entity_data.hash() == serialized_snapshot[ENTITY_DATA].hash())
 	return serialized_snapshot
 
@@ -45,22 +45,22 @@ static func decompress_data_to_string(file: File, end: int) -> String:
 
 static func read_compressed_replay_file(filepath: String) -> Array:
 	var file := File.new()
-	print("reading compressed replay file...")
+	Console.write("reading compressed replay file...")
 	if file.open(filepath, File.READ) == OK:
 		return open_compressed(file)
 	else:
-		print("error reading compressed replay file!")
+		Console.write("error reading compressed replay file!")
 		return []
 
 static func open_compressed(file: File) -> Array:
-	print("opening compressed replay file")
+	Console.write("opening compressed replay file")
 	file.seek_end()
 	var end := file.get_position()
 	assert(end == file.get_len())
 	file.seek(0)
-	print("decompressing replay file...")
+	Console.write("decompressing replay file...")
 	var replay = str2var(decompress_data_to_string(file,end))
-	print("data successfully decompressed!")
+	Console.write("data successfully decompressed!")
 	assert(replay is Array)
 	return replay
 
@@ -78,11 +78,11 @@ static func save_compressed(file: File, replay: Array, title: String) -> void:
 		file.open(file_path_debug(get_file_name(title)), File.WRITE)
 	else:
 		file.open(file_path_normal(get_file_name(title)), File.WRITE)
-	print("storing compressed replay file...")
+	Console.write("storing compressed replay file...")
 	file.store_buffer(replay_to_compressed_buffer(replay))
 	
-	print("closing compressed replay file...")
-	print(get_file_name(title))
+	Console.write("closing compressed replay file...")
+	Console.write(get_file_name(title))
 	file.close()
 
 static func save(replay: Array) -> void:

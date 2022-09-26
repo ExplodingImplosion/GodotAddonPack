@@ -61,7 +61,9 @@ func _physics_process(delta: float) -> void:
 				move(delta)
 				Network.correct_in_snapshot(generate_snap_entity(),input)
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
-	Network.snapshot_entity(generate_snap_entity())
+	# this is hacky and stupid
+	if !is_queued_for_deletion():
+		Network.snapshot_entity(generate_snap_entity())
 
 func physics_tick_client(delta: float) -> void:
 	if is_owned_by_local_player():
