@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Weapon",
+"class": "AmmoWeapon",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Ammo Weapon.gd"
+}, {
 "base": "Node",
 "class": "AutoInterpolate",
 "language": "GDScript",
@@ -44,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_general/data/encdecbuffer.gd"
 }, {
+"base": "Spatial",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://Gameplay/Entity.gd"
+}, {
 "base": "Reference",
 "class": "EntityInfo",
 "language": "GDScript",
@@ -63,6 +73,11 @@ _global_script_classes=[ {
 "class": "GDDatabase",
 "language": "GDScript",
 "path": "res://addons/keh_gddb/database.gd"
+}, {
+"base": "Entity",
+"class": "Held",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Held Item.gd"
 }, {
 "base": "Reference",
 "class": "InputData",
@@ -224,6 +239,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://shared/scripts/sutils.gd"
 }, {
+"base": "AmmoWeapon",
+"class": "SingleLoader",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Single Loader.gd"
+}, {
 "base": "Node2D",
 "class": "Smooth2D",
 "language": "GDScript",
@@ -269,12 +289,18 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_ui/core/uihelpers.gd"
 }, {
+"base": "Held",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Weapon.gd"
+}, {
 "base": "Reference",
 "class": "_SmoothCore",
 "language": "GDScript",
 "path": "res://addons/keh_smooth/smoothcore.gd"
 } ]
 _global_script_class_icons={
+"AmmoWeapon": "",
 "AutoInterpolate": "",
 "Cam3D": "",
 "CustomControlBase": "",
@@ -282,10 +308,12 @@ _global_script_class_icons={
 "DBTable": "",
 "DataAsset": "",
 "EncDecBuffer": "",
+"Entity": "",
 "EntityInfo": "",
 "ExpandablePanel": "",
 "FancyLineEdit": "res://addons/keh_ui/fancy_line_edit.png",
 "GDDatabase": "",
+"Held": "",
 "InputData": "",
 "InventoryBag": "res://addons/keh_ui/inventory/bag.png",
 "InventoryBase": "",
@@ -318,6 +346,7 @@ _global_script_class_icons={
 "SampleDataAsset": "",
 "SampleScriptedResource": "",
 "SharedUtils": "",
+"SingleLoader": "",
 "Smooth2D": "",
 "Smooth3D": "",
 "SnapEntityBase": "",
@@ -327,6 +356,7 @@ _global_script_class_icons={
 "TabularSimpleDataSource": "",
 "TabularStyler": "",
 "UIHelper": "",
+"Weapon": "",
 "_SmoothCore": ""
 }
 

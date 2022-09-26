@@ -51,24 +51,33 @@ func _ready() -> void:
 		Inputs.connect("mouse_moved",self,"aim")
 
 func _process(delta: float) -> void:
+	tick(delta,Quack.interpfrac)
+func tick(delta: float, interp_frac: float) -> void:
 	pass
+
 func _physics_process(delta: float) -> void:
-	if has_correction:
-		apply_corrections()
-		if is_owned_by_local_player():
-			for input in Inputs.get_local_cached_inputs():
-				process_inputs(input,false)
-				move(delta)
-				Network.correct_in_snapshot(generate_snap_entity(),input)
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
 	# this is hacky and stupid
 	if !is_queued_for_deletion():
 		Network.snapshot_entity(generate_snap_entity())
 
 func physics_tick_client(delta: float) -> void:
-	if is_owned_by_local_player():
+	var is_local: bool = is_owned_by_local_player()
+	if has_correction:
+		apply_corrections()
+		has_correction = false
+		if is_local:
+			update_aim_angle()
+			var caim: Vector2 = aim_angle
+			for input in Inputs.get_local_cached_inputs():
+				process_inputs(input,false)
+				simulate(delta)
+				Network.correct_in_snapshot(generate_snap_entity(),input)
+			assert(caim == aim_angle)
+			set_aim(caim)
+	if is_local:
 		process_inputs(Network.get_input(owner_id),true)
-		move(delta)
+		simulate(delta)
 
 func physics_tick_server(delta: float) -> void:
 	# hacky and stupid. checks to delete every frame. should only happen when the player disconnects
@@ -76,7 +85,7 @@ func physics_tick_server(delta: float) -> void:
 		queue_free()
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
-	move(delta)
+	simulate(delta)
 
 func generate_snap_entity() -> SnapEntityBase:
 	var uid: int = get_meta("uid")
@@ -87,6 +96,9 @@ func generate_snap_entity() -> SnapEntityBase:
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)
+
+func simulate(delta: float) -> void:
+	move(delta)
 
 var direction: Vector3
 var temp_vel: Vector3
@@ -136,7 +148,6 @@ func apply_corrections() -> void:
 		self[correction] = correction_data[correction]
 	set_aim(aim_angle)
 	global_transform.origin = position
-	has_correction = false
 
 var just_jumped: bool = false
 var jumped: bool = false
