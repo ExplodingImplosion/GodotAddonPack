@@ -171,7 +171,8 @@ static func get_interpfrac() -> float:
 	return Engine.get_physics_interpolation_fraction()
 
 static func datetime_string() -> String:
-	return OS.get_datetime_string_from_system(false, true).replace(":", "-")
+	return "---"
+#	return OS.get_datetime_string_from_system(false, true).replace(":", "-")
 
 static func get_tickrate() -> int:
 	return Engine.get_iterations_per_second()

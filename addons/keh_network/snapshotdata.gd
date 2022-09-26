@@ -183,7 +183,7 @@ func reset() -> void:
 	
 	_server_state = null
 	_history.clear()
-	Replay.serialize_lifetime_history(lifetime_history)
+	Replay.save(lifetime_history)
 	lifetime_history.clear()
 	_ssig_to_snap.clear()
 	_isig_to_snap.clear()
