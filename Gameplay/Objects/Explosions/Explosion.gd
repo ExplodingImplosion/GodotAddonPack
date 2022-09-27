@@ -26,6 +26,10 @@ export var knockback_falloff_curve: Curve
 
 signal hit(damage,knockback)
 var frame_created: int
+# maybe wont be used
+var deletion_frame: int
+
+onready var collisionshape: CollisionShape = $"Collision Shape"
 
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
@@ -34,7 +38,9 @@ func _init() -> void:
 	frame_created = Network.get_snap_building_signature()
 
 func _ready() -> void:
-	pass
+	assert(collisionshape.shape)
+	if collisionshape.shape is SphereShape:
+		assert(size == collisionshape.shape.radius)
 
 func _physics_process(delta: float) -> void:
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)

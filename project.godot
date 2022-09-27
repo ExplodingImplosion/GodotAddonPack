@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_nodes/cam3d/cam3d.gd"
 }, {
+"base": "Object",
+"class": "Collision",
+"language": "GDScript",
+"path": "res://Gameplay/Collision.gd"
+}, {
 "base": "Control",
 "class": "CustomControlBase",
 "language": "GDScript",
@@ -72,7 +77,7 @@ _global_script_classes=[ {
 "base": "Area",
 "class": "Explosion",
 "language": "GDScript",
-"path": "res://Gameplay/Objects/Explosion.gd"
+"path": "res://Gameplay/Objects/Explosions/Explosion.gd"
 }, {
 "base": "Control",
 "class": "FancyLineEdit",
@@ -219,7 +224,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Gameplay/Characters/Player Snap Data.gd"
 }, {
-"base": "StaticBody",
+"base": "KinematicBody",
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Gameplay/Objects/Projectiles/Projectile.gd"
@@ -319,6 +324,7 @@ _global_script_class_icons={
 "AutoInterpolate": "",
 "BoundingBox": "",
 "Cam3D": "",
+"Collision": "",
 "CustomControlBase": "",
 "DBHelpers": "",
 "DBTable": "",
@@ -538,6 +544,13 @@ most_recent_item={
 [keh_addons]
 
 network/print_debug_info=true
+
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Damage"
+3d_physics/layer_3="Knockback"
+3d_physics/layer_4="Network"
 
 [mouse]
 

@@ -3,6 +3,9 @@ const resource_list: Array = [
 	# gameplay scenes
 	[
 		preload("res://Gameplay/Characters/Player Character.tscn"),
+		preload("res://Gameplay/Items/Weapons/Rocket Launcher/Rocket Launcher.tscn"),
+		preload("res://Gameplay/Objects/Projectiles/Rocket.tscn"),
+		preload("res://Gameplay/Objects/Explosions/Rocket Explosion.tscn"),
 	],
 	# chashes, Quack creates this on startup
 	[],
@@ -21,8 +24,8 @@ const resource_list: Array = [
 ]
 
 enum {GAMEPLAYSCENES,CHASHES,MENU_NAMES,MAP_NAMES,OTHER_SCENES}
-enum gameplayscenes{PlayerCharacter}
-enum chashes{PlayerSnapData}
+enum gameplayscenes{PlayerCharacter,RocketLauncher,Rocket,RocketExplosion}
+enum chashes{PlayerSnapData,RocketLauncherSnapData,RocketSnapData,RocketExplosionSnapData}
 enum menu_names{MainMenu}
 enum map_names{PLAYGROUND}
 enum other_scenes{}

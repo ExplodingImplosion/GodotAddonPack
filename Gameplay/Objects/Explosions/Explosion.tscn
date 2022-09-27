@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Network/Bounding Box.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Gameplay/Objects/Explosions/Explosion.gd" type="Script" id=2]
+
+[node name="Explosion" type="Area"]
+script = ExtResource( 2 )
+
+[node name="Collision Shape" type="CollisionShape" parent="."]
+
+[node name="Bounding Box" parent="." instance=ExtResource( 1 )]

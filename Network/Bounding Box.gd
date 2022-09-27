@@ -5,6 +5,7 @@ var offset: Vector3
 var size: Vector3
 
 onready var collisionshape: CollisionShape = $CollisionShape
+onready var parent: Spatial = get_parent()
 
 func _init(_size: Vector3) -> void:
 	size = _size

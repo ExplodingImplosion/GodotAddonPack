@@ -12,8 +12,7 @@ export(float,-1000,1000) var max_tilt: float
 export(float,-100,100) var movement_tilt_factor: float
 export(float,0,100) var sway_return_factor: float
 export var can_be_dropped: bool
-export var dropped_scene: PackedScene
-export(int,0,100) var dropped_resource_index: int
+export(int,0,999) var dropped_resource_index: int
 
 var equip_time_left: float
 var sway: Vector3

@@ -1,4 +1,4 @@
-extends StaticBody
+extends KinematicBody
 class_name Projectile
 
 var resource_id: int
@@ -17,13 +17,18 @@ export(float,-100,100) var gravity: float
 export var changes_velocity: bool
 export(float,-100,100) var target_speed: float
 export(float,0,1000) var time_to_reach_target: float
-enum {DAMAGE,KNOCKBACK,SPAWN}
-export(int,FLAGS,"Damage","Knockback","Spawn") var collision_behavior: int
+enum {DAMAGE,KNOCKBACK,SPAWN,DELETE_ON_CONTACT}
+export(int,FLAGS,"Damage","Knockback","Spawn","Delete on contact") var collision_behavior: int
 export(float,0,500) var damage: float
 export(float,-100,100) var knockback: float
+export(int,0,999) var spawn_resource_index: int
 
 onready var collision_shape: CollisionShape = $"Collision Shape"
 onready var mesh: MeshInstance = $Mesh
+
+var position: Vector3
+var velocity: Vector3
+var orientation: Vector3
 
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
@@ -63,7 +68,25 @@ func physics_tick_client(delta: float) -> void:
 		simulate(delta)
 
 func simulate(delta: float) -> void:
-	pass
+	var collision: KinematicCollision = move(delta)
+	if collision:
+		# could be something else like a csg mesh
+		var collider: CollisionObject = collision.get_collider()
+		if Collision.collides_with_world(collider):
+			if collision_damages():
+				if Collision.is_damageable(collider):
+					pass
+			if collision_knockbacks():
+				if Collision.accepts_knockback(collider):
+					pass
+			if collision_spawns():
+				pass
+			if delete_on_contact():
+				# maybe not
+				queue_free()
+
+func move(delta: float) -> KinematicCollision:
+	return move_and_collide(velocity * delta)
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
@@ -83,6 +106,8 @@ func on_tree_exited() -> void:
 func apply_corrections() -> void:
 	for correction in correction_data.keys():
 		self[correction] = correction_data[correction]
+	global_rotation = orientation
+	global_transform.origin = position
 
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	pass
@@ -94,3 +119,15 @@ func generate_snap_entity() -> SnapEntityBase:
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)
+
+func collision_damages() -> bool:
+	return collision_behavior && DAMAGE
+
+func collision_knockbacks() -> bool:
+	return collision_behavior && KNOCKBACK
+
+func collision_spawns() -> bool:
+	return collision_behavior && SPAWN
+
+func delete_on_contact() -> bool:
+	return collision_behavior && DELETE_ON_CONTACT
