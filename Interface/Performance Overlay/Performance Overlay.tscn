@@ -174,76 +174,77 @@ clip_text = true
 [node name="processdeltadiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
 margin_left = 230.0
 margin_top = 20.0
-margin_right = 435.0
+margin_right = 434.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="label" type="Label" parent="HFlowContainer/processdeltadiffcontainer"]
-margin_right = 135.0
+margin_right = 134.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 custom_styles/normal = ExtResource( 2 )
-text = "_process/Delta Diff: "
+text = "_process idle Time: "
 
 [node name="readout" type="Label" parent="HFlowContainer/processdeltadiffcontainer"]
-margin_left = 135.0
-margin_right = 205.0
+margin_left = 134.0
+margin_right = 204.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="processquackdiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 435.0
+margin_left = 434.0
 margin_top = 20.0
-margin_right = 684.0
+margin_right = 646.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="label" type="Label" parent="HFlowContainer/processquackdiffcontainer"]
-margin_right = 179.0
+margin_right = 142.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 custom_styles/normal = ExtResource( 2 )
-text = "_process/Quack Delta Diff: "
+text = "_process Quack idle: "
 
 [node name="readout" type="Label" parent="HFlowContainer/processquackdiffcontainer"]
-margin_left = 179.0
-margin_right = 249.0
+margin_left = 142.0
+margin_right = 212.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="physprocessdeltadiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 684.0
+margin_left = 646.0
 margin_top = 20.0
-margin_right = 995.0
+margin_right = 905.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="label" type="Label" parent="HFlowContainer/physprocessdeltadiffcontainer"]
-margin_right = 241.0
+margin_right = 189.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 custom_styles/normal = ExtResource( 2 )
-text = "_physics_process/Physics Delta Diff: "
+text = "_physics_process Idle Time: "
 
 [node name="readout" type="Label" parent="HFlowContainer/physprocessdeltadiffcontainer"]
-margin_left = 241.0
-margin_right = 311.0
+margin_left = 189.0
+margin_right = 259.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="pingcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_top = 40.0
-margin_right = 81.0
-margin_bottom = 60.0
+margin_left = 905.0
+margin_top = 20.0
+margin_right = 986.0
+margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
@@ -263,9 +264,8 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="rttcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 81.0
 margin_top = 40.0
-margin_right = 157.0
+margin_right = 76.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -286,9 +286,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="ticksbehindcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 157.0
+margin_left = 76.0
 margin_top = 40.0
-margin_right = 292.0
+margin_right = 211.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -309,9 +309,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="inputcachesizecontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 292.0
+margin_left = 211.0
 margin_top = 40.0
-margin_right = 452.0
+margin_right = 371.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -332,9 +332,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="packetlosscontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 452.0
+margin_left = 371.0
 margin_top = 40.0
-margin_right = 581.0
+margin_right = 500.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -355,9 +355,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="tickratecontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 581.0
+margin_left = 500.0
 margin_top = 40.0
-margin_right = 685.0
+margin_right = 604.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0

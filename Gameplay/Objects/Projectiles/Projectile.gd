@@ -1,11 +1,29 @@
-extends Spatial
-class_name Entity
+extends StaticBody
+class_name Projectile
 
 var resource_id: int
 var has_correction: bool
 var owner_id: int = 1
 var correction_data: Dictionary
 export var snap_entity_script: Script
+
+export(float,-100,100) var initial_speed: float
+export var infinite_active_lifetime: bool
+export(float,0,9223372036854775807) var active_lifetime: float
+export var infinite_lifetime: bool
+export(float,0,9223372036854775807) var lifetime: float
+export var affected_by_gravity: bool
+export(float,-100,100) var gravity: float
+export var changes_velocity: bool
+export(float,-100,100) var target_speed: float
+export(float,0,1000) var time_to_reach_target: float
+enum {DAMAGE,KNOCKBACK,SPAWN}
+export(int,FLAGS,"Damage","Knockback","Spawn") var collision_behavior: int
+export(float,0,500) var damage: float
+export(float,-100,100) var knockback: float
+
+onready var collision_shape: CollisionShape = $"Collision Shape"
+onready var mesh: MeshInstance = $Mesh
 
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
@@ -14,6 +32,8 @@ func _init() -> void:
 
 func _ready() -> void:
 	pass
+
+signal collided(dmg,kb)
 
 func _physics_process(delta: float) -> void:
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)

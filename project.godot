@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_smooth/autointerpolate.gd"
 }, {
+"base": "Area",
+"class": "BoundingBox",
+"language": "GDScript",
+"path": "res://Network/Bounding Box.gd"
+}, {
 "base": "Position3D",
 "class": "Cam3D",
 "language": "GDScript",
@@ -63,6 +68,11 @@ _global_script_classes=[ {
 "class": "ExpandablePanel",
 "language": "GDScript",
 "path": "res://addons/keh_ui/expanel/expanel.gd"
+}, {
+"base": "Area",
+"class": "Explosion",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Explosion.gd"
 }, {
 "base": "Control",
 "class": "FancyLineEdit",
@@ -209,6 +219,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Gameplay/Characters/Player Snap Data.gd"
 }, {
+"base": "StaticBody",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Projectiles/Projectile.gd"
+}, {
 "base": "Reference",
 "class": "Quantize",
 "language": "GDScript",
@@ -302,6 +317,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AmmoWeapon": "",
 "AutoInterpolate": "",
+"BoundingBox": "",
 "Cam3D": "",
 "CustomControlBase": "",
 "DBHelpers": "",
@@ -311,6 +327,7 @@ _global_script_class_icons={
 "Entity": "",
 "EntityInfo": "",
 "ExpandablePanel": "",
+"Explosion": "",
 "FancyLineEdit": "res://addons/keh_ui/fancy_line_edit.png",
 "GDDatabase": "",
 "Held": "",
@@ -340,6 +357,7 @@ _global_script_class_icons={
 "NetSnapshotData": "",
 "PlayerCharacter": "",
 "PlayerSnapData": "",
+"Projectile": "",
 "Quantize": "",
 "Replay": "",
 "Resources": "",

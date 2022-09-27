@@ -1,5 +1,5 @@
-extends Spatial
-class_name Entity
+extends Area
+class_name Explosion
 
 var resource_id: int
 var has_correction: bool
@@ -7,16 +7,40 @@ var owner_id: int = 1
 var correction_data: Dictionary
 export var snap_entity_script: Script
 
+enum {NONE,LINEAR,SQUARED,STEPPED,CURVE}
+export(float,0,500) var damage: float
+export(float,-100,100) var knockback: float
+export(float,0,9223372036854775807) var size: float
+export var infinite_active_lifetime: bool
+export(float,0,9223372036854775807) var active_lifetime: float
+export var infinite_lifetime: bool
+export(float,0,9223372036854775807) var lifetime: float
+export(int,"None","Linear","Squared","Stepped","Curve") var damage_falloff_method: int
+export(float,-1,1) var damage_falloff_scale: float
+export var damage_falloff_steps: PoolRealArray
+export var damage_falloff_curve: Curve
+export(int,"None","Linear","Squared","Stepped","Curve") var knockback_falloff_method: int
+export(float,-1,1) var knockback_falloff_scale: float
+export var knockback_falloff_steps: PoolRealArray
+export var knockback_falloff_curve: Curve
+
+signal hit(damage,knockback)
+var frame_created: int
+
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
 	connect("tree_exiting",self,"on_tree_exiting")
 	connect("tree_exited",self,"on_tree_exited")
+	frame_created = Network.get_snap_building_signature()
 
 func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
+	# this is gonna bite me in the ass i know it
+	if is_frame_after_created():
+		queue_free()
 	if !is_queued_for_deletion():
 		Network.snapshot_entity(generate_snap_entity())
 
@@ -74,3 +98,6 @@ func generate_snap_entity() -> SnapEntityBase:
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)
+
+func is_frame_after_created() -> bool:
+	return frame_created < Network.get_snap_building_signature()

@@ -35,8 +35,8 @@ reload_sound = null
 ammo_per_load = 0
 
 [node name="Rotational Parent" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.156355, -0.0872698, -0.29485 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.144, -0.078, -0.223 )
 
 [node name="Item Mesh" parent="Rotational Parent" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.142731 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0159548, -0.142731 )
 mesh = SubResource( 1 )
