@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Gameplay/Items/Weapons/Ammo Weapon.gd"
 }, {
+"base": "SnapEntityBase",
+"class": "AmmoWeaponSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd"
+}, {
 "base": "Node",
 "class": "AutoInterpolate",
 "language": "GDScript",
@@ -69,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_network/entityinfo.gd"
 }, {
+"base": "SnapEntityBase",
+"class": "EntitySnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Entity Snap Data.gd"
+}, {
 "base": "CustomControlBase",
 "class": "ExpandablePanel",
 "language": "GDScript",
@@ -78,6 +88,11 @@ _global_script_classes=[ {
 "class": "Explosion",
 "language": "GDScript",
 "path": "res://Gameplay/Objects/Explosions/Explosion.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "ExplosionSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Explosions/Explosion Snap Data.gd"
 }, {
 "base": "Control",
 "class": "FancyLineEdit",
@@ -93,6 +108,11 @@ _global_script_classes=[ {
 "class": "Held",
 "language": "GDScript",
 "path": "res://Gameplay/Items/Held Item.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "HeldSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Held Item Snap Data.gd"
 }, {
 "base": "Reference",
 "class": "InputData",
@@ -229,6 +249,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Gameplay/Objects/Projectiles/Projectile.gd"
 }, {
+"base": "SnapEntityBase",
+"class": "ProjectileSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Projectiles/Projectile Snap Data.gd"
+}, {
 "base": "Reference",
 "class": "Quantize",
 "language": "GDScript",
@@ -243,6 +268,21 @@ _global_script_classes=[ {
 "class": "Resources",
 "language": "GDScript",
 "path": "res://Utilities/Resources.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "RocketExplosionSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Explosions/Rocket Explosion Snap Data.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "RocketLauncherSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Rocket Launcher/Rocket Launcher Snap Data.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "RocketSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Objects/Projectiles/Rocket Snap Data.gd"
 }, {
 "base": "DataAsset",
 "class": "SampleDataAsset",
@@ -263,6 +303,11 @@ _global_script_classes=[ {
 "class": "SingleLoader",
 "language": "GDScript",
 "path": "res://Gameplay/Items/Weapons/Single Loader.gd"
+}, {
+"base": "SnapEntityBase",
+"class": "SingleLoaderSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Single Loader Snap Data.gd"
 }, {
 "base": "Node2D",
 "class": "Smooth2D",
@@ -314,6 +359,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Gameplay/Items/Weapons/Weapon.gd"
 }, {
+"base": "SnapEntityBase",
+"class": "WeaponSnapData",
+"language": "GDScript",
+"path": "res://Gameplay/Items/Weapons/Weapon Snap Data.gd"
+}, {
 "base": "Reference",
 "class": "_SmoothCore",
 "language": "GDScript",
@@ -321,6 +371,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AmmoWeapon": "",
+"AmmoWeaponSnapData": "",
 "AutoInterpolate": "",
 "BoundingBox": "",
 "Cam3D": "",
@@ -332,11 +383,14 @@ _global_script_class_icons={
 "EncDecBuffer": "",
 "Entity": "",
 "EntityInfo": "",
+"EntitySnapData": "",
 "ExpandablePanel": "",
 "Explosion": "",
+"ExplosionSnapData": "",
 "FancyLineEdit": "res://addons/keh_ui/fancy_line_edit.png",
 "GDDatabase": "",
 "Held": "",
+"HeldSnapData": "",
 "InputData": "",
 "InventoryBag": "res://addons/keh_ui/inventory/bag.png",
 "InventoryBase": "",
@@ -364,13 +418,18 @@ _global_script_class_icons={
 "PlayerCharacter": "",
 "PlayerSnapData": "",
 "Projectile": "",
+"ProjectileSnapData": "",
 "Quantize": "",
 "Replay": "",
 "Resources": "",
+"RocketExplosionSnapData": "",
+"RocketLauncherSnapData": "",
+"RocketSnapData": "",
 "SampleDataAsset": "",
 "SampleScriptedResource": "",
 "SharedUtils": "",
 "SingleLoader": "",
+"SingleLoaderSnapData": "",
 "Smooth2D": "",
 "Smooth3D": "",
 "SnapEntityBase": "",
@@ -381,6 +440,7 @@ _global_script_class_icons={
 "TabularStyler": "",
 "UIHelper": "",
 "Weapon": "",
+"WeaponSnapData": "",
 "_SmoothCore": ""
 }
 

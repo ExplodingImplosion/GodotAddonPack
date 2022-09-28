@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Gameplay/Items/Weapons/Single Loader.gd" type="Script" id=1]
 [ext_resource path="res://Gameplay/Items/Held Item.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Gameplay/Items/Weapons/Rocket Launcher/Rocket Launcher Snap Data.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.05
@@ -9,6 +10,7 @@ mid_height = 0.3
 
 [node name="Rocket Launcher" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
+snap_entity_script = ExtResource( 3 )
 equip_time = 0.2
 horizontal_sway_factor = -0.5
 max_horizontal_sway = 200.0
@@ -29,10 +31,10 @@ max_volume = 0.5
 pitch_scale = 1.0
 ammo_used_per_shot = 1
 mag_size = 4
+ammo_per_load = 0
 reload_time = 0.0
 chamber_time = 0.4
 reload_sound = null
-ammo_per_load = 0
 
 [node name="Rotational Parent" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.144, -0.078, -0.223 )

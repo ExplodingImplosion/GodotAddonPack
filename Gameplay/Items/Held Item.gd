@@ -16,13 +16,21 @@ export(int,0,999) var dropped_resource_index: int
 
 var equip_time_left: float
 var sway: Vector3
-onready var player: KinematicBody = get_parent()
+var player: KinematicBody
 onready var rotational_parent: Position3D = $"Rotational Parent"
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
 
 func _init() -> void:
 	._init()
 	
+
+func on_tree_entered() -> void:
+	# not optimized and high key stupid
+	var parent: Node = get_parent()
+	if parent and parent is KinematicBody:
+		player = parent
+		parent.remove_child(self)
+		parent.head.add_child(self)
 
 func input1() -> void:
 	pass
@@ -83,3 +91,11 @@ func modify_tilt_from_movement(value: float) -> void:
 
 func simulate(delta: float) -> void:
 	tick_sway(delta)
+
+func process_inputs(inputs: InputData, auth: bool) -> void:
+	if inputs.is_pressed("fire"):
+		input1()
+	if inputs.is_pressed("alt_fire"):
+		input2()
+	if inputs.is_pressed("reload"):
+		input3()

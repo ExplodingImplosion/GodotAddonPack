@@ -79,23 +79,22 @@ func _ready() -> void:
 
 func register_all_spawners() -> void:
 	register_spawner(PlayerSnapData, Resources.gameplayscenes.PlayerCharacter, Resources.chashes.PlayerSnapData, "extra_player_setup")
-#	var player_scene: PackedScene = Resources.get_gameplay_scene(Resources.gameplayscenes.PlayerCharacter)
-#	var player_chash: int = Resources.get_chash(Resources.chashes.PlayerSnapData)
-#	var gaming: PlayerSnapData = Network.create_snap_entity(PlayerSnapData,Resources.gameplayscenes.PlayerCharacter,player_chash)
-#	Network.snapshot_data.register_spawner(PlayerSnapData, # class string
-#												player_chash, # class hash
-#												new_spawner(player_scene), # scene spawner
-#												map, # parent
-#												funcref(self,"extra_player_setup"))
+	register_spawner(RocketLauncherSnapData,Resources.gameplayscenes.RocketLauncher,Resources.chashes.RocketLauncherSnapData,"extra_item_setup")
+	register_spawner(RocketSnapData,Resources.gameplayscenes.Rocket,Resources.chashes.RocketSnapData,"extra_object_setup")
+	register_spawner(RocketExplosionSnapData,Resources.gameplayscenes.RocketExplosion,Resources.chashes.RocketExplosionSnapData,"extra_object_setup")
 
 func register_spawner(script: Script, gameplay_scene_id: int, chash_id: int, extra_setup: String) -> void:
 	var scene: PackedScene = Resources.get_gameplay_scene(gameplay_scene_id)
 	var chash: int = Resources.get_chash(chash_id)
-#	var snapdata: SnapEntityBase = Network.create_snap_entity(script, gameplay_scene_id, chash)
-											# script, class hash, scene spawner, parent, extra setup func
 	Network.snapshot_data.register_spawner(script, chash, NetDefaultSpawner.new(scene), map, funcref(self,extra_setup))
 
 static func extra_player_setup(ret) -> void:
+	pass
+
+static func extra_item_setup(ret) -> void:
+	pass
+
+static func extra_object_setup(ret) -> void:
 	pass
 
 # ////////////////////////////////////
@@ -259,6 +258,8 @@ func try_respawning_player(id: int) -> void:
 	var player_node: NetPlayerNode = Network.player_data.get_pnode(id)
 	var player_character: PlayerCharacter = Network.snapshot_data.spawn_node(PlayerSnapData,id,Resources.get_chash(Resources.chashes.PlayerSnapData))
 	player_character.global_transform.origin = Vector3(0,40,0)
+	var rocketlauncher: SingleLoader = Network.snapshot_data.spawn_node(RocketLauncherSnapData,id+1,Resources.get_chash(Resources.chashes.RocketLauncherSnapData))
+	map.reparent_node(rocketlauncher,player_character)
 #	if is_respawning_allowed():
 #		match Gamemodes.get_team_type(gamemode):
 #			Gamemodes.team_type.FFA:

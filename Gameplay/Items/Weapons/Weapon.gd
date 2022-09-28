@@ -60,3 +60,6 @@ func input2() -> void:
 func on_equip_finished() -> void:
 	.on_equip_finished()
 	can_fire = true
+
+#func simulate(delta: float) -> void:
+#	.simulate(delta)

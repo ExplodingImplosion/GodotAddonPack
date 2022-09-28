@@ -1,6 +1,7 @@
 extends KinematicBody
 class_name Projectile
 
+# is this even gonna be used?
 var resource_id: int
 var has_correction: bool
 var owner_id: int = 1

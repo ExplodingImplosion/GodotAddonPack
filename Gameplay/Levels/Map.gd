@@ -28,3 +28,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	pass
+
+func reparent_node(node: Node,to: Node) -> void:
+	remove_child(node)
+	to.add_child(node)

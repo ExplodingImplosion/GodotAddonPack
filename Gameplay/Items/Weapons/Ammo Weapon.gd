@@ -3,6 +3,7 @@ class_name AmmoWeapon
 
 export(int,1,100) var ammo_used_per_shot: int = 1
 export(int,1,100) var mag_size: int
+export(int,1,100) var ammo_per_load: int
 export(float,0,10) var reload_time: float
 export(float,0,10) var chamber_time: float
 export var reload_sound: AudioStreamSample
@@ -43,7 +44,11 @@ func try_reload() -> void:
 	pass
 
 func on_ammo_chambered() -> void:
-	current_ammo = mag_size
+	current_ammo += ammo_per_load
+	if current_ammo > mag_size:
+		current_ammo = mag_size
+	elif current_ammo < mag_size:
+		begin_reload()
 
 func on_reload_finished() -> void:
 	can_fire = true

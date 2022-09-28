@@ -21,7 +21,6 @@ func _init(uid: int, chash: int).(uid,chash) -> void:
 #	set_meta("class_hash",chash)
 #	set_meta("owner_id",EntityInfo.CTYPE_UINT)
 
-# crashes if uncommented
 func apply_state(node: Node) -> void:
 	apply_vars(node)
 
