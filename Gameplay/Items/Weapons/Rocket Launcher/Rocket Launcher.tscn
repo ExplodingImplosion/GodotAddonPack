@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Gameplay/Items/Weapons/Single Loader.gd" type="Script" id=1]
 [ext_resource path="res://Gameplay/Items/Held Item.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Gameplay/Items/Weapons/Rocket Launcher/Rocket Launcher Snap Data.gd" type="Script" id=3]
+[ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd" type="Script" id=3]
+
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.05

@@ -269,21 +269,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Utilities/Resources.gd"
 }, {
-"base": "SnapEntityBase",
-"class": "RocketExplosionSnapData",
-"language": "GDScript",
-"path": "res://Gameplay/Objects/Explosions/Rocket Explosion Snap Data.gd"
-}, {
-"base": "SnapEntityBase",
-"class": "RocketLauncherSnapData",
-"language": "GDScript",
-"path": "res://Gameplay/Items/Weapons/Rocket Launcher/Rocket Launcher Snap Data.gd"
-}, {
-"base": "SnapEntityBase",
-"class": "RocketSnapData",
-"language": "GDScript",
-"path": "res://Gameplay/Objects/Projectiles/Rocket Snap Data.gd"
-}, {
 "base": "DataAsset",
 "class": "SampleDataAsset",
 "language": "GDScript",
@@ -303,11 +288,6 @@ _global_script_classes=[ {
 "class": "SingleLoader",
 "language": "GDScript",
 "path": "res://Gameplay/Items/Weapons/Single Loader.gd"
-}, {
-"base": "SnapEntityBase",
-"class": "SingleLoaderSnapData",
-"language": "GDScript",
-"path": "res://Gameplay/Items/Weapons/Single Loader Snap Data.gd"
 }, {
 "base": "Node2D",
 "class": "Smooth2D",
@@ -422,14 +402,10 @@ _global_script_class_icons={
 "Quantize": "",
 "Replay": "",
 "Resources": "",
-"RocketExplosionSnapData": "",
-"RocketLauncherSnapData": "",
-"RocketSnapData": "",
 "SampleDataAsset": "",
 "SampleScriptedResource": "",
 "SharedUtils": "",
 "SingleLoader": "",
-"SingleLoaderSnapData": "",
 "Smooth2D": "",
 "Smooth3D": "",
 "SnapEntityBase": "",
