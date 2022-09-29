@@ -93,6 +93,9 @@ static func get_movement_from_keyboard() -> Vector2:
 
 static func get_local_cached_inputs() -> Array:
 	return Network.player_data.local_player.get_cached_input_list()
+
+static func get_player_cached_inputs(player: int) -> Array:
+	return Network.player_data.remote_player[player].get_cached_input_list()
 # depreciated. use bit_has_flag
 #static func is_updown_pressed(updown: int) -> bool:
 #	return true if updown == DOWN else false

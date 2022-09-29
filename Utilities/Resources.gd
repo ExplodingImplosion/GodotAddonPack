@@ -25,7 +25,7 @@ const resource_list: Array = [
 
 enum {GAMEPLAYSCENES,CHASHES,MENU_NAMES,MAP_NAMES,OTHER_SCENES}
 enum gameplayscenes{PlayerCharacter,RocketLauncher,Rocket,RocketExplosion}
-enum chashes{PlayerSnapData,RocketLauncherSnapData,RocketSnapData,RocketExplosionSnapData}
+enum chashes{}
 enum menu_names{MainMenu}
 enum map_names{PLAYGROUND}
 enum other_scenes{}
