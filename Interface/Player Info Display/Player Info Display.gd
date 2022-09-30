@@ -91,8 +91,16 @@ func _physics_process(delta: float) -> void:
 			if showdirection:
 				directiondotvelreadout.set_text(str(myplayer.direction.dot(myplayer.velocity)))
 			if showboundingbox:
-				boundingboxreadout.set_text(str(myplayer.boundingbox.scale))
+				boundingboxreadout.set_text(str(myplayer.boundingbox.area.scale))
 		else:
-			for child in map.get_children():
-				if child is PlayerCharacter and child.is_owned_by_local_player():
-					myplayer = child
+			var kids: Array = map.get_children()
+			for idx in kids.size():
+				var child: Node = kids[idx]
+				var pidx: int
+				if child is PlayerCharacter:
+					if playeridx == pidx:
+						myplayer = child
+					else:
+						pidx += 1
+
+var playeridx: int = -1

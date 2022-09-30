@@ -223,19 +223,20 @@ func perf_overlay_cmd() -> void:
 
 const playerinfomenu: PackedScene = preload("res://Interface/Player Info Display/Player Info Display.tscn")
 var playerinfodisplay: CanvasLayer
-func player_info_display_cmd() -> void:
+func player_info_display_cmd(idx: int) -> void:
 	if playerinfodisplay == null:
 		playerinfodisplay = playerinfomenu.instance()
+		playerinfodisplay.playeridx = idx
 		Quack.root.add_child(playerinfodisplay)
 	else:
 		playerinfodisplay.queue_free()
 		playerinfodisplay = null
-func playerinfo_cmd() -> void:
-	player_info_display_cmd()
-func display_player_info_cmd() -> void:
-	player_info_display_cmd()
-func showplayerinfo_cmd() -> void:
-	player_info_display_cmd()
+func playerinfo_cmd(idx: int) -> void:
+	player_info_display_cmd(idx)
+func display_player_info_cmd(idx: int) -> void:
+	player_info_display_cmd(idx)
+func showplayerinfo_cmd(idx: int) -> void:
+	player_info_display_cmd(idx)
 
 func max_fps_cmd(fps: int) -> void:
 	Engine.set_target_fps(fps)

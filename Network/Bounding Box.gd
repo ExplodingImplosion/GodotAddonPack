@@ -1,4 +1,4 @@
-extends Area
+extends Node
 class_name BoundingBox
 
 export(float,0.1,999) var min_size: float
@@ -6,8 +6,9 @@ export(float,0.1,999) var min_size: float
 var offset: Vector3
 #var size: Vector3
 
-onready var collisionshape: CollisionShape = $CollisionShape
-onready var parent: Spatial = get_parent().get_parent()
+onready var area: Area = $Area
+onready var collisionshape: CollisionShape = $Area/CollisionShape
+onready var parent: Spatial = get_parent()
 
 #func _init(size: Vector3) -> void:
 #	scale = size
@@ -27,20 +28,29 @@ func new_collision_shape() -> void:
 #func apply_offset() -> void:
 #	collisionshape.transform.origin = offset
 
+func get_owner_player() -> NetPlayerNode:
+	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
+
+func get_ping(player: NetPlayerNode) -> float:
+	return player._ping.last_ping if player._ping else 0.0
+
 # warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
 	if qNetwork.is_server():
-		var delay: int
-		# delay doesnt get bigger than 1... i dont think players upload cached inputs to server
-		delay = Inputs.get_player_cached_inputs(parent.owner_id).size() if parent.owner_id != 1 else Inputs.get_local_cached_inputs().size()
-		var maxpos: Vector3 = global_transform.origin
+		#												lmao ping is measured in ms
+		var player: NetPlayerNode = get_owner_player()
+		# the frame after player is cleared from remote player dict the bounding
+		# box still exists, this prevents script errors for frame after deletion
+		if !player:
+			return
+		var delay: int = get_ping(player) / (delta * 1000) + 1
+		var maxpos: Vector3 = area.global_transform.origin
 		var minpos: Vector3 = maxpos
 		var posdiff: Vector3
 		# maybe delay -1?
 		for input in delay:
 			var snapshot: NetSnapshot = Network.snapshot_data._history[-(input + 1)]
-#															could also do parent.get_meta("uid")
-			var entity: SnapEntityBase = snapshot.get_entity(parent.get_meta("chash"),parent.uid)
+			var entity: SnapEntityBase = snapshot.get_entity(parent.namehash,parent.owner_id)
 			if entity:
 				maxpos = set_if_greater(maxpos,entity.position)
 				minpos = set_if_lesser(minpos,entity.position)
@@ -51,8 +61,8 @@ func _physics_process(delta: float) -> void:
 			posdiff.x = enforce_min_size(posdiff.x)
 			posdiff.y = enforce_min_size(posdiff.y)
 			posdiff.z = enforce_min_size(posdiff.z)
-		scale = posdiff + parent.size
-		global_transform.origin = maxpos - posdiff/2
+		area.scale = posdiff + parent.size
+		area.global_transform.origin = maxpos - posdiff/2
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 

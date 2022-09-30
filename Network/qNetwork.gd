@@ -256,6 +256,7 @@ func poll_for_respawns(delta: float) -> void:
 func try_respawning_player(id: int) -> void:
 	printerr("temp spawning logic")
 	var player_node: NetPlayerNode = Network.player_data.get_pnode(id)
+	print(Resources.get_chash(Resources.gameplayscenes.PlayerCharacter))
 	var player_character: PlayerCharacter = Network.snapshot_data.spawn_node(PlayerSnapData,id,Resources.get_chash(Resources.gameplayscenes.PlayerCharacter))
 	player_character.global_transform.origin = Vector3(0,40,0)
 	var rocketlauncher: SingleLoader = Network.snapshot_data.spawn_node(AmmoWeaponSnapData,id+1,Resources.get_chash(Resources.gameplayscenes.RocketLauncher))

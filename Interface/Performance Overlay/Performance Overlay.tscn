@@ -8,6 +8,7 @@ script = ExtResource( 1 )
 show_fps = true
 show_physics_process_delta_time_diff = true
 show_ping = true
+show_ticks_behind = true
 show_input_cache_size = true
 show_tickrate = true
 

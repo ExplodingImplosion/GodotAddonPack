@@ -1,6 +1,10 @@
 extends Spatial
 class_name Entity
 
+# this is fucking insane but it needs to be done for bounding boxes to work because
+# scritps cant pull their class name
+var namehash: int = hash("EntitySnapData")
+
 var resource_id: int
 var has_correction: bool
 var owner_id: int = 1

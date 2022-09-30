@@ -170,7 +170,7 @@ static func is_mouse_visible() -> bool:
 static func get_interpfrac() -> float:
 	return Engine.get_physics_interpolation_fraction()
 
-static func datetime_string() -> String:
+static func get_datetime_string() -> String:
 	return Time.get_datetime_string_from_system(false, true).replace(":", "-")
 
 static func get_tickrate() -> int:

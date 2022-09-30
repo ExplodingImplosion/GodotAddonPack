@@ -31,6 +31,7 @@ onready var physics_process_delta_time_diff_readout: Label = $HFlowContainer/phy
 onready var input_cache_size_readout: Label = $HFlowContainer/inputcachesizecontainer/readout
 onready var tickrate_readout: Label = $HFlowContainer/tickratecontainer/readout
 onready var ping_readout: Label = $HFlowContainer/pingcontainer/readout
+onready var ticks_behind_readout: Label = $HFlowContainer/ticksbehindcontainer/readout
 
 func _ready() -> void:
 	var hflowcontainer: HFlowContainer = get_child(0)
@@ -49,6 +50,7 @@ func _ready() -> void:
 	input_cache_size_readout.get_parent().set_visible(show_input_cache_size)
 	tickrate_readout.get_parent().set_visible(show_tickrate)
 	ping_readout.get_parent().set_visible(show_ping)
+	ticks_behind_readout.get_parent().set_visible(show_ticks_behind)
 	# if ur tryna make it so ppl can turn labels back on then this shouldnt be a thing
 	for child in hflowcontainer.get_children():
 		if child.visible == false:
@@ -56,8 +58,10 @@ func _ready() -> void:
 	if show_ping:
 		Network.connect("localping",self,"set_ping")
 
-func set_ping(ping: int) -> void:
-	ping_readout.set_text(str(ping))
+var last_ping: float
+func set_ping(ping: float) -> void:
+	last_ping = ping
+	ping_readout.set_text(str(int(ping)))
 
 var processtime: float
 var physprocesstime: float
@@ -90,3 +94,5 @@ func _physics_process(delta: float) -> void:
 		tickrate_readout.set_text(str(Quack.get_tickrate()))
 	if show_input_cache_size:
 		input_cache_size_readout.set_text(str(Inputs.get_local_cached_inputs().size()))
+	if show_ticks_behind:
+		ticks_behind_readout.set_text(str(int(last_ping/(delta * 1000))))

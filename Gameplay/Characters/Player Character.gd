@@ -1,6 +1,10 @@
 extends KinematicBody
 class_name PlayerCharacter
 
+# this is fucking insane but it needs to be done for bounding boxes to work because
+# scritps cant pull their class name
+var namehash: int = hash("PlayerSnapData")
+
 var resource_id: int = 0
 
 var owner_id: int = 1
@@ -25,7 +29,7 @@ onready var head: Spatial = $Head
 onready var camera: Camera = $Head/Camera
 onready var collisionshape: CollisionShape = $CollisionShape
 onready var size: Vector3 = get_size()
-onready var boundingbox: BoundingBox = $"Spatial/Bounding Box"
+onready var boundingbox: BoundingBox = $"Bounding Box"
 
 # EXPORT VARS
 export var speed: float = 7.0

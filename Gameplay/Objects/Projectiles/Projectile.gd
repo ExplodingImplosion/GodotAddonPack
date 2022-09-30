@@ -1,6 +1,10 @@
 extends KinematicBody
 class_name Projectile
 
+# this is fucking insane but it needs to be done for bounding boxes to work because
+# scritps cant pull their class name
+var namehash: int = hash("ProjectileSnapData")
+
 # is this even gonna be used?
 var resource_id: int
 var has_correction: bool
