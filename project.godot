@@ -262,12 +262,17 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Replay",
 "language": "GDScript",
-"path": "res://Network/Replay.gd"
+"path": "res://addons/keh_network/replay.gd"
 }, {
 "base": "Reference",
 "class": "Resources",
 "language": "GDScript",
 "path": "res://Utilities/Resources.gd"
+}, {
+"base": "Control",
+"class": "SFXHelper",
+"language": "GDScript",
+"path": "res://demos/audiomaster/sfxhelper.gd"
 }, {
 "base": "DataAsset",
 "class": "SampleDataAsset",
@@ -402,6 +407,7 @@ _global_script_class_icons={
 "Quantize": "",
 "Replay": "",
 "Resources": "",
+"SFXHelper": "",
 "SampleDataAsset": "",
 "SampleScriptedResource": "",
 "SharedUtils": "",

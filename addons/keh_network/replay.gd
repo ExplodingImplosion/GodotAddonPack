@@ -21,21 +21,14 @@ static func read_compressed_replay_file(filepath: String) -> Array:
 
 static func open_compressed(file: File) -> Array:
 	print("opening compressed replay file")
-	file.seek_end()
-	var end := file.get_position()
-	assert(end == file.get_len())
-	file.seek(0)
 	print("decompressing replay file...")
-	var replay = bytes2var(decompress_data(file,end))
+	var replay = bytes2var(decompress_data(file,file.get_len()))
 	print("data successfully decompressed!")
 	assert(replay is Array)
 	return replay
 
 static func get_file_name(title: String) -> String:
-	return str("%s %s %s.REPLAY"%[title, get_datetime_string(), OS.get_unique_id()])
-
-static func get_datetime_string() -> String:
-	return Time.get_datetime_string_from_system(false, true).replace(":", "-")
+	return str("%s %s %s.REPLAY"%[title, Quack.get_datetime_string(), OS.get_unique_id()])
 
 static func file_path_debug(name: String) -> String:
 	return debug_save_path + name
@@ -45,7 +38,7 @@ static func file_path_normal(name: String) -> String:
 
 static func save_compressed(file: File, replay: Array, title: String) -> void:
 	# diverges behavior based on if the game is exported or not
-	if !OS.has_feature("standalone"):
+	if !Quack.is_exported():
 		make_dir_if_doesnt_exist(debug_save_path)
 		file.open(file_path_debug(get_file_name(title)), File.WRITE)
 	else:
