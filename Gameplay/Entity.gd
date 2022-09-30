@@ -8,14 +8,18 @@ var correction_data: Dictionary
 export var snap_entity_script: Script
 
 func _init() -> void:
+# warning-ignore:return_value_discarded
 	connect("tree_entered",self,"on_tree_entered")
+# warning-ignore:return_value_discarded
 	connect("tree_exiting",self,"on_tree_exiting")
+# warning-ignore:return_value_discarded
 	connect("tree_exited",self,"on_tree_exited")
 
 func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+# warning-ignore:standalone_ternary
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
 	if !is_queued_for_deletion():
 		Network.snapshot_entity(generate_snap_entity())
@@ -42,12 +46,15 @@ func physics_tick_client(delta: float) -> void:
 		process_inputs(Network.get_input(owner_id),true)
 		simulate(delta)
 
+# warning-ignore:unused_argument
 func simulate(delta: float) -> void:
 	pass
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func tick(delta: float, interp_frac: float) -> void:
 	pass
 
@@ -64,6 +71,8 @@ func apply_corrections() -> void:
 	for correction in correction_data.keys():
 		self[correction] = correction_data[correction]
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	pass
 

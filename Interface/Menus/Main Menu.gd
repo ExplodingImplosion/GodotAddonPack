@@ -1,6 +1,7 @@
 extends Menu
 
 func _ready() -> void:
+# warning-ignore:narrowing_conversion
 	Engine.target_fps = OS.get_screen_refresh_rate()
 
 

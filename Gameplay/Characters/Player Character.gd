@@ -24,6 +24,8 @@ var has_correction: bool
 onready var head: Spatial = $Head
 onready var camera: Camera = $Head/Camera
 onready var collisionshape: CollisionShape = $CollisionShape
+onready var size: Vector3 = get_size()
+onready var boundingbox: BoundingBox = $"Spatial/Bounding Box"
 
 # EXPORT VARS
 export var speed: float = 7.0
@@ -41,6 +43,10 @@ export var crouch_speed: float = 2.0
 export var standing_height: float = 1.88
 export var crouching_height: float = 1.0
 
+func get_size() -> Vector3:
+	var shape: CapsuleShape = collisionshape.shape
+	return Vector3(shape.radius,shape.height,shape.radius)
+
 func _init() -> void:
 	pass
 func _ready() -> void:
@@ -48,14 +54,19 @@ func _ready() -> void:
 	if is_owned_by_local_player():
 		camera.set_current(true)
 		Quack.capture_cursor()
+# warning-ignore:return_value_discarded
 		Inputs.connect("mouse_moved",self,"aim")
+	
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func tick(delta: float, interp_frac: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+# warning-ignore:standalone_ternary
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
 	# this is hacky and stupid
 	if !is_queued_for_deletion():
@@ -73,7 +84,6 @@ func physics_tick_client(delta: float) -> void:
 				process_inputs(input,false)
 				simulate(delta)
 				Network.correct_in_snapshot(generate_snap_entity(),input)
-			assert(caim == aim_angle)
 			set_aim(caim)
 	if is_local:
 		process_inputs(Network.get_input(owner_id),true)

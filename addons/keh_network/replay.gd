@@ -27,29 +27,25 @@ static func open_compressed(file: File) -> Array:
 	assert(replay is Array)
 	return replay
 
-static func get_file_name(title: String) -> String:
+static func make_file_name(title: String) -> String:
 	return str("%s %s %s.REPLAY"%[title, Quack.get_datetime_string(), OS.get_unique_id()])
 
-static func file_path_debug(name: String) -> String:
-	return debug_save_path + name
-
-static func file_path_normal(name: String) -> String:
-	return save_path + name
+static func open_file_at_directory(file: File, file_name: String, directory: String) -> void:
+	make_dir_if_doesnt_exist(directory)
+	file.open(directory + file_name, File.WRITE)
 
 static func save_compressed(file: File, replay: Array, title: String) -> void:
 	# diverges behavior based on if the game is exported or not
 	if !Quack.is_exported():
-		make_dir_if_doesnt_exist(debug_save_path)
-		file.open(file_path_debug(get_file_name(title)), File.WRITE)
+		open_file_at_directory(file,make_file_name(title),debug_save_path)
 	else:
-		make_dir_if_doesnt_exist(save_path)
-		file.open(file_path_normal(get_file_name(title)), File.WRITE)
+		open_file_at_directory(file,make_file_name(title),save_path)
 	print("storing compressed replay file...")
 	file.store_buffer(replay_to_compressed_buffer(replay))
 	
-	print("closing compressed replay file...")
-	print(get_file_name(title))
+	prints("closing compressed replay file", make_file_name(title), "...")
 	file.close()
+	prints("file closed.")
 
 static func make_dir_if_doesnt_exist(path: String) -> void:
 	var dir:= Directory.new()
@@ -58,5 +54,5 @@ static func make_dir_if_doesnt_exist(path: String) -> void:
 			# this is mad barebones
 			printerr("make_dir failed!")
 
-static func save(replay: Array) -> void:
-	save_compressed(File.new(),replay,"replay")
+static func save(replay: Array,name: String = "replay") -> void:
+	save_compressed(File.new(),replay,name)

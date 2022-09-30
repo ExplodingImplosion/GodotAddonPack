@@ -15,6 +15,7 @@ export var showtarget: bool
 export var showtempaccel: bool
 export var showonfloor: bool
 export var showdirectiondotvel: bool
+export var showboundingbox: bool
 
 onready var positionreadout: Label =$HFlowContainer/positioncontainer/readout
 onready var velocityreadout: Label =$HFlowContainer/velocitycontainer/readout
@@ -31,6 +32,7 @@ onready var targetreadout: Label =$HFlowContainer/targetcontainer/readout
 onready var tempaccelreadout: Label =$HFlowContainer/tempaccelcontainer/readout
 onready var onfloorreadout: Label =$HFlowContainer/onfloorcontainer/readout
 onready var directiondotvelreadout: Label =$HFlowContainer/directiondotvelcontainer/readout
+onready var boundingboxreadout: Label = $HFlowContainer/boundingboxcontainer/readout
 
 var myplayer: PlayerCharacter
 
@@ -88,6 +90,8 @@ func _physics_process(delta: float) -> void:
 				onfloorreadout.set_text(str(myplayer.is_on_floor()))
 			if showdirection:
 				directiondotvelreadout.set_text(str(myplayer.direction.dot(myplayer.velocity)))
+			if showboundingbox:
+				boundingboxreadout.set_text(str(myplayer.boundingbox.scale))
 		else:
 			for child in map.get_children():
 				if child is PlayerCharacter and child.is_owned_by_local_player():

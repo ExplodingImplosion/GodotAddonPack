@@ -40,4 +40,6 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 mesh = SubResource( 2 )
 
-[node name="Bounding Box" parent="." instance=ExtResource( 3 )]
+[node name="Spatial" type="Node" parent="."]
+
+[node name="Bounding Box" parent="Spatial" instance=ExtResource( 3 )]

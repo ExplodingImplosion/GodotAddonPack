@@ -14,6 +14,7 @@ showtarget = true
 showtempaccel = true
 showonfloor = true
 showdirectiondotvel = true
+showboundingbox = true
 
 [node name="HFlowContainer" type="HFlowContainer" parent="."]
 margin_top = 66.0
@@ -355,3 +356,28 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 60, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
+
+[node name="boundingboxcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 220.0
+margin_right = 352.0
+margin_bottom = 240.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/boundingboxcontainer"]
+margin_right = 132.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "Bounding Box Size: "
+
+[node name="readout" type="Label" parent="HFlowContainer/boundingboxcontainer"]
+margin_left = 132.0
+margin_right = 352.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 220, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+__meta__ = {
+"_editor_description_": ""
+}

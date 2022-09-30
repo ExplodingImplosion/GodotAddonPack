@@ -185,7 +185,7 @@ func reset() -> void:
 	_server_state = null
 	_history.clear()
 	if !_lifetime_history.empty():
-		Replay.save(_lifetime_history)
+		Replay.save(_lifetime_history,'server') if qNetwork.is_server() else Replay.save(_lifetime_history,'client')
 	# maybe just clear the buffer?
 	_lifetime_history_buffer = EncDecBuffer.new()
 	_lifetime_history.clear()

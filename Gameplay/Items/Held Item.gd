@@ -20,9 +20,9 @@ var player: KinematicBody
 onready var rotational_parent: Position3D = $"Rotational Parent"
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
 
-func _init() -> void:
-	._init()
-	
+#func _init() -> void:
+#	._init()
+#	
 
 func on_tree_entered() -> void:
 	# not optimized and high key stupid
