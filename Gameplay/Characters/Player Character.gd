@@ -49,7 +49,7 @@ export var crouching_height: float = 1.0
 
 func get_size() -> Vector3:
 	var shape: CapsuleShape = collisionshape.shape
-	return Vector3(shape.radius,shape.height,shape.radius)
+	return Vector3(shape.radius,shape.height,shape.radius)*2
 
 func _init() -> void:
 	pass
@@ -79,11 +79,11 @@ func _physics_process(delta: float) -> void:
 func physics_tick_client(delta: float) -> void:
 	var is_local: bool = is_owned_by_local_player()
 	if has_correction:
+		update_aim_angle()
+		var caim: Vector2 = aim_angle
 		apply_corrections()
 		has_correction = false
 		if is_local:
-			update_aim_angle()
-			var caim: Vector2 = aim_angle
 			for input in Inputs.get_local_cached_inputs():
 				process_inputs(input,false)
 				simulate(delta)

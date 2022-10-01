@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Dev/bbtest.gd" type="Script" id=1]
+[ext_resource path="res://Dev/Materials/Transparent Collision.tres" type="Material" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 2 )
+size = Vector3( 1, 1, 1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 2.48229, -0.440376, -2.91035 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Position3D"]
+mesh = SubResource( 1 )
+
+[node name="Position3D2" type="Position3D" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.88958, -1.02934, -0.891136 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Position3D2"]
+mesh = SubResource( 1 )
+
+[node name="Area" type="Area" parent="."]
+transform = Transform( 1.5, 0, 0, 0, 0.5, 0, 0, 0, 2, 1.89801, 2.47574, -1.51651 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Area"]
+mesh = SubResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.538535, -0.445963, 0.71491, 0, 0.848455, 0.529268, -0.842603, -0.28503, 0.456923, 5.26421, 1.94504, 1.01457 )

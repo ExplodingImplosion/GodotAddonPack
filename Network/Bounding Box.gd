@@ -28,34 +28,34 @@ func new_collision_shape() -> void:
 #func apply_offset() -> void:
 #	collisionshape.transform.origin = offset
 
-func get_owner_player() -> NetPlayerNode:
-	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
-
-func get_ping(player: NetPlayerNode) -> float:
-	return player._ping.last_ping if player._ping else 0.0
-
+#func get_owner_player() -> NetPlayerNode:
+#	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
 # warning-ignore:unused_argument
+
 func _physics_process(delta: float) -> void:
-	if qNetwork.is_server():
-		#												lmao ping is measured in ms
-		var player: NetPlayerNode = get_owner_player()
-		# the frame after player is cleared from remote player dict the bounding
-		# box still exists, this prevents script errors for frame after deletion
-		if !player:
-			return
-		var delay: int = get_ping(player) / (delta * 1000) + 1
-		var maxpos: Vector3 = area.global_transform.origin
+	var history: Array= Network.snapshot_data._history
+	if qNetwork.is_server() and !history.empty():
+		var delay: int = qNetwork.max_player_delay
+		var maxpos: Vector3 = parent.global_transform.origin
 		var minpos: Vector3 = maxpos
 		var posdiff: Vector3
-		# maybe delay -1?
-		for input in delay:
-			var snapshot: NetSnapshot = Network.snapshot_data._history[-(input + 1)]
+		for i in delay:
+			# prevents frame delays greater than max history size from looping around in array
+			# and accessing redundant data
+			if i+1 > history.size():
+				break
+			var idx: int = -(i+1)
+			var snapshot: NetSnapshot = history[idx]
 			var entity: SnapEntityBase = snapshot.get_entity(parent.namehash,parent.owner_id)
 			if entity:
 				maxpos = set_if_greater(maxpos,entity.position)
 				minpos = set_if_lesser(minpos,entity.position)
-			# maybe bail from loop if entity not present?
-		posdiff = maxpos.abs() + minpos.abs()
+			else:
+				# there is like zero shot that the entity was simply "not present" on one frame
+				# back in time and then present the next frame back in time, so this bails
+				# from the loop if the entity isn't present on a given frame
+				break
+		posdiff = maxpos-minpos
 		if parent.size.length() > 0:
 			# probably redundant because there's no shot parent.size AND posdiff are 0
 			posdiff.x = enforce_min_size(posdiff.x)
@@ -63,20 +63,27 @@ func _physics_process(delta: float) -> void:
 			posdiff.z = enforce_min_size(posdiff.z)
 		area.scale = posdiff + parent.size
 		area.global_transform.origin = maxpos - posdiff/2
+		area.global_transform.origin.y += parent.size.y/2
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 
 func enforce_min_size(value: float) -> float:
 	return min_size if is_zero_approx(value) else value
 
-func set_if_greater(v1: Vector3, v2: Vector3) -> Vector3:
-	v1.x = v2.x if v2.x > v1.x else v2.x
-	v1.y = v2.y if v2.y > v1.y else v2.y
-	v1.z = v2.z if v2.z > v1.z else v2.z
+static func set_if_greater(v1: Vector3, v2: Vector3) -> Vector3:
+	v1.x = sig(v1.x,v2.x)
+	v1.y = sig(v1.y,v2.y)
+	v1.z = sig(v1.z,v2.z)
 	return v1
 
-func set_if_lesser(v1: Vector3, v2: Vector3) -> Vector3:
-	v1.x = v2.x if v2.x < v1.x else v2.x
-	v1.y = v2.y if v2.y < v1.y else v2.y
-	v1.z = v2.z if v2.z < v1.z else v2.z
+static func sig(v1: float, v2: float) -> float:
+	return v2 if v2 > v1 else v1
+
+static func sil(v1: float, v2: float) -> float:
+	return v2 if v2 < v1 else v1
+
+static func set_if_lesser(v1: Vector3, v2: Vector3) -> Vector3:
+	v1.x = sil(v1.x,v2.x)
+	v1.y = sil(v1.y,v2.y)
+	v1.z = sil(v1.z,v2.z)
 	return v1

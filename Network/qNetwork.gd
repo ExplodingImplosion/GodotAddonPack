@@ -287,7 +287,21 @@ func add_player_to_respawn_queue(id: int, with_time: int = GET_GAMEMODE_RESPAWN_
 	else:
 		printerr("Player %s already queued for respawn!"%[id])
 
+var max_player_delay: int
+static func get_max_delay(delta: float) -> int:
+	var delay: float
+	var this_delay: float
+	for player in Network.player_data.remote_player.values():
+		this_delay = get_ping(player)
+		if this_delay > delay:
+			delay = this_delay
+	return int(delay/(delta*1000)+1)
+
+static func get_ping(player: NetPlayerNode) -> float:
+	return player._ping.last_ping if player._ping else 0.0
+
 func physics_tick_server(delta: float) -> void:
+	max_player_delay = get_max_delay(delta)
 	poll_for_respawns(delta)
 #		Network.snapshot_data.get_game_node(Network.player_data.get_pnode(id).net_id,PlayerSnapData)
 
