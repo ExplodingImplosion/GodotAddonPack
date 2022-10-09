@@ -111,3 +111,9 @@ func is_owned_by_local_player() -> bool:
 
 func is_frame_after_created() -> bool:
 	return frame_created < Network.get_snap_building_signature()
+
+func on_body_entered(body: CollisionObject):
+	if Collision.can_damage_happen(self,body):
+		pass
+	if Collision.can_knockback_happen(self,body):
+		pass

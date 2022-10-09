@@ -33,9 +33,11 @@ func new_collision_shape() -> void:
 # warning-ignore:unused_argument
 
 func _physics_process(delta: float) -> void:
-	var history: Array= Network.snapshot_data._history
-	if qNetwork.is_server() and !history.empty():
-		var delay: int = qNetwork.max_player_delay
+	if !qNetwork.is_server():
+		return
+	var history: Array= qNetwork.get_recent_snapshot_history()
+	if !history.empty():
+		var delay: int = qNetwork.max_player_frame_delay
 		var maxpos: Vector3 = parent.global_transform.origin
 		var minpos: Vector3 = maxpos
 		var posdiff: Vector3
@@ -46,7 +48,7 @@ func _physics_process(delta: float) -> void:
 				break
 			var idx: int = -(i+1)
 			var snapshot: NetSnapshot = history[idx]
-			var entity: SnapEntityBase = snapshot.get_entity(parent.namehash,parent.owner_id)
+			var entity: SnapEntityBase = Entity.get_entity_from_snapshot(snapshot,parent)
 			if entity:
 				maxpos = set_if_greater(maxpos,entity.position)
 				minpos = set_if_lesser(minpos,entity.position)
@@ -87,3 +89,62 @@ static func set_if_lesser(v1: Vector3, v2: Vector3) -> Vector3:
 	v1.y = sil(v1.y,v2.y)
 	v1.z = sil(v1.z,v2.z)
 	return v1
+
+
+# maybe make this a CollisionObject instead
+func on_body_entered(body: PhysicsBody):
+	# maybe just connect this func on startup but only if is server,
+	# or disconnect this func on startup only if it isnt server
+	if !qNetwork.is_server():
+		return
+	# this should be the only eventuality
+	assert(Collision.network_collision(body))
+	var history: Array = qNetwork.get_recent_snapshot_history()
+	if !history.empty():
+		var body_owner_delay: int = qNetwork.get_cached_player_frame_delay(body.owner_id)
+		var parent_entity: SnapEntityBase = parent.generate_snap_entity()
+		var body_entity: SnapEntityBase = body.generate_snap_entity()
+		var original_parent_entity: SnapEntityBase = parent_entity
+		var original_body_entity: SnapEntityBase = body_entity
+		for i in body_owner_delay:
+			# prevents frame delays greater than max history size from looping around in array
+			# and accessing redundant data
+			if i+1 > history.size():
+				break
+			var idx: int = -(i+1)
+			var snapshot: NetSnapshot = history[idx]
+			var this_parent_entity: SnapEntityBase = Entity.get_entity_from_snapshot(snapshot,parent)
+			var this_body_entity: SnapEntityBase = Entity.get_entity_from_snapshot(snapshot,body)
+			if this_parent_entity:
+				parent_entity = this_parent_entity
+			if this_body_entity:
+				body_entity = this_body_entity
+			if !this_parent_entity and !this_body_entity:
+				# there is like zero shot that the entities were simply "not present" on one frame
+				# back in time and then present the next frame back in time, so this bails
+				# from the loop if both entities aren't present on a given frame
+				break
+		var parent_entities_same: bool = parent_entity != original_parent_entity
+		var body_entities_same: bool = body_entity != original_body_entity
+		if !parent_entities_same:
+			apply_vars_to_node_from_snapentity(parent,parent_entity)
+#		elif body_entities_same:
+#			var bodyparent: Node = body.get_parent()
+#			bodyparent.remove_child(body)
+#			bodyparent.add_child(body)
+		if !body_entities_same:
+			apply_vars_to_node_from_snapentity(body,body_entity)
+		
+		# functionality goes here
+		
+		if !parent_entities_same:
+			apply_vars_to_node_from_snapentity(parent,original_parent_entity)
+		if !body_entities_same:
+			apply_vars_to_node_from_snapentity(body,original_body_entity)
+#	else:
+#		printerr("body %s doesnt have network collision set up and neither does bounding box %s, layers/masks are %s/%s and %s/%s"%[body,self,body.collision_layer,body.collision_mask,area.collision_layer,area.collision_mask])
+#		Quack.quit()
+
+static func apply_vars_to_node_from_snapentity(node: Spatial, entity: SnapEntityBase) -> void:
+	entity.apply_state(node)
+	node.apply_corrections()

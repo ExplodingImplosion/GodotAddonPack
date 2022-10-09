@@ -8,4 +8,4 @@ snap_entity_script = ExtResource( 2 )
 initial_speed = 21.0
 infinite_active_lifetime = true
 infinite_lifetime = true
-collision_behavior = 4
+collision_behavior = 12

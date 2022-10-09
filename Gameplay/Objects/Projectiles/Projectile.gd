@@ -39,6 +39,8 @@ func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
 	connect("tree_exiting",self,"on_tree_exiting")
 	connect("tree_exited",self,"on_tree_exited")
+#	if collision_damages():
+#		pass
 
 func _ready() -> void:
 	pass

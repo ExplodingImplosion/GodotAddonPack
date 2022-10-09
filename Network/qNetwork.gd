@@ -113,6 +113,8 @@ func reset() -> void:
 #	Network.reset_input()
 	Network.reset_system()
 	local_player = null
+	player_ids.resize(0)
+	player_frame_delays.clear()
 	Quack.change_scene("res://Interface/Menus/Main Menu.tscn")
 
 func reset_if_connected() -> void:
@@ -138,6 +140,7 @@ func go_to_main_menu_if_map_is_current_scene() -> void:
 func on_player_added(id: int) -> void:
 	print("Client %s added."%[id])
 	player_ids.append(id)
+	player_frame_delays[id] = 0
 	prints("DEBUG",player_ids,Quack.tree.get_network_connected_peers())
 	rpc_id(id,"client_start",map_path)
 	print_debug("get rid of this after")
@@ -148,6 +151,7 @@ func on_player_removed(id: int) -> void:
 	print("Client %s removed."%[id])
 	# might get super expensive with larger player numbers... look into this
 	player_ids.remove(id)
+	player_frame_delays.erase(id)
 
 func on_connection_succeeded() -> void:
 	print("Connection succeeded!")
@@ -287,21 +291,41 @@ func add_player_to_respawn_queue(id: int, with_time: int = GET_GAMEMODE_RESPAWN_
 	else:
 		printerr("Player %s already queued for respawn!"%[id])
 
-var max_player_delay: int
-static func get_max_delay(delta: float) -> int:
-	var delay: float
-	var this_delay: float
+var max_player_frame_delay: int
+var player_frame_delays: Dictionary
+static func get_max_frame_delay(delta: float) -> int:
+	var max_ping: float
+	var this_ping: float
 	for player in Network.player_data.remote_player.values():
-		this_delay = get_ping(player)
-		if this_delay > delay:
-			delay = this_delay
-	return int(delay/(delta*1000)+1)
+		this_ping = get_ping(player)
+		if this_ping > max_ping:
+			max_ping = this_ping
+	return get_frame_delay(max_ping,delta)
+
+static func get_recent_snapshot_history() -> Array:
+	return Network.snapshot_data._history
+
+static func get_player_frame_delay(player: NetPlayerNode,delta: float) -> int:
+	return get_frame_delay(get_ping(player),delta)
+
+static func get_frame_delay(ping: float,delta: float) -> int:
+	return int(ping/(delta*1000)+1)
 
 static func get_ping(player: NetPlayerNode) -> float:
 	return player._ping.last_ping if player._ping else 0.0
 
+static func get_ping_by_id(id: int) -> float:
+	return get_ping(Network.player_data.remote_player[id])
+
+func get_cached_player_frame_delay(id: int) -> int:
+	return player_frame_delays[id]
+
 func physics_tick_server(delta: float) -> void:
-	max_player_delay = get_max_delay(delta)
+	max_player_frame_delay = get_max_frame_delay(delta)
+	# stupid because the above func iterates thru every remote player,
+	# which means this iterates thru lists of remote players twice. fuck you!
+	for id in player_ids:
+		player_frame_delays[id] = get_frame_delay(get_ping_by_id(id),delta)
 	poll_for_respawns(delta)
 #		Network.snapshot_data.get_game_node(Network.player_data.get_pnode(id).net_id,PlayerSnapData)
 

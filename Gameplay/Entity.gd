@@ -87,3 +87,6 @@ func generate_snap_entity() -> SnapEntityBase:
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)
+
+static func get_entity_from_snapshot(snapshot: NetSnapshot, entity: Spatial) -> SnapEntityBase:
+	return snapshot.get_entity(entity.namehash,entity.owner_id)

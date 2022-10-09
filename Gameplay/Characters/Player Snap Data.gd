@@ -14,6 +14,7 @@ var max_health: float = 100
 var dead: bool = false
 var crouch_amount: float
 var team: int
+var jumped: int
 #const uid = 0
 
 func _init(uid: int, chash: int).(uid,chash) -> void:
@@ -40,6 +41,7 @@ func apply_vars(to: PlayerCharacter) -> void:
 	dead = dead,
 	crouch_amount = crouch_amount,
 	team = team,
+	jumped = jumped,
 	}
 
 func get_vars(from: PlayerCharacter) -> void:
@@ -56,3 +58,4 @@ func get_vars(from: PlayerCharacter) -> void:
 	dead = from.dead
 	crouch_amount = from.crouch_amount
 	team = from.team
+	jumped = from.jumped
