@@ -39,6 +39,7 @@ func physics_tick_server(delta: float) -> void:
 func physics_tick_client(delta: float) -> void:
 	var is_local: bool = is_owned_by_local_player()
 	if has_correction:
+#		if generate_snap_entity().make_correction_data().hash() != correction_data:
 		apply_corrections()
 		has_correction = false
 		if is_local:
@@ -90,3 +91,17 @@ func is_owned_by_local_player() -> bool:
 
 static func get_entity_from_snapshot(snapshot: NetSnapshot, entity: Spatial) -> SnapEntityBase:
 	return snapshot.get_entity(entity.namehash,entity.owner_id)
+
+static func spawn_params_to_correction_data(entity: Spatial, params: Dictionary) -> Dictionary:
+	# LMFAOOOOOO FIX THIS
+	return {}
+
+static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_params: Dictionary, from: Spatial) -> void:
+	if _spawn_resource_index > -1:
+		var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,Network.get_incrementing_id(_owner_id))
+		var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
+		for key in correction_data.keys():
+			assert(node.correction_data.has(key))
+			assert(typeof(node.correction_data[key]) == typeof(correction_data[key]))
+			node.correction_data[key] = correction_data[key]
+		node.apply_corrections()

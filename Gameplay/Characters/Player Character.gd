@@ -78,8 +78,24 @@ func _physics_process(delta: float) -> void:
 
 func physics_tick_client(delta: float) -> void:
 	var is_local: bool = is_owned_by_local_player()
+	update_aim_angle()
 	if has_correction:
-		update_aim_angle()
+		# only applying corrections if correction data is the same as
+		# current info doesnt work because of floating point imprecision :/
+		# would need to either take every float for both dicts and quantize them
+		# or something or instead of hashing the dicts, this would go through every
+		# single fucking key and compare them, and specifically compare using
+		# is_equal_approx based on what type each value is... Would like to use this
+		# as an optimization so that rolling back only occurs when client/server
+		# disagree but we live in a cruel world i guess 
+#		var altdata: Dictionary = generate_snap_entity().make_correction_data()
+#		if altdata.hash() != correction_data.hash():
+#			if Engine.get_physics_frames() % 60 == 0:
+#				prints(altdata.hash(),correction_data.hash())
+#				prints("altadata keys ",altdata.keys().size()," correction_data keys ",correction_data.keys().size())
+#				for key in altdata.keys():
+#					prints(altdata[key],correction_data[key],altdata[key] == correction_data[key])
+#					print("---")
 		var caim: Vector2 = aim_angle
 		apply_corrections()
 		has_correction = false

@@ -26,7 +26,8 @@ enum {DAMAGE,KNOCKBACK,SPAWN,DELETE_ON_CONTACT}
 export(int,FLAGS,"Damage","Knockback","Spawn","Delete on contact") var collision_behavior: int
 export(float,0,500) var damage: float
 export(float,-100,100) var knockback: float
-export(int,0,999) var spawn_resource_index: int
+export(int,-1,999) var spawn_resource_index: int = -1
+export var spawn_params: Dictionary
 
 onready var collision_shape: CollisionShape = $"Collision Shape"
 onready var mesh: MeshInstance = $Mesh
@@ -86,8 +87,8 @@ func simulate(delta: float) -> void:
 			if collision_knockbacks():
 				if Collision.accepts_knockback(collider):
 					pass
-			if collision_spawns():
-				pass
+			if collision_spawns() and spawn_resource_index > -1:
+				Entity.try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
 			if delete_on_contact():
 				# maybe not
 				queue_free()

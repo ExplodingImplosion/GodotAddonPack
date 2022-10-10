@@ -2,7 +2,8 @@ extends Held
 class_name Weapon
 
 export(float,0,10) var fire_rate: float
-export(float,0,100) var damage: float
+export(int,-1,999) var spawn_resource_index: int = -1
+export var spawn_params: Dictionary
 export var can_headshot: bool
 export(float,0,100) var headshot_multiplier: float
 enum {AUTO,SINGLE,PUMPBOLT}
@@ -36,6 +37,8 @@ func fire() -> void:
 	if firing_sound:
 		pass
 		#Audio.play(firing_sound,volume,max_volume,pitch_scale)
+	try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
+
 func is_fireable() -> bool:
 #	if firing_type == AUTO || released_fire:
 #		return can_fire

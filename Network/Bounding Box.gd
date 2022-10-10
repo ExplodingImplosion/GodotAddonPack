@@ -35,7 +35,10 @@ func new_collision_shape() -> void:
 func _physics_process(delta: float) -> void:
 	if !qNetwork.is_server():
 		return
-	var history: Array= qNetwork.get_recent_snapshot_history()
+	update_size_from_net_history_and_max_player_delay()
+
+func update_size_from_net_history_and_max_player_delay() -> void:
+	var history: Array = qNetwork.get_recent_snapshot_history()
 	if !history.empty():
 		var delay: int = qNetwork.max_player_frame_delay
 		var maxpos: Vector3 = parent.global_transform.origin
@@ -58,7 +61,7 @@ func _physics_process(delta: float) -> void:
 				# from the loop if the entity isn't present on a given frame
 				break
 		posdiff = maxpos-minpos
-		if parent.size.length() > 0:
+		if is_zero_approx(parent.size.length()):
 			# probably redundant because there's no shot parent.size AND posdiff are 0
 			posdiff.x = enforce_min_size(posdiff.x)
 			posdiff.y = enforce_min_size(posdiff.y)
@@ -99,6 +102,9 @@ func on_body_entered(body: PhysicsBody):
 		return
 	# this should be the only eventuality
 	assert(Collision.network_collision(body))
+	# dont need to rewind for stuff if its a server owned body
+	if body.owner_id == 1:
+		return
 	var history: Array = qNetwork.get_recent_snapshot_history()
 	if !history.empty():
 		var body_owner_delay: int = qNetwork.get_cached_player_frame_delay(body.owner_id)
@@ -106,7 +112,14 @@ func on_body_entered(body: PhysicsBody):
 		var body_entity: SnapEntityBase = body.generate_snap_entity()
 		var original_parent_entity: SnapEntityBase = parent_entity
 		var original_body_entity: SnapEntityBase = body_entity
-		for i in body_owner_delay:
+		
+		
+		# body needs to resimulate so we're going to rewind back to the delay + 1 for body
+		# but NOT for the parent
+		
+		# ALSO THIS SHOULD BE REWRITTEN TO REWIND FROM FURTHEST POINT BACK FORWARDS INSTEAD
+		# OF REWINDING BACKWARDS FROM MOST RECENT FRAME
+		for i in body_owner_delay+1:
 			# prevents frame delays greater than max history size from looping around in array
 			# and accessing redundant data
 			if i+1 > history.size():
@@ -115,7 +128,9 @@ func on_body_entered(body: PhysicsBody):
 			var snapshot: NetSnapshot = history[idx]
 			var this_parent_entity: SnapEntityBase = Entity.get_entity_from_snapshot(snapshot,parent)
 			var this_body_entity: SnapEntityBase = Entity.get_entity_from_snapshot(snapshot,body)
-			if this_parent_entity:
+			# makes sure that when rewinding back the parent isnt rewound to the wrong one, because
+			# of resimulating weirdness
+			if this_parent_entity and i != body_owner_delay:
 				parent_entity = this_parent_entity
 			if this_body_entity:
 				body_entity = this_body_entity
@@ -132,10 +147,10 @@ func on_body_entered(body: PhysicsBody):
 #			var bodyparent: Node = body.get_parent()
 #			bodyparent.remove_child(body)
 #			bodyparent.add_child(body)
+		# this shit is prolly gonna break
 		if !body_entities_same:
 			apply_vars_to_node_from_snapentity(body,body_entity)
-		
-		# functionality goes here
+			body.simulate(get_physics_process_delta_time())
 		
 		if !parent_entities_same:
 			apply_vars_to_node_from_snapentity(parent,original_parent_entity)

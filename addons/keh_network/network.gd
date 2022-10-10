@@ -741,13 +741,13 @@ remote func _unregister_player(_id: int) -> void:
 
 
 #### Incrementing ID system
-func register_incrementing_id(id_name: String) -> void:
-	_incrementing_id[id_name] = 0
+func register_incrementing_id(id: int) -> void:
+	_incrementing_id[id] = 0
 
-func get_incrementing_id(id_name: String) -> int:
-	assert(_incrementing_id.has(id_name))
-	_incrementing_id[id_name] += 1
-	return _incrementing_id[id_name]
+func get_incrementing_id(id: int) -> int:
+	assert(_incrementing_id.has(id))
+	_incrementing_id[id] += 1
+	return _incrementing_id[id]
 
 
 #### Snapshot system

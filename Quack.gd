@@ -48,7 +48,7 @@ func tick_time_value_up(value: float) -> float:
 
 
 func _init() -> void:
-	Resources.build_chashes()
+	Resources.build_chashes_and_snap_scripts()
 func _ready() -> void:
 	setup_connections()
 	setup_filepaths()

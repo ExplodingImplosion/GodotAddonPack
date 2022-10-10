@@ -4,7 +4,6 @@
 [ext_resource path="res://Gameplay/Items/Held Item.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd" type="Script" id=3]
 
-
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.05
 mid_height = 0.3
@@ -22,7 +21,12 @@ max_tilt = 100.0
 movement_tilt_factor = -2.0
 sway_return_factor = 10.0
 fire_rate = 0.3
-damage = 50.0
+spawn_resource_index = 2
+spawn_params = {
+"orientation": null,
+"owner_id": null,
+"position": null
+}
 can_headshot = false
 headshot_multiplier = 0.0
 firing_type = 0

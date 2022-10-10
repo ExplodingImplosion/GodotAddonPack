@@ -78,6 +78,7 @@ func _ready() -> void:
 # ////////////////////////////////////
 
 func register_all_spawners() -> void:
+	register_incrementing_id(1)
 	register_spawner(PlayerSnapData, Resources.gameplayscenes.PlayerCharacter, "extra_player_setup")
 	register_spawner(AmmoWeaponSnapData,Resources.gameplayscenes.RocketLauncher,"extra_item_setup")
 	register_spawner(ProjectileSnapData,Resources.gameplayscenes.Rocket,"extra_object_setup")
@@ -87,6 +88,9 @@ func register_spawner(script: Script, gameplay_scene_id: int, extra_setup: Strin
 	var scene: PackedScene = Resources.get_gameplay_scene(gameplay_scene_id)
 	var chash: int = Resources.get_chash(gameplay_scene_id)
 	Network.snapshot_data.register_spawner(script, chash, NetDefaultSpawner.new(scene), map, funcref(self,extra_setup))
+
+func register_incrementing_id(id: int) -> void:
+	Network.register_incrementing_id(id)
 
 static func extra_player_setup(ret) -> void:
 	pass
@@ -141,6 +145,7 @@ func on_player_added(id: int) -> void:
 	print("Client %s added."%[id])
 	player_ids.append(id)
 	player_frame_delays[id] = 0
+	register_incrementing_id(id)
 	prints("DEBUG",player_ids,Quack.tree.get_network_connected_peers())
 	rpc_id(id,"client_start",map_path)
 	print_debug("get rid of this after")
@@ -150,7 +155,7 @@ func on_player_added(id: int) -> void:
 func on_player_removed(id: int) -> void:
 	print("Client %s removed."%[id])
 	# might get super expensive with larger player numbers... look into this
-	player_ids.remove(id)
+	player_ids.remove(player_ids.find(id))
 	player_frame_delays.erase(id)
 
 func on_connection_succeeded() -> void:
@@ -237,6 +242,13 @@ func _physics_process(delta: float) -> void:
 		physics_tick_server(delta)
 	else:
 		physics_tick_client(delta)
+
+func spawn_node_by_resource_idx(idx: int,node_id: int) -> Node:
+	return Network.snapshot_data.spawn_node(Resources.get_snap_entity_script(idx),node_id,Resources.get_chash(idx))
+
+#func spawn_incrementing_id_by_idx(idx: int) -> Node:
+#	return Network.snapshot_data.
+#Resources.get_snap_entity_script(idx),Resources.get_chash(idx)
 
 #func spawn_node(node: Spatial, transform: Transform) -> void:
 #	node.global_transform = transform

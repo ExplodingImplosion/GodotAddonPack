@@ -11,7 +11,10 @@ func apply_state(node: Node) -> void:
 
 func apply_vars(to: Entity) -> void:
 	to.has_correction = true
-	to.correction_data = {
+	to.correction_data =  make_correction_data()
+
+func make_correction_data() -> Dictionary:
+	return {
 	owner_id = owner_id,
 	}
 
