@@ -57,6 +57,11 @@ static func build_chashes_and_snap_scripts() -> void:
 	var _snapscripts: Array = resource_list[SNAPSCRIPTS]
 	for resource in resource_list[GAMEPLAYSCENES]:
 		_chashes.append((resource as PackedScene).get_path().hash())
-		var dummynode: Node = (resource as PackedScene).instance()
-		_snapscripts.append(dummynode.snap_entity_script)
-		dummynode.queue_free()
+		var state: SceneState = (resource as PackedScene).get_state()
+		for i in state.get_node_property_count(0):
+			# potentially very volatile
+			var value = state.get_node_property_value(0,i)
+			if value is Script:
+				_snapscripts.append(value)
+				break
+	assert(resource_list[GAMEPLAYSCENES].size() == resource_list[SNAPSCRIPTS].size())

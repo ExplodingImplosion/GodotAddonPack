@@ -273,9 +273,11 @@ func try_respawning_player(id: int) -> void:
 	printerr("temp spawning logic")
 	var player_node: NetPlayerNode = Network.player_data.get_pnode(id)
 	print(Resources.get_chash(Resources.gameplayscenes.PlayerCharacter))
-	var player_character: PlayerCharacter = Network.snapshot_data.spawn_node(PlayerSnapData,id,Resources.get_chash(Resources.gameplayscenes.PlayerCharacter))
+	# Network.snapshot_data.spawn_node(PlayerSnapData,id,Resources.get_chash(Resources.gameplayscenes.PlayerCharacter))
+	var player_character: PlayerCharacter = spawn_node_by_resource_idx(Resources.gameplayscenes.PlayerCharacter,id)
 	player_character.global_transform.origin = Vector3(0,40,0)
-	var rocketlauncher: SingleLoader = Network.snapshot_data.spawn_node(AmmoWeaponSnapData,id+1,Resources.get_chash(Resources.gameplayscenes.RocketLauncher))
+	# Network.snapshot_data.spawn_node(AmmoWeaponSnapData,id+1,Resources.get_chash(Resources.gameplayscenes.RocketLauncher))
+	var rocketlauncher: SingleLoader = spawn_node_by_resource_idx(Resources.gameplayscenes.RocketLauncher,id+1)
 	map.reparent_node(rocketlauncher,player_character)
 #	if is_respawning_allowed():
 #		match Gamemodes.get_team_type(gamemode):
