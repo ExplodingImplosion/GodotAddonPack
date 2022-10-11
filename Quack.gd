@@ -269,3 +269,6 @@ static func get_func_length(function: FuncRef) -> int:
 	function.call_func()
 	time2 = OS.get_ticks_usec()
 	return time2 - time
+
+static func redefer_simple(object: Object, method: String) -> void:
+	object.call_deferred(method)

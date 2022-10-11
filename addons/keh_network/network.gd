@@ -124,7 +124,8 @@ class UpdateControl:
 			snap.add_type(k)
 		
 		# Defer the call to the finish() function so the physics tick can finish updating the game state
-		call_deferred("finish")
+		# Make Quack defer it a second time so that bounding box stuff works correctly
+		Quack.call_deferred("redefer_simple",self,"finish")
 	
 	func finish() -> void:
 		if (!snap):

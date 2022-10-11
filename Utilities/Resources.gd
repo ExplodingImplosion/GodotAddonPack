@@ -61,7 +61,10 @@ static func build_chashes_and_snap_scripts() -> void:
 		for i in state.get_node_property_count(0):
 			# potentially very volatile
 			var value = state.get_node_property_value(0,i)
-			if value is Script:
+			# because some scenes have a script property listed before their snap_entity_script
+			# property, this needs to check that the script property is the right property
+			if value is Script and state.get_node_property_name(0,i) == "snap_entity_script":
+				# potentially very volatile
 				_snapscripts.append(value)
 				break
 	assert(resource_list[GAMEPLAYSCENES].size() == resource_list[SNAPSCRIPTS].size())
