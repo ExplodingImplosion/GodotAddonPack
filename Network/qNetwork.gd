@@ -262,22 +262,24 @@ func physics_tick_client(delta: float) -> void:
 
 # SERVER
 # /////////////
-var boundingboxes: Array
-var current_box: int = 0
+#var boundingboxes: Array
+#var current_box: int = 0
+#
+#static func try_make_bbox(parent: Node,size: Vector3) -> BoundingBox:
+#	return Quack.return_null_if_freed(BoundingBox.new(parent,size))
+#
+#func update_bboxes() -> void:
+#	for boundingbox in boundingboxes:
+#		boundingbox.update_size_from_net_history_and_max_player_delay()
+#
+#func clean_bboxes() -> void:
+#	var new: Array
+#	for boundingbox in boundingboxes:
+#		if !Quack.is_freed_instance(boundingbox):
+#			new.append(boundingbox)
+#	boundingboxes = new
 
-static func try_make_bbox(parent: Node,size: Vector3) -> BoundingBox:
-	return Quack.return_null_if_freed(BoundingBox.new(parent,size))
-
-func update_bboxes() -> void:
-	for boundingbox in boundingboxes:
-		boundingbox.update_size_from_net_history_and_max_player_delay()
-
-func clean_bboxes() -> void:
-	var new: Array
-	for boundingbox in boundingboxes:
-		if !Quack.is_freed_instance(boundingbox):
-			new.append(boundingbox)
-	boundingboxes = new
+var query := PhysicsDirectSpaceState.new()
 
 const respawn_queue = {}
 func poll_for_respawns(delta: float) -> void:

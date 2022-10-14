@@ -1,52 +1,76 @@
-extends Reference
+extends Node
 class_name BoundingBox
 
 export(float,0.1,999) var min_size: float
 
-const box: AABB = AABB()
+#const box: AABB = AABB()
 
-var offset: Vector3
+static func setup_params(exclusions: Array,collider: CollisionShape) -> PhysicsShapeQueryParameters:
+	var params := PhysicsShapeQueryParameters.new()
+	params.exclude = exclusions
+	params.collision_mask = Collision.NETWORK
+	params.collide_with_bodies = false
+	params.collide_with_areas = true
+	params.set_shape(collider.shape)
+	return params
+
+static func test(params: PhysicsShapeQueryParameters,max_results: int = 32) -> Array:
+	return qNetwork.query.intersect_shape(params,max_results)
+
 var parent_size: Vector3
 var parent: Spatial
 var debug_mesh: MeshInstance
-const debug_mesh_scene: PackedScene = preload("res://Dev/Dev Box.tscn")
+var params: PhysicsShapeQueryParameters
+onready var collider: CollisionShape = $Area/CollisionShape
+onready var area: Area = $Area
+#const debug_mesh_scene: PackedScene = preload("res://Dev/Dev Box.tscn")
 
-func enable_debug_mesh() -> void:
-	if !debug_mesh:
-		debug_mesh = debug_mesh_scene.instance()
-		parent.add_child(debug_mesh)
+#func enable_debug_mesh() -> void:
+#	if !debug_mesh:
+#		debug_mesh = debug_mesh_scene.instance()
+#		parent.add_child(debug_mesh)
+#
+#func disable_debug_mesh() -> void:
+#	if debug_mesh:
+#		debug_mesh.queue_free()
+#		debug_mesh = null
 
-func disable_debug_mesh() -> void:
-	if debug_mesh:
-		debug_mesh.queue_free()
-		debug_mesh = null
+#func set_size(size: Vector3) -> void:
+#	box.size = size
+#
+#func get_size() -> Vector3:
+#	return box.size
+#
+#func set_position(position: Vector3) -> void:
+#	box.position = position
+#
+#func get_position() -> Vector3:
+#	return box.position
 
-func set_size(size: Vector3) -> void:
-	box.size = size
+#func _init(box_parent: Spatial, box_size: Vector3) -> void:
+##	set_position(position)
+##	set_size(size)
+#	parent = box_parent
+#	parent_size = box_size
+#	assert(parent_size.length() > 0 and !is_zero_approx(parent_size.length()))
+#	if qNetwork.is_server():
+#		qNetwork.boundingboxes.append(self)
+#	else:
+#		free()
 
-func get_size() -> Vector3:
-	return box.size
+func _init() -> void:
+	parent = get_parent()
 
-func set_position(position: Vector3) -> void:
-	box.position = position
-
-func get_position() -> Vector3:
-	return box.position
-
-func _init(box_parent: Spatial, box_size: Vector3) -> void:
-#	set_position(position)
-#	set_size(size)
-	parent = box_parent
-	parent_size = box_size
-	assert(parent_size.length() > 0 and !is_zero_approx(parent_size.length()))
-	if qNetwork.is_server():
-		qNetwork.boundingboxes.append(self)
-	else:
-		free()
+func _ready() -> void:
+	assert(parent and collider and collider.shape)
+	params = setup_params([parent],collider)
 
 #func get_owner_player() -> NetPlayerNode:
 #	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
 # warning-ignore:unused_argument
+
+func _physics_process(delta: float) -> void:
+	update_size_from_net_history_and_max_player_delay()
 
 func update_size_from_net_history_and_max_player_delay() -> void:
 	var history: Array = qNetwork.get_recent_snapshot_history()
@@ -77,10 +101,10 @@ func update_size_from_net_history_and_max_player_delay() -> void:
 			posdiff.x = enforce_min_size(posdiff.x)
 			posdiff.y = enforce_min_size(posdiff.y)
 			posdiff.z = enforce_min_size(posdiff.z)
-		set_size(posdiff + parent_size)
-		var pos: Vector3 = maxpos - posdiff/2
-		pos.y += parent_size.y/2
-		set_position(pos)
+		area.scale = posdiff + parent_size
+#		var pos: Vector3 = maxpos - posdiff/2
+#		pos.y += parent_size.y/2
+		area.global_transform.origin = maxpos - posdiff/2
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 
