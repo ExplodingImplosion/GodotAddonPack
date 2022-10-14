@@ -60,7 +60,12 @@ func physics_tick_server(delta: float) -> void:
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
+	var intersections: Array = BoundingBox.test(params)
+	for intersection in intersections:
+		if intersection is BoundingBox:
+			intersection.on_body_entered(self)
 
+onready var params: PhysicsShapeQueryParameters = BoundingBox.setup_params([self],collision_shape)
 func physics_tick_client(delta: float) -> void:
 	var is_local: bool = is_owned_by_local_player()
 	if has_correction:

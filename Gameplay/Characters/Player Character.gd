@@ -27,9 +27,9 @@ var has_correction: bool
 # NODE REFERENCES
 onready var head: Spatial = $Head
 onready var camera: Camera = $Head/Camera
-onready var collisionshape: CollisionShape = $CollisionShape
+onready var collision_shape: CollisionShape = $CollisionShape
 onready var size: Vector3 = get_size()
-onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collisionshape))
+#onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collision_shape))
 
 # EXPORT VARS
 export var speed: float = 7.0
@@ -48,7 +48,7 @@ export var standing_height: float = 1.88
 export var crouching_height: float = 1.0
 
 func get_size() -> Vector3:
-	var shape: CapsuleShape = collisionshape.shape
+	var shape: CapsuleShape = collision_shape.shape
 	return Vector3(shape.radius,shape.height,shape.radius)*2
 
 func _init() -> void:
@@ -116,8 +116,6 @@ func physics_tick_server(delta: float) -> void:
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
-	if boundingbox:
-		boundingbox._physics_process(delta)
 
 func generate_snap_entity() -> SnapEntityBase:
 	var uid: int = get_meta("uid")

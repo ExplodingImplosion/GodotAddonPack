@@ -18,7 +18,7 @@ static func test(params: PhysicsShapeQueryParameters,max_results: int = 32) -> A
 	return qNetwork.query.intersect_shape(params,max_results)
 
 var parent_size: Vector3
-var parent: Spatial
+onready var parent: Spatial = get_parent()
 var debug_mesh: MeshInstance
 var params: PhysicsShapeQueryParameters
 onready var collider: CollisionShape = $Area/CollisionShape
@@ -58,12 +58,13 @@ onready var area: Area = $Area
 #	else:
 #		free()
 
-func _init() -> void:
-	parent = get_parent()
-
 func _ready() -> void:
 	assert(parent and collider and collider.shape)
 	params = setup_params([parent],collider)
+	call_deferred("setup_parent_size")
+
+func setup_parent_size() -> void:
+	parent_size = Collision.get_collision_dimensions(parent.collision_shape)
 
 #func get_owner_player() -> NetPlayerNode:
 #	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
@@ -102,9 +103,9 @@ func update_size_from_net_history_and_max_player_delay() -> void:
 			posdiff.y = enforce_min_size(posdiff.y)
 			posdiff.z = enforce_min_size(posdiff.z)
 		area.scale = posdiff + parent_size
-#		var pos: Vector3 = maxpos - posdiff/2
-#		pos.y += parent_size.y/2
-		area.global_transform.origin = maxpos - posdiff/2
+		var pos: Vector3 = maxpos - posdiff/2
+		pos.y += parent_size.y/2
+		area.global_transform.origin = pos
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 

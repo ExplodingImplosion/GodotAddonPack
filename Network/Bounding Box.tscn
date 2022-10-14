@@ -18,5 +18,3 @@ shape = SubResource( 1 )
 
 [node name="MeshInstance" parent="Area" instance=ExtResource( 2 )]
 skeleton = NodePath("../..")
-
-[connection signal="body_entered" from="Area" to="." method="on_body_entered"]

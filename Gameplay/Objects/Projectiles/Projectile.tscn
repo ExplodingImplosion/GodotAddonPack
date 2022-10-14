@@ -12,4 +12,3 @@ script = ExtResource( 1 )
 [node name="Mesh" type="MeshInstance" parent="."]
 
 [node name="Bounding Box" parent="." instance=ExtResource( 2 )]
-min_size = 0.0
