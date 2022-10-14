@@ -34,6 +34,7 @@ var frame_created: int
 var deletion_frame: int
 
 onready var collisionshape: CollisionShape = $"Collision Shape"
+onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collisionshape))
 
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")

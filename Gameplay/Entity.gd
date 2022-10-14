@@ -105,3 +105,23 @@ static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_pa
 			assert(typeof(node.correction_data[key]) == typeof(correction_data[key]))
 			node.correction_data[key] = correction_data[key]
 		node.apply_corrections()
+
+static func get_collision_dimensions(collider: CollisionShape) -> Vector3:
+	var shape: Shape = collider.shape
+	var rotation: Vector3 = collider.global_rotation
+	var scale: Vector3 = collider.scale
+	assert(shape is BoxShape or shape is CapsuleShape or shape is SphereShape or shape is CylinderShape)
+	if shape is BoxShape:
+		return shape.extents*2*scale
+	elif shape is CapsuleShape:
+		# capsules are weird in godot 3
+		if shape.radius >= 1:
+			return Vector3(shape.radius,shape.radius,shape.height)*2*scale
+		else:
+			return Vector3(shape.radius*2,shape.radius*2,1)*scale
+	elif shape is SphereShape:
+		return shape.radius*2*scale
+	elif shape is CylinderShape:
+		return Vector3(shape.radius*2,shape.height,shape.radius*2)*scale
+	else:
+		return Vector3.ZERO

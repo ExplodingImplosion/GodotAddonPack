@@ -24,7 +24,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/keh_smooth/autointerpolate.gd"
 }, {
-"base": "Node",
+"base": "Reference",
 "class": "BoundingBox",
 "language": "GDScript",
 "path": "res://Network/Bounding Box.gd"

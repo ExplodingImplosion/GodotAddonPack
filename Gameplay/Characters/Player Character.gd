@@ -29,7 +29,7 @@ onready var head: Spatial = $Head
 onready var camera: Camera = $Head/Camera
 onready var collisionshape: CollisionShape = $CollisionShape
 onready var size: Vector3 = get_size()
-onready var boundingbox: BoundingBox = $"Bounding Box"
+onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collisionshape))
 
 # EXPORT VARS
 export var speed: float = 7.0
@@ -116,6 +116,8 @@ func physics_tick_server(delta: float) -> void:
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
+	if boundingbox:
+		boundingbox._physics_process(delta)
 
 func generate_snap_entity() -> SnapEntityBase:
 	var uid: int = get_meta("uid")

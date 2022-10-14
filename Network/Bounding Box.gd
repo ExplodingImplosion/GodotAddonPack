@@ -1,41 +1,52 @@
-extends Node
+extends Reference
 class_name BoundingBox
 
 export(float,0.1,999) var min_size: float
 
+const box: AABB = AABB()
+
 var offset: Vector3
-#var size: Vector3
+var parent_size: Vector3
+var parent: Spatial
+var debug_mesh: MeshInstance
+const debug_mesh_scene: PackedScene = preload("res://Dev/Dev Box.tscn")
 
-onready var area: Area = $Area
-onready var collisionshape: CollisionShape = $Area/CollisionShape
-onready var parent: Spatial = get_parent()
+func enable_debug_mesh() -> void:
+	if !debug_mesh:
+		debug_mesh = debug_mesh_scene.instance()
+		parent.add_child(debug_mesh)
 
-#func _init(size: Vector3) -> void:
-#	scale = size
-#	size = _size
-#	new_collision_shape()
-#	apply_size()
+func disable_debug_mesh() -> void:
+	if debug_mesh:
+		debug_mesh.queue_free()
+		debug_mesh = null
 
-func new_collision_shape() -> void:
-	collisionshape.set_shape(BoxShape.new())
+func set_size(size: Vector3) -> void:
+	box.size = size
 
-#func apply_size() -> void:
-#	(collisionshape.shape as BoxShape).set_extents(size)
+func get_size() -> Vector3:
+	return box.size
 
-# why offset just the collision shape when you can just use transform.origin?
-# like mayyyyyyyyybe only doing it for the collisionshape saves a couple
-# cpu cycles, but like idek if thats the case LMFAO
-#func apply_offset() -> void:
-#	collisionshape.transform.origin = offset
+func set_position(position: Vector3) -> void:
+	box.position = position
+
+func get_position() -> Vector3:
+	return box.position
+
+func _init(box_parent: Spatial, box_size: Vector3) -> void:
+#	set_position(position)
+#	set_size(size)
+	parent = box_parent
+	parent_size = box_size
+	assert(parent_size.length() > 0 and !is_zero_approx(parent_size.length()))
+	if qNetwork.is_server():
+		qNetwork.boundingboxes.append(self)
+	else:
+		free()
 
 #func get_owner_player() -> NetPlayerNode:
 #	return Network.player_data.remote_player.get(parent.owner_id) # Network.player_data.local_player if parent.owner_id == 1 else 
 # warning-ignore:unused_argument
-
-func _physics_process(delta: float) -> void:
-	if !qNetwork.is_server():
-		return
-	update_size_from_net_history_and_max_player_delay()
 
 func update_size_from_net_history_and_max_player_delay() -> void:
 	var history: Array = qNetwork.get_recent_snapshot_history()
@@ -61,14 +72,15 @@ func update_size_from_net_history_and_max_player_delay() -> void:
 				# from the loop if the entity isn't present on a given frame
 				break
 		posdiff = maxpos-minpos
-		if is_zero_approx(parent.size.length()):
-			# probably redundant because there's no shot parent.size AND posdiff are 0
+		if is_zero_approx(parent_size.length()):
+			# probably redundant because there's no shot parent_size AND posdiff are 0
 			posdiff.x = enforce_min_size(posdiff.x)
 			posdiff.y = enforce_min_size(posdiff.y)
 			posdiff.z = enforce_min_size(posdiff.z)
-		area.scale = posdiff + parent.size
-		area.global_transform.origin = maxpos - posdiff/2
-		area.global_transform.origin.y += parent.size.y/2
+		set_size(posdiff + parent_size)
+		var pos: Vector3 = maxpos - posdiff/2
+		pos.y += parent_size.y/2
+		set_position(pos)
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 
@@ -150,7 +162,7 @@ func on_body_entered(body: PhysicsBody):
 		# this shit is prolly gonna break
 		if !body_entities_same:
 			apply_vars_to_node_from_snapentity(body,body_entity)
-			body.simulate(get_physics_process_delta_time())
+			body.simulate(parent.get_physics_process_delta_time())
 		
 		if !parent_entities_same:
 			apply_vars_to_node_from_snapentity(parent,original_parent_entity)
