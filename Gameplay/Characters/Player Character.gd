@@ -202,3 +202,43 @@ func process_inputs(input_data: InputData,auth: bool) -> void:
 		aim_angle = input_data.get_custom_vec2("aim_angle")
 		set_aim(aim_angle)
 		input_dir = input_data.get_custom_vec2("input_dir")
+
+static func defaultinventory() -> Array:
+	var i: Array
+	i.resize(3)
+	return i
+
+enum {NOITEM = -1}
+var current_item: Held
+var current_item_idx: int = -1
+var inventory: Array = defaultinventory()
+
+func inventory_has_empty_slot() -> int:
+	return inventory.find(null)
+
+func insert_item(item: Held, idx: int) -> void:
+	inventory[idx] = item
+
+func exchange_current_item_for_new(item: Held) -> void:
+	current_item.drop()
+	inventory[current_item_idx] = item
+	set_item_current(item)
+
+func set_item_current(item: Held) -> void:
+	current_item = item
+	current_item.equip()
+
+# WEAPON STUFF
+func give_held_item(item: Held) -> void:
+	var empty_idx: int = inventory_has_empty_slot()
+	if empty_idx > NOITEM:
+		assert(!item.equipped)
+		insert_item(item,empty_idx)
+		# change at some point so that players can choose to have all items
+		# unequipped
+		if current_item_idx == NOITEM:
+			set_item_current(item)
+	else:
+		assert(current_item_idx > NOITEM and current_item != null)
+		exchange_current_item_for_new(item)
+	qNetwork.map.reparent_node(item,self)

@@ -47,8 +47,8 @@ static func collision_knockbacks(node: CollisionObject) -> bool:
 static func get_collision_dimensions(collider: CollisionShape) -> Vector3:
 	var shape: Shape = collider.shape
 	var rotation: Vector3 = collider.global_rotation
-	if rotation != Vector3.ZERO:
-		assert(false)
+#	if rotation != Vector3.ZERO:
+#		assert(false)
 	var scale: Vector3 = collider.scale
 	assert(shape is BoxShape or shape is CapsuleShape or shape is SphereShape or shape is CylinderShape)
 	if shape is BoxShape:

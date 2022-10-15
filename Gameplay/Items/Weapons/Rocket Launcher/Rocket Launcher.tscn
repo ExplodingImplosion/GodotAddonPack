@@ -5,13 +5,12 @@
 [ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
-radius = 0.05
-mid_height = 0.3
+radius = 0.025
+mid_height = 0.2
 
 [node name="Rocket Launcher" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 snap_entity_script = ExtResource( 3 )
-equip_time = 0.2
 horizontal_sway_factor = -0.5
 max_horizontal_sway = 200.0
 vertical_sway_factor = 0.5
@@ -42,8 +41,8 @@ chamber_time = 0.4
 reload_sound = null
 
 [node name="Rotational Parent" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.144, -0.078, -0.223 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.053, -0.058, -0.144 )
 
 [node name="Item Mesh" parent="Rotational Parent" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0159548, -0.142731 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016, -0.055 )
 mesh = SubResource( 1 )

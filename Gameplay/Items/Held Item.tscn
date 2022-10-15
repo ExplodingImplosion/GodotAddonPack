@@ -10,4 +10,4 @@ script = ExtResource( 1 )
 [node name="Item Mesh" type="MeshInstance" parent="Rotational Parent"]
 
 [node name="Offset" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.35 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )

@@ -296,8 +296,7 @@ func try_respawning_player(id: int) -> void:
 	var player_character: PlayerCharacter = spawn_node_by_resource_idx(Resources.gameplayscenes.PlayerCharacter,id)
 	player_character.global_transform.origin = Vector3(0,40,0)
 	# Network.snapshot_data.spawn_node(AmmoWeaponSnapData,id+1,Resources.get_chash(Resources.gameplayscenes.RocketLauncher))
-	var rocketlauncher: SingleLoader = spawn_node_by_resource_idx(Resources.gameplayscenes.RocketLauncher,id+1)
-	map.reparent_node(rocketlauncher,player_character)
+	player_character.give_held_item(spawn_node_by_resource_idx(Resources.gameplayscenes.RocketLauncher,id+1))
 #	if is_respawning_allowed():
 #		match Gamemodes.get_team_type(gamemode):
 #			Gamemodes.team_type.FFA:

@@ -14,6 +14,7 @@ export(float,0,100) var sway_return_factor: float
 export var can_be_dropped: bool
 export(int,0,999) var dropped_resource_index: int
 
+var equipped: bool
 var equip_time_left: float
 var sway: Vector3
 var player: KinematicBody
@@ -45,18 +46,21 @@ func on_equip_finished() -> void:
 	pass
 
 func equip() -> void:
-	pass
+	equipped = true
+	if equip_time == 0:
+		on_equip_finished()
 #	show()
 
 func unequip() -> void:
 	if is_equipping():
 		pass
+	equipped = false
 
 func is_equipping() -> bool:
 	return false
 
 func drop() -> void:
-	pass
+	queue_free()
 
 func tick_sway(delta: float) -> void:
 	update_sway()

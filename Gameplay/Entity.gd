@@ -99,6 +99,7 @@ static func spawn_params_to_correction_data(entity: Spatial, params: Dictionary)
 static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_params: Dictionary, from: Spatial) -> void:
 	if _spawn_resource_index > -1:
 		var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,Network.get_incrementing_id(_owner_id))
+		print(node)
 		var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
 		for key in correction_data.keys():
 			assert(node.correction_data.has(key))
