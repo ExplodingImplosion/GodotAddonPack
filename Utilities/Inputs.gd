@@ -3,6 +3,16 @@ extends Node
 signal mouse_moved(relative)
 signal pause_pressed
 
+func connect_to_mouse_movement_if_not_already(object:Object,method:String) -> void:
+	if !is_connected_to_mouse_movement(object,method):
+		connect_to_mouse_movement(object,method)
+
+func connect_to_mouse_movement(object: Object, method: String) -> void:
+	connect("mouse_moved",object,method)
+
+func is_connected_to_mouse_movement(object: Object,method: String) -> bool:
+	return is_connected("mouse_moved",object,method)
+
 func is_mouse_connected_to_object() -> bool:
 	return false if get_signal_connection_list("mouse_moved").empty() else true
 

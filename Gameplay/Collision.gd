@@ -1,47 +1,56 @@
 extends Object
 class_name Collision
 
+static func assert_node_has_collision_layers(node: Spatial) -> void:
+	assert(node is CollisionObject or node is CSGShape or node is SoftBody or node is GridMap)
+
 enum {WORLD=1,DAMAGE=2,KNOCKBACK=4,NETWORK=8}
-static func is_damageable(node: CollisionObject) -> bool:
+static func is_damageable(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_layer && DAMAGE
 
-static func accepts_damage(node: CollisionObject) -> bool:
+static func accepts_damage(node: Spatial) -> bool:
 	return is_damageable(node)
 
-static func can_be_damaged(node: CollisionObject) -> bool:
+static func can_be_damaged(node: Spatial) -> bool:
 	return is_damageable(node)
 
-static func can_damage_happen(from: CollisionObject, to: CollisionObject) -> bool:
+static func can_damage_happen(from: Spatial, to: Spatial) -> bool:
 	return collision_damages(from) and is_damageable(to)
 
-static func collides_with_world(node: CollisionObject) -> bool:
+static func collides_with_world(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_layer && WORLD # maybe change this to collision_layer and collision_mask?
 										 # maybe even just collision_mask? Because the mask is
 										 # what determines 'scanning' for collisions and layer is what
 										 # what determines 'recieving' collisions
 
-static func accepts_knockback(node: CollisionObject) -> bool:
+static func accepts_knockback(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_layer && KNOCKBACK
 
-static func can_be_knocked_back(node: CollisionObject) -> bool:
+static func can_be_knocked_back(node: Spatial) -> bool:
 	return accepts_knockback(node)
 
-static func can_knockback_happen(from: CollisionObject, to: CollisionObject) -> bool:
+static func can_knockback_happen(from: Spatial, to: Spatial) -> bool:
 	return can_node_knockback(from) and accepts_knockback(to)
 
-static func network_collision(node: CollisionObject) -> bool:
+static func network_collision(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_mask && NETWORK
 
-static func can_node_damage(node: CollisionObject) -> bool:
+static func can_node_damage(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_mask && DAMAGE
 
-static func collision_damages(node: CollisionObject) -> bool:
+static func collision_damages(node: Spatial) -> bool:
 	return can_node_damage(node)
 
-static func can_node_knockback(node: CollisionObject) -> bool:
+static func can_node_knockback(node: Spatial) -> bool:
+	assert_node_has_collision_layers(node)
 	return node.collision_mask && KNOCKBACK
 
-static func collision_knockbacks(node: CollisionObject) -> bool:
+static func collision_knockbacks(node: Spatial) -> bool:
 	return can_node_knockback(node)
 
 static func get_collision_dimensions(collider: CollisionShape) -> Vector3:

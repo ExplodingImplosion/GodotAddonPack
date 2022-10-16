@@ -279,7 +279,7 @@ func physics_tick_client(delta: float) -> void:
 #			new.append(boundingbox)
 #	boundingboxes = new
 
-var query := PhysicsDirectSpaceState.new()
+onready var query := PhysicsServer.space_get_direct_state(Quack.root.world.space)
 
 const respawn_queue = {}
 func poll_for_respawns(delta: float) -> void:

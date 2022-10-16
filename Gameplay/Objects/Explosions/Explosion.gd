@@ -32,9 +32,10 @@ signal hit(damage,knockback)
 var frame_created: int
 # maybe wont be used
 var deletion_frame: int
+var position: Vector3
 
-onready var collisionshape: CollisionShape = $"Collision Shape"
-onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collisionshape))
+onready var collision_shape: CollisionShape = $"Collision Shape"
+#onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collision_shape))
 
 func _init() -> void:
 	connect("tree_entered",self,"on_tree_entered")
@@ -43,9 +44,9 @@ func _init() -> void:
 	frame_created = Network.get_snap_building_signature()
 
 func _ready() -> void:
-	assert(collisionshape.shape)
-	if collisionshape.shape is SphereShape:
-		assert(size == collisionshape.shape.radius)
+	assert(collision_shape.shape)
+	if collision_shape.shape is SphereShape:
+		assert(size == collision_shape.shape.radius)
 
 func _physics_process(delta: float) -> void:
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
@@ -78,7 +79,7 @@ func physics_tick_client(delta: float) -> void:
 		simulate(delta)
 
 func simulate(delta: float) -> void:
-	pass
+	position = global_transform.origin
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
@@ -98,6 +99,7 @@ func on_tree_exited() -> void:
 func apply_corrections() -> void:
 	for correction in correction_data.keys():
 		self[correction] = correction_data[correction]
+	global_transform.origin = position
 
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	pass

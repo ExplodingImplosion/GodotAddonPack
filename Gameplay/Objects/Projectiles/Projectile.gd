@@ -60,6 +60,10 @@ func physics_tick_server(delta: float) -> void:
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
+	if owner_id != 1:
+		bbox_test()
+
+func bbox_test() -> void:
 	var intersections: Array = BoundingBox.test(params)
 	for intersection in intersections:
 		if intersection is BoundingBox:
@@ -84,7 +88,7 @@ func simulate(delta: float) -> void:
 	var collision: KinematicCollision = move(delta)
 	if collision:
 		# could be something else like a csg mesh
-		var collider: CollisionObject = collision.get_collider()
+		var collider: Spatial = collision.get_collider()
 		if Collision.collides_with_world(collider):
 			if collision_damages():
 				if Collision.is_damageable(collider):
@@ -92,13 +96,23 @@ func simulate(delta: float) -> void:
 			if collision_knockbacks():
 				if Collision.accepts_knockback(collider):
 					pass
+			# spawn node if should
 			if collision_spawns() and spawn_resource_index > -1:
 				Entity.try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
+			# delete self if should
 			if delete_on_contact():
 				# maybe not
 				queue_free()
+	position = global_transform.origin
+	orientation = global_rotation
 
 func move(delta: float) -> KinematicCollision:
+	var speed: float = initial_speed
+	if changes_velocity:
+		pass
+	if affected_by_gravity:
+		pass
+	velocity = (-global_transform.basis.z).normalized() * speed
 	return move_and_collide(velocity * delta)
 
 func _process(delta: float) -> void:

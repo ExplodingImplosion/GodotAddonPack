@@ -17,13 +17,26 @@ export(int,0,999) var dropped_resource_index: int
 var equipped: bool
 var equip_time_left: float
 var sway: Vector3
+#var sway_should_return: bool
 var player: KinematicBody
 onready var rotational_parent: Position3D = $"Rotational Parent"
+onready var offset: Position3D = $Offset
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
 
-#func _init() -> void:
-#	._init()
-#	
+func _init() -> void:
+	._init()
+
+func _ready() -> void:
+	._ready()
+	connect_sway_to_mouse_movement_if_local()
+
+func connect_sway_to_mouse_movement_if_local() -> void:
+	if is_owned_by_local_player():
+		Inputs.connect_to_mouse_movement_if_not_already(self,"modify_sway")
+
+func apply_corrections() -> void:
+	.apply_corrections()
+	connect_sway_to_mouse_movement_if_local()
 
 func on_tree_entered() -> void:
 	# not optimized and high key stupid
@@ -32,6 +45,10 @@ func on_tree_entered() -> void:
 		player = parent
 		parent.remove_child(self)
 		parent.head.add_child(self)
+
+func _physics_process(delta: float) -> void:
+	offset.update()
+	._physics_process(delta)
 
 func input1() -> void:
 	pass
@@ -64,7 +81,10 @@ func drop() -> void:
 
 func tick_sway(delta: float) -> void:
 	update_sway()
+#	if sway_should_return:
 	tick_sway_return(delta)
+#	else:
+#		sway_should_return = true
 
 func update_sway() -> void:
 	rotational_parent.set_rotation_degrees(sway)
@@ -86,9 +106,10 @@ func set_sway(new_sway: Vector2) -> void:
 	sway.y = new_sway.x
 
 func modify_sway(direction: Vector2) -> void:
-	sway.x = clamp(sway.x + (direction.y * vertical_sway_factor),max_vertical_sway,-max_vertical_sway)
-	sway.y = clamp(sway.y + (direction.x * horizontal_sway_factor),max_horizontal_sway,-max_horizontal_sway)
-	sway.z = clamp(sway.z + (direction.x * tilt_factor),max_tilt,-max_tilt)
+	sway.x = clamp(sway.x + (direction.y * vertical_sway_factor),-max_vertical_sway,max_vertical_sway)
+	sway.y = clamp(sway.y + (direction.x * horizontal_sway_factor),-max_horizontal_sway,max_horizontal_sway)
+	sway.z = clamp(sway.z + (direction.x * tilt_factor),-max_tilt,max_tilt)
+#	sway_should_return = false
 
 func modify_tilt_from_movement(value: float) -> void:
 	sway.z += value * movement_tilt_factor

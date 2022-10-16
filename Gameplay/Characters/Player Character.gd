@@ -59,7 +59,7 @@ func _ready() -> void:
 		camera.set_current(true)
 		Quack.capture_cursor()
 # warning-ignore:return_value_discarded
-		Inputs.connect("mouse_moved",self,"aim")
+		Inputs.connect_to_mouse_movement(self,"aim")
 	
 
 func _process(delta: float) -> void:
@@ -230,6 +230,8 @@ func set_item_current(item: Held) -> void:
 
 # WEAPON STUFF
 func give_held_item(item: Held) -> void:
+	# wonks everything the fuck out
+#	item.owner_id = owner_id
 	var empty_idx: int = inventory_has_empty_slot()
 	if empty_idx > NOITEM:
 		assert(!item.equipped)

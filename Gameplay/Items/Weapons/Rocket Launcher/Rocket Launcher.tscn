@@ -11,20 +11,20 @@ mid_height = 0.2
 [node name="Rocket Launcher" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 snap_entity_script = ExtResource( 3 )
-horizontal_sway_factor = -0.5
-max_horizontal_sway = 200.0
-vertical_sway_factor = 0.5
-max_vertical_sway = 200.0
-tilt_factor = 0.5
-max_tilt = 100.0
+horizontal_sway_factor = -0.2
+max_horizontal_sway = 60.0
+vertical_sway_factor = 0.2
+max_vertical_sway = 60.0
+tilt_factor = 0.2
+max_tilt = 50.0
 movement_tilt_factor = -2.0
 sway_return_factor = 10.0
 fire_rate = 0.3
 spawn_resource_index = 2
 spawn_params = {
-"orientation": null,
-"owner_id": null,
-"position": null
+"orientation": NodePath("Offset"),
+"owner_id": NodePath("."),
+"position": NodePath("Offset")
 }
 can_headshot = false
 headshot_multiplier = 0.0

@@ -57,3 +57,7 @@ func on_equip_finished() -> void:
 	.on_equip_finished()
 	if is_mag_empty():
 		begin_reload()
+
+func on_tree_entered() -> void:
+	.on_tree_entered()
+	current_ammo = mag_size

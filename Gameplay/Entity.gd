@@ -93,8 +93,12 @@ static func get_entity_from_snapshot(snapshot: NetSnapshot, entity: Spatial) -> 
 	return snapshot.get_entity(entity.namehash,entity.owner_id)
 
 static func spawn_params_to_correction_data(entity: Spatial, params: Dictionary) -> Dictionary:
-	# LMFAOOOOOO FIX THIS
-	return {}
+	var ret: Dictionary
+	for key in params.keys():
+		assert(key is String and params[key] is NodePath)
+		var param: NodePath = params[key]
+		ret[key] = entity.get_node(param)[key]
+	return ret
 
 static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_params: Dictionary, from: Spatial) -> void:
 	if _spawn_resource_index > -1:
@@ -102,7 +106,7 @@ static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_pa
 		print(node)
 		var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
 		for key in correction_data.keys():
-			assert(node.correction_data.has(key))
-			assert(typeof(node.correction_data[key]) == typeof(correction_data[key]))
+#			assert(node.correction_data.has(key))
+#			assert(typeof(node.correction_data[key]) == typeof(correction_data[key]))
 			node.correction_data[key] = correction_data[key]
 		node.apply_corrections()
