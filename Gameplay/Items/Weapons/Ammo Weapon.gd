@@ -16,6 +16,21 @@ signal reload_finished
 signal ammo_chambered
 signal ammo_reloaded
 
+onready var reload_timer: CustomTimer = CustomTimer.new(reload_time,false)
+onready var chamber_timer: CustomTimer = CustomTimer.new(chamber_time,false)
+
+func _ready() -> void:
+	._ready()
+	reload_timer.connect("finished",self,"on_reload_finished")
+	chamber_timer.connect("finished",self,"on_ammo_chambered")
+
+func simulate(delta: float) -> void:
+	.simulate(delta)
+	if is_reloading():
+		reload_timer.tick(delta)
+	if is_ammo_rechambering():
+		chamber_timer.tick(delta)
+
 func input3() -> void:
 	try_reload()
 
@@ -36,25 +51,28 @@ func can_reload() -> bool:
 	return current_ammo < mag_size and !is_reloading() and !is_equipping() and not fired
 
 func is_reloading() -> bool:
-	return false
+	return reload_timer.is_running
+
+func is_ammo_rechambering() -> bool:
+	return chamber_timer.is_running
 
 func begin_reload() -> void:
 	can_fire = false
 func try_reload() -> void:
 	pass
 
-func on_ammo_chambered() -> void:
+func on_ammo_chambered(time_remainder: float, interp_fraction: float) -> void:
 	current_ammo += ammo_per_load
 	if current_ammo > mag_size:
 		current_ammo = mag_size
 	elif current_ammo < mag_size:
 		begin_reload()
 
-func on_reload_finished() -> void:
+func on_reload_finished(remainder: float, interp_fraction: float) -> void:
 	can_fire = true
 
-func on_equip_finished() -> void:
-	.on_equip_finished()
+func on_equip_finished(remainder: float, interp_fraction: float) -> void:
+	.on_equip_finished(remainder,interp_fraction)
 	if is_mag_empty():
 		begin_reload()
 

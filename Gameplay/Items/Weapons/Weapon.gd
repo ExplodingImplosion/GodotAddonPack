@@ -2,6 +2,7 @@ extends Held
 class_name Weapon
 
 export(float,0,10) var fire_rate: float
+export(float,0,10) var cycle_rate: float
 export(int,-1,999) var spawn_resource_index: int = -1
 export var spawn_params: Dictionary
 export var can_headshot: bool
@@ -20,7 +21,19 @@ var trying_to_fire: bool
 var released_fire: bool
 var fired: bool
 
+onready var fire_timer: CustomTimer = CustomTimer.new(fire_rate,false)
+onready var cycle_timer: CustomTimer = CustomTimer.new(cycle_rate,false)
+
 signal shot_fired(interpfrac)
+
+func _ready() -> void:
+	._ready()
+	fire_timer.connect("finished",self,"on_attack_cycled")
+
+func simulate(delta: float) -> void:
+	.simulate(delta)
+	if fired:
+		fire_timer.tick(delta)
 
 func try_fire() -> void:
 	trying_to_fire = true
@@ -38,6 +51,8 @@ func fire() -> void:
 		pass
 		#Audio.play(firing_sound,volume,max_volume,pitch_scale)
 	try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
+	fired = true
+	fire_timer.start()
 
 func is_fireable() -> bool:
 #	if firing_type == AUTO || released_fire:
@@ -60,9 +75,12 @@ func input2() -> void:
 #func input3() -> void:
 #	try_reload()
 
-func on_equip_finished() -> void:
-	.on_equip_finished()
+func on_equip_finished(remainder: float, interp_fraction: float) -> void:
+	.on_equip_finished(remainder,interp_fraction)
 	can_fire = true
 
 #func simulate(delta: float) -> void:
 #	.simulate(delta)
+
+func on_attack_cycled(remainder: float, interp_fraction: float) -> void:
+	pass

@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://addons/keh_ui/core/customctrlbase.gd"
 }, {
 "base": "Reference",
+"class": "CustomTimer",
+"language": "GDScript",
+"path": "res://Gameplay/Custom Timer.gd"
+}, {
+"base": "Reference",
 "class": "DBHelpers",
 "language": "GDScript",
 "path": "res://addons/keh_gddb/editor/helpers.gd"
@@ -362,6 +367,7 @@ _global_script_class_icons={
 "Cam3D": "",
 "Collision": "",
 "CustomControlBase": "",
+"CustomTimer": "",
 "DBHelpers": "",
 "DBTable": "",
 "DataAsset": "",

@@ -22,13 +22,16 @@ var player: KinematicBody
 onready var rotational_parent: Position3D = $"Rotational Parent"
 onready var offset: Position3D = $Offset
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
+onready var equip_timer: CustomTimer = CustomTimer.new(equip_time,false)
 
 func _init() -> void:
 	._init()
 
 func _ready() -> void:
 	._ready()
+	assert(equip_timer.max_time == equip_time and equip_time == equip_timer.time_left)
 	connect_sway_to_mouse_movement_if_local()
+	equip_timer.connect("finished",self,"on_equip_finished")
 
 func connect_sway_to_mouse_movement_if_local() -> void:
 	if is_owned_by_local_player():
@@ -59,22 +62,22 @@ func input2() -> void:
 func input3() -> void:
 	pass
 
-func on_equip_finished() -> void:
+func on_equip_finished(remainder: float, interp_fraction: float) -> void:
 	pass
 
 func equip() -> void:
 	equipped = true
-	if equip_time == 0:
-		on_equip_finished()
+	equip_timer.start()
 #	show()
 
 func unequip() -> void:
 	if is_equipping():
 		pass
 	equipped = false
+	equip_timer.stop()
 
 func is_equipping() -> bool:
-	return false
+	return equip_timer.is_running
 
 func drop() -> void:
 	queue_free()
@@ -115,7 +118,10 @@ func modify_tilt_from_movement(value: float) -> void:
 	sway.z += value * movement_tilt_factor
 
 func simulate(delta: float) -> void:
-	tick_sway(delta)
+	if equipped:
+		tick_sway(delta)
+		if is_equipping():
+			equip_timer.tick(delta)
 
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	if inputs.is_pressed("fire"):
