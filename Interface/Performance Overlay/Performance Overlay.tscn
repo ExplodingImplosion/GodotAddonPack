@@ -6,7 +6,7 @@
 [node name="Performance Overlay" type="CanvasLayer"]
 script = ExtResource( 1 )
 show_fps = true
-show_physics_process_delta_time_diff = true
+show_physics_process_delta_idle_fraction = true
 show_ping = true
 show_ticks_behind = true
 show_input_cache_size = true
@@ -175,53 +175,53 @@ clip_text = true
 [node name="processdeltadiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
 margin_left = 230.0
 margin_top = 20.0
-margin_right = 434.0
+margin_right = 435.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="label" type="Label" parent="HFlowContainer/processdeltadiffcontainer"]
-margin_right = 134.0
+margin_right = 135.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 custom_styles/normal = ExtResource( 2 )
-text = "_process idle Time: "
+text = "_process Idle Time: "
 
 [node name="readout" type="Label" parent="HFlowContainer/processdeltadiffcontainer"]
-margin_left = 134.0
-margin_right = 204.0
+margin_left = 135.0
+margin_right = 205.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="processquackdiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 434.0
+margin_left = 435.0
 margin_top = 20.0
-margin_right = 646.0
+margin_right = 648.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="label" type="Label" parent="HFlowContainer/processquackdiffcontainer"]
-margin_right = 142.0
+margin_right = 143.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 custom_styles/normal = ExtResource( 2 )
-text = "_process Quack idle: "
+text = "_process Quack Idle: "
 
 [node name="readout" type="Label" parent="HFlowContainer/processquackdiffcontainer"]
-margin_left = 142.0
-margin_right = 212.0
+margin_left = 143.0
+margin_right = 213.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="physprocessdeltadiffcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 646.0
+margin_left = 648.0
 margin_top = 20.0
-margin_right = 905.0
+margin_right = 907.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -241,11 +241,33 @@ rect_min_size = Vector2( 70, 20 )
 custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
+[node name="physprocessdeltaidlefractioncontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_top = 40.0
+margin_right = 278.0
+margin_bottom = 60.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="label" type="Label" parent="HFlowContainer/physprocessdeltaidlefractioncontainer"]
+margin_right = 208.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+custom_styles/normal = ExtResource( 2 )
+text = "_physics_process Idle Fraction: "
+
+[node name="readout" type="Label" parent="HFlowContainer/physprocessdeltaidlefractioncontainer"]
+margin_left = 208.0
+margin_right = 278.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 70, 20 )
+custom_styles/normal = ExtResource( 2 )
+clip_text = true
+
 [node name="pingcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 905.0
-margin_top = 20.0
-margin_right = 986.0
-margin_bottom = 40.0
+margin_left = 278.0
+margin_top = 40.0
+margin_right = 359.0
+margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
 
@@ -265,8 +287,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="rttcontainer" type="HBoxContainer" parent="HFlowContainer"]
+margin_left = 359.0
 margin_top = 40.0
-margin_right = 76.0
+margin_right = 435.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -287,9 +310,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="ticksbehindcontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 76.0
+margin_left = 435.0
 margin_top = 40.0
-margin_right = 211.0
+margin_right = 570.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -310,9 +333,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="inputcachesizecontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 211.0
+margin_left = 570.0
 margin_top = 40.0
-margin_right = 371.0
+margin_right = 730.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -333,9 +356,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="packetlosscontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 371.0
+margin_left = 730.0
 margin_top = 40.0
-margin_right = 500.0
+margin_right = 859.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0
@@ -356,9 +379,9 @@ custom_styles/normal = ExtResource( 2 )
 clip_text = true
 
 [node name="tickratecontainer" type="HBoxContainer" parent="HFlowContainer"]
-margin_left = 500.0
+margin_left = 859.0
 margin_top = 40.0
-margin_right = 604.0
+margin_right = 963.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 0

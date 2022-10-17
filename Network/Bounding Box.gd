@@ -71,7 +71,8 @@ func setup_parent_size() -> void:
 # warning-ignore:unused_argument
 
 func _physics_process(delta: float) -> void:
-	update_size_from_net_history_and_max_player_delay()
+	if qNetwork.is_server():
+		update_size_from_net_history_and_max_player_delay()
 
 func update_size_from_net_history_and_max_player_delay() -> void:
 	var history: Array = qNetwork.get_recent_snapshot_history()
@@ -106,6 +107,7 @@ func update_size_from_net_history_and_max_player_delay() -> void:
 		var pos: Vector3 = maxpos - posdiff/2
 		pos.y += parent_size.y/2
 		area.global_transform.origin = pos
+#		prints(delay,area.global_transform.origin.y,maxpos.y,minpos.y,posdiff.y)
 		# leftover code in case wanna do shit with collision shapes
 #		parent.collisionshape
 

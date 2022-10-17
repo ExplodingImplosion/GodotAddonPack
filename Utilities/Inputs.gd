@@ -10,6 +10,13 @@ func connect_to_mouse_movement_if_not_already(object:Object,method:String) -> vo
 func connect_to_mouse_movement(object: Object, method: String) -> void:
 	connect("mouse_moved",object,method)
 
+func disconnect_mouse_movement_if_connected(object:Object,method:String) -> void:
+	if is_connected_to_mouse_movement(object,method):
+		disconnect_mouse_movement(object,method)
+
+func disconnect_mouse_movement(object: Object,method: String) -> void:
+	disconnect("mouse_moved",object,method)
+
 func is_connected_to_mouse_movement(object: Object,method: String) -> bool:
 	return is_connected("mouse_moved",object,method)
 

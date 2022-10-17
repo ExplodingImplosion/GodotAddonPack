@@ -101,12 +101,13 @@ static func spawn_params_to_correction_data(entity: Spatial, params: Dictionary)
 	return ret
 
 static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_params: Dictionary, from: Spatial) -> void:
-	if _spawn_resource_index > -1:
-		var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,Network.get_incrementing_id(_owner_id))
-		print(node)
-		var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
-		for key in correction_data.keys():
+	assert(_spawn_resource_index > -1)
+	var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,Network.get_incrementing_id(_owner_id))
+	prints(node,node.get_meta("uid"))
+	var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
+	for key in correction_data.keys():
 #			assert(node.correction_data.has(key))
 #			assert(typeof(node.correction_data[key]) == typeof(correction_data[key]))
-			node.correction_data[key] = correction_data[key]
-		node.apply_corrections()
+		node.correction_data[key] = correction_data[key]
+	node.apply_corrections()
+	node._physics_process(node.get_physics_process_delta_time())

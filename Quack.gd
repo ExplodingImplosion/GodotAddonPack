@@ -49,6 +49,7 @@ func tick_time_value_up(value: float) -> float:
 
 func _init() -> void:
 	Resources.build_chashes_and_snap_scripts()
+	pause_mode = Node.PAUSE_MODE_PROCESS
 func _ready() -> void:
 	setup_connections()
 	setup_filepaths()
@@ -272,3 +273,13 @@ static func get_func_length(function: FuncRef) -> int:
 
 static func redefer_simple(object: Object, method: String) -> void:
 	object.call_deferred(method)
+
+
+func pause_tree() -> void:
+	tree.paused = true
+
+func unpause_tree() -> void:
+	tree.paused = false
+
+func pause_unpause_tree() -> void:
+	tree.paused = !tree.paused

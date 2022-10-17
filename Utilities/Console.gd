@@ -42,6 +42,7 @@ func _init() -> void:
 	setup_label()
 	setup_line()
 	hide()
+	pause_mode = Node.PAUSE_MODE_PROCESS
 
 #func _ready() -> void:
 #	pass
@@ -55,6 +56,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed(down):
 		if can_history_move():
 			move_in_history(DOWN)
+	if Input.is_action_just_pressed("ui_dev_pause") and OS.is_debug_build():
+		pause_cmd()
 
 func _physics_process(delta: float) -> void:
 	pass
@@ -246,3 +249,12 @@ func disconnect_cmd() -> void:
 
 func shutdown_cmd() -> void:
 	qNetwork.shutdown_server()
+
+func pause_cmd() -> void:
+	Quack.pause_unpause_tree()
+
+func unpause_cmd() -> void:
+	Quack.unpause_tree()
+
+func continue_cmd() -> void:
+	unpause_cmd()

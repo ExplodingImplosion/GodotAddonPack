@@ -10,6 +10,7 @@ export var show_physics_process_time: bool
 export var show_process_delta_time_diff: bool
 export var show_process_quack_delta_diff: bool
 export var show_physics_process_delta_time_diff: bool
+export var show_physics_process_delta_idle_fraction: bool
 export var show_ping: bool
 export var show_rtt: bool
 export var show_ticks_behind: bool
@@ -28,6 +29,7 @@ onready var physics_process_time_readout: Label = $HFlowContainer/physprocesscon
 onready var process_delta_time_diff_readout: Label = $HFlowContainer/processdeltadiffcontainer/readout
 onready var process_quack_delta_diff_readout: Label = $HFlowContainer/processquackdiffcontainer/readout
 onready var physics_process_delta_time_diff_readout: Label = $HFlowContainer/physprocessdeltadiffcontainer/readout
+onready var physics_process_delta_idle_fraction_readout: Label = $HFlowContainer/physprocessdeltaidlefractioncontainer/readout
 onready var input_cache_size_readout: Label = $HFlowContainer/inputcachesizecontainer/readout
 onready var tickrate_readout: Label = $HFlowContainer/tickratecontainer/readout
 onready var ping_readout: Label = $HFlowContainer/pingcontainer/readout
@@ -47,6 +49,7 @@ func _ready() -> void:
 	process_delta_time_diff_readout.get_parent().set_visible(show_process_delta_time_diff)
 	process_quack_delta_diff_readout.get_parent().set_visible(show_process_quack_delta_diff)
 	physics_process_delta_time_diff_readout.get_parent().set_visible(show_physics_process_delta_time_diff)
+	physics_process_delta_idle_fraction_readout.get_parent().set_visible(show_physics_process_delta_idle_fraction)
 	input_cache_size_readout.get_parent().set_visible(show_input_cache_size)
 	tickrate_readout.get_parent().set_visible(show_tickrate)
 	ping_readout.get_parent().set_visible(show_ping)
@@ -90,6 +93,8 @@ func _physics_process(delta: float) -> void:
 		physics_process_time_readout.set_text(str(physprocesstime))
 	if show_physics_process_delta_time_diff:
 		physics_process_delta_time_diff_readout.set_text(str(delta - physprocesstime))
+	if show_physics_process_delta_idle_fraction:
+		physics_process_delta_idle_fraction_readout.set_text(str(1-(physprocesstime/delta)))
 	if show_tickrate:
 		tickrate_readout.set_text(str(Quack.get_tickrate()))
 	if show_input_cache_size:

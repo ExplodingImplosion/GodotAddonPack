@@ -28,7 +28,9 @@ var has_correction: bool
 onready var head: Spatial = $Head
 onready var camera: Camera = $Head/Camera
 onready var collision_shape: CollisionShape = $CollisionShape
-onready var size: Vector3 = get_size()
+onready var beakmesh: MeshInstance = $Head/MeshInstance
+onready var bodymesh: MeshInstance = $MeshInstance
+onready var third_person_meshes: Array = [bodymesh,beakmesh]
 #onready var boundingbox: BoundingBox = qNetwork.try_make_bbox(self,Entity.get_collision_dimensions(collision_shape))
 
 # EXPORT VARS
@@ -47,20 +49,12 @@ export var crouch_speed: float = 2.0
 export var standing_height: float = 1.88
 export var crouching_height: float = 1.0
 
-func get_size() -> Vector3:
-	var shape: CapsuleShape = collision_shape.shape
-	return Vector3(shape.radius,shape.height,shape.radius)*2
-
 func _init() -> void:
 	pass
 func _ready() -> void:
 	owner_id = get_meta("uid") if has_meta("uid") else 1
 	if is_owned_by_local_player():
-		camera.set_current(true)
-		Quack.capture_cursor()
-# warning-ignore:return_value_discarded
-		Inputs.connect_to_mouse_movement(self,"aim")
-	
+		take_local_control()
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
@@ -202,6 +196,38 @@ func process_inputs(input_data: InputData,auth: bool) -> void:
 		aim_angle = input_data.get_custom_vec2("aim_angle")
 		set_aim(aim_angle)
 		input_dir = input_data.get_custom_vec2("input_dir")
+
+func take_local_control() -> void:
+	owner_id = Network.get_local_id()
+	go_first_person()
+	Quack.capture_cursor()
+	Inputs.connect_to_mouse_movement(self,"aim")
+
+func release_control() -> void:
+	go_third_person()
+	Inputs.disconnect_mouse_movement(self,"aim")
+
+func go_first_person() -> void:
+	camera.set_current(true)
+	if current_item:
+		current_item.show()
+	hide_tp_meshes()
+
+func go_third_person() -> void:
+	camera.set_current(false)
+	if current_item:
+		current_item.hide()
+	show_tp_meshes()
+
+func show_tp_meshes() -> void:
+	for mesh in third_person_meshes:
+		assert(mesh is MeshInstance)
+		mesh.show()
+
+func hide_tp_meshes() -> void:
+	for mesh in third_person_meshes:
+		assert(mesh is MeshInstance)
+		mesh.hide()
 
 static func defaultinventory() -> Array:
 	var i: Array
