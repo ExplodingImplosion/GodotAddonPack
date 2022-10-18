@@ -15,6 +15,7 @@ export var can_be_dropped: bool
 export(int,0,999) var dropped_resource_index: int
 
 var equipped: bool
+var equipping: bool
 var equip_time_left: float
 var sway: Vector3
 #var sway_should_return: bool
@@ -40,6 +41,8 @@ func connect_sway_to_mouse_movement_if_local() -> void:
 func apply_corrections() -> void:
 	.apply_corrections()
 	connect_sway_to_mouse_movement_if_local()
+	equip_timer.time_left = equip_time_left
+	equip_timer.is_running = equipping
 
 func on_tree_entered() -> void:
 	# not optimized and high key stupid
@@ -51,7 +54,6 @@ func on_tree_entered() -> void:
 
 func _physics_process(delta: float) -> void:
 	offset.update()
-	._physics_process(delta)
 
 func input1() -> void:
 	pass
@@ -68,16 +70,14 @@ func on_equip_finished(remainder: float, interp_fraction: float) -> void:
 func equip() -> void:
 	equipped = true
 	equip_timer.start()
+	equipping = true
 #	show()
 
 func unequip() -> void:
-	if is_equipping():
-		pass
+	if equipping:
+		equipping = false
 	equipped = false
 	equip_timer.stop()
-
-func is_equipping() -> bool:
-	return equip_timer.is_running
 
 func drop() -> void:
 	queue_free()
@@ -120,8 +120,10 @@ func modify_tilt_from_movement(value: float) -> void:
 func simulate(delta: float) -> void:
 	if equipped:
 		tick_sway(delta)
-		if is_equipping():
+		if equipping:
 			equip_timer.tick(delta)
+	equip_time_left = equip_timer.time_left
+	equipping = equip_timer.is_running
 
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	if inputs.is_pressed("fire"):

@@ -16,21 +16,24 @@ func _init(maxtime: float,should_repeat: bool) -> void:
 	repeats = should_repeat
 
 func tick(delta: float) -> void:
-	emit_signal("finished",ONEFRAME,Quack.interpfrac) if max_time == ONEFRAME else tick_normal(delta)
+	emit_finished(ONEFRAME) if max_time == ONEFRAME else tick_normal(delta)
 
 func tick_normal(delta: float) -> void:
 	time_left -= delta
-	var remainder: float
 	if time_left <= 0.0:
+		var remainder: float
 		remainder = abs(time_left)
-		emit_signal("finished",remainder,Quack.interpfrac)
 		if repeats:
 			if remainder:
 				reset_time()
+				emit_finished(remainder)
 				tick(abs(time_left))
 		else:
 			stop()
-	
+			emit_finished(remainder)
+
+func emit_finished(remainder: float) -> void:
+	emit_signal("finished",remainder,Quack.interpfrac)
 
 func start() -> void:
 	is_running = true

@@ -48,7 +48,7 @@ func fire() -> void:
 	current_ammo -= ammo_used_per_shot
 
 func can_reload() -> bool:
-	return current_ammo < mag_size and !is_reloading() and !is_equipping() and not fired
+	return current_ammo < mag_size and !is_reloading() and !equipping and not fired
 
 func is_reloading() -> bool:
 	return reload_timer.is_running
