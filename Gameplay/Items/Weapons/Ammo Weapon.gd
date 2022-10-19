@@ -11,6 +11,8 @@ export var reload_sound: AudioStreamSample
 var current_ammo: int
 var reload_time_left: float
 var chamber_time_left: float
+var reloading: bool
+var rechambering: bool
 
 signal reload_finished
 signal ammo_chambered
@@ -30,6 +32,17 @@ func simulate(delta: float) -> void:
 		reload_timer.tick(delta)
 	if is_ammo_rechambering():
 		chamber_timer.tick(delta)
+	reloading = is_reloading()
+	rechambering = is_ammo_rechambering()
+	reload_time_left = reload_timer.time_left
+	chamber_time_left = chamber_timer.time_left
+
+func apply_corrections() -> void:
+	.apply_corrections()
+	reload_timer.time_left = reload_time_left
+	chamber_timer.time_left = chamber_time_left
+	reload_timer.is_running = reloading
+	chamber_timer.is_running = rechambering
 
 func input3() -> void:
 	try_reload()
@@ -58,8 +71,11 @@ func is_ammo_rechambering() -> bool:
 
 func begin_reload() -> void:
 	can_fire = false
+	reload_timer.start()
+	chamber_timer.start()
 func try_reload() -> void:
-	pass
+	if can_reload():
+		begin_reload()
 
 func on_ammo_chambered(time_remainder: float, interp_fraction: float) -> void:
 	current_ammo += ammo_per_load
@@ -73,9 +89,16 @@ func on_reload_finished(remainder: float, interp_fraction: float) -> void:
 
 func on_equip_finished(remainder: float, interp_fraction: float) -> void:
 	.on_equip_finished(remainder,interp_fraction)
-	if is_mag_empty():
-		begin_reload()
+	reload_if_empty()
 
 func on_tree_entered() -> void:
 	.on_tree_entered()
 	current_ammo = mag_size
+
+func reload_if_empty() -> void:
+	if is_mag_empty():
+		begin_reload()
+
+func on_attack_cycled(remainder: float, interp_fraction: float) -> void:
+	.on_attack_cycled(remainder,interp_fraction)
+	reload_if_empty()

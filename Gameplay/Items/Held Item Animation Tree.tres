@@ -1,0 +1,23 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=5 format=2]
+
+[sub_resource type="AnimationNodeAdd2" id=2]
+
+[sub_resource type="AnimationNodeAdd2" id=3]
+sync = true
+
+[sub_resource type="AnimationNodeStateMachine" id=6]
+
+[sub_resource type="AnimationNodeTimeScale" id=5]
+
+[resource]
+graph_offset = Vector2( -358.041, -215.859 )
+nodes/AddFire/node = SubResource( 2 )
+nodes/AddFire/position = Vector2( 20, 140 )
+nodes/AddMovement/node = SubResource( 3 )
+nodes/AddMovement/position = Vector2( 180, 140 )
+nodes/State/node = SubResource( 6 )
+nodes/State/position = Vector2( -200, 140 )
+nodes/TimeScale/node = SubResource( 5 )
+nodes/TimeScale/position = Vector2( 360, 140 )
+nodes/output/position = Vector2( 520, 140 )
+node_connections = [ "output", 0, "TimeScale" ]

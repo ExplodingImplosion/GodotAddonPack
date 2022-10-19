@@ -277,6 +277,8 @@ static func get_func_length(function: FuncRef) -> int:
 static func redefer_simple(object: Object, method: String) -> void:
 	object.call_deferred(method)
 
+static func bit_has_flag(bit: int, flag: int) -> bool:
+	return bool(bit&flag)
 
 func pause_tree() -> void:
 	tree.paused = true

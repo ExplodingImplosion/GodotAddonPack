@@ -6,16 +6,7 @@ export(float,0.1,999) var min_size: float
 #const box: AABB = AABB()
 
 static func setup_params(exclusions: Array,collider: CollisionShape) -> PhysicsShapeQueryParameters:
-	var params := PhysicsShapeQueryParameters.new()
-	params.exclude = exclusions
-	params.collision_mask = Collision.NETWORK
-	params.collide_with_bodies = false
-	params.collide_with_areas = true
-	params.set_shape(collider.shape)
-	return params
-
-static func test(params: PhysicsShapeQueryParameters,max_results: int = 32) -> Array:
-	return qNetwork.query.intersect_shape(params,max_results)
+	return Collision.setup_params(exclusions,collider,Collision.NETWORK,false,true)
 
 var parent_size: Vector3
 onready var parent: Spatial = get_parent()

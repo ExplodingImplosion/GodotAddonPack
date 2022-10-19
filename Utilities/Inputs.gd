@@ -57,9 +57,6 @@ const action_event_indexes: Dictionary = {}
 
 enum {UP}
 
-static func bit_has_flag(bit: int, flag: int) -> bool:
-	return bool(bit&flag)
-
 static func action_pressed_as_bitflag(action: String, this_int: int) -> int:
 	return this_int if Input.is_action_pressed(action) else UP
 

@@ -24,6 +24,8 @@ onready var rotational_parent: Position3D = $"Rotational Parent"
 onready var offset: Position3D = $Offset
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
 onready var equip_timer: CustomTimer = CustomTimer.new(equip_time,false)
+onready var animtree: AnimationTree = $AnimationTree
+onready var animplayer: AnimationPlayer = $AnimationPlayer
 
 func _init() -> void:
 	._init()

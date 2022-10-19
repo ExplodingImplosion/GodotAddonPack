@@ -1,12 +1,157 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Gameplay/Items/Weapons/Single Loader.gd" type="Script" id=1]
 [ext_resource path="res://Gameplay/Items/Held Item.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd" type="Script" id=3]
+[ext_resource path="res://Gameplay/Items/Weapon Animation Tree.tres" type="AnimationNodeBlendTree" id=4]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.025
 mid_height = 0.2
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
+
+[sub_resource type="Animation" id=3]
+resource_name = "Fire"
+length = 0.7
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Rotational Parent/Item Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.116667, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.016, -0.055 ), Vector3( 0, 0.0286031, -0.00627632 ), Vector3( 0, 0.0279568, -0.00877497 ), Vector3( 0, 0.016, -0.055 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Rotational Parent/Item Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.116667, 0.666667 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -5.105, 0, 0 ), Vector3( -4.8432, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Jump"
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Rotational Parent/Item Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.85 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.016, -0.055 ), Vector3( 0, 0.0219219, -0.055 ), Vector3( 0, -0.0509701, -0.055 ), Vector3( 0, 0.016, -0.055 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Rotational Parent/Item Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.85, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 18.126, 0, 0 ), Vector3( -16.038, 0, 0 ), Vector3( 5.87529, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Rotational Parent/Item Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.016, -0.055 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Rotational Parent/Item Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Reload"
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Rotational Parent/Item Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.516667, 0.633333, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.016, -0.055 ), Vector3( 0, 0.0239921, -0.0382803 ), Vector3( 0.0115784, 0.0356111, -0.0252176 ), Vector3( 0, 0.0239921, -0.0382803 ), Vector3( 0, 0.016, -0.055 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Rotational Parent/Item Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 0.516667, 0.633333, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -13.0811, 41.7916, 14.2093 ), Vector3( -18.9046, 48.4555, 19.4367 ), Vector3( -13.0811, 41.7916, 14.2093 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Walk"
+length = 2.0
+loop = true
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Rotational Parent/Item Mesh:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.003, 0.005, -0.055 ), Vector3( 0.0142919, 0.0144351, -0.055 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Rotational Parent/Item Mesh:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 2.141, 0, 0 ), Vector3( -2.141, 0, 0 ) ]
+}
 
 [node name="Rocket Launcher" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
@@ -20,7 +165,7 @@ tilt_factor = 0.2
 max_tilt = 50.0
 movement_tilt_factor = -2.0
 sway_return_factor = 10.0
-fire_rate = 1.0
+fire_rate = 0.7
 spawn_resource_index = 2
 spawn_params = {
 "orientation": NodePath("Offset"),
@@ -35,9 +180,9 @@ volume = -5.0
 max_volume = 0.5
 pitch_scale = 1.0
 ammo_used_per_shot = 1
-mag_size = 20
+mag_size = 4
 ammo_per_load = 0
-reload_time = 0.0
+reload_time = 0.4
 chamber_time = 0.4
 reload_sound = null
 
@@ -47,3 +192,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.053, -0.058, -0.144 )
 [node name="Item Mesh" parent="Rotational Parent" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016, -0.055 )
 mesh = SubResource( 1 )
+
+[node name="AnimationTree" parent="." index="2"]
+tree_root = ExtResource( 4 )
+parameters/AddMovement/add_amount = 1.0
+parameters/Fire/active = false
+parameters/State/playback = SubResource( 2 )
+
+[node name="AnimationPlayer" parent="." index="3"]
+anims/Fire = SubResource( 3 )
+anims/Jump = SubResource( 4 )
+anims/RESET = SubResource( 7 )
+anims/Reload = SubResource( 5 )
+anims/Walk = SubResource( 6 )

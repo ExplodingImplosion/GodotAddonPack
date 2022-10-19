@@ -270,3 +270,32 @@ func give_held_item(item: Held) -> void:
 		assert(current_item_idx > NOITEM and current_item != null)
 		exchange_current_item_for_new(item)
 	qNetwork.map.reparent_node(item,self)
+
+# DAMAGE, KNOCKBACK
+func apply_damage(damage: float) -> void:
+	health -= damage
+	kill_if_should_die()
+
+func apply_knockback(knockback: Vector3) -> void:
+	velocity += knockback
+
+func change_health(mod: float) -> void:
+	health += mod
+
+func heal(amount: float) -> void:
+	health += amount
+
+func set_health(new_health: float) -> void:
+	assert(new_health <= max_health)
+	health = new_health
+
+# DEATH
+func should_die() -> bool:
+	return health <= 0.0
+
+func kill() -> void:
+	dead = true
+
+func kill_if_should_die() -> void:
+	if should_die():
+		kill()

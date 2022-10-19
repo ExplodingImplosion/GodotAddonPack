@@ -22,6 +22,7 @@ export(float,0,9223372036854775807) var lifetime: float
 export(int,"None","Linear","Squared","Stepped","Curve") var damage_falloff_method: int
 export(float,-1,1) var damage_falloff_scale: float
 export var damage_falloff_steps: PoolRealArray
+export var damage_falloff_step_distances: PoolRealArray
 export var damage_falloff_curve: Curve
 export(int,"None","Linear","Squared","Stepped","Curve") var knockback_falloff_method: int
 export(float,-1,1) var knockback_falloff_scale: float
@@ -64,6 +65,11 @@ func physics_tick_server(delta: float) -> void:
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
+	if owner_id != 1:
+		#	var intersections: Array = Collision.test(params)
+		for intersection in Collision.test(bbox_params):
+			if intersection.collider is BoundingBox:
+				intersection.collider.on_body_entered(self)
 
 func physics_tick_client(delta: float) -> void:
 	var is_local: bool = is_owned_by_local_player()
@@ -79,8 +85,14 @@ func physics_tick_client(delta: float) -> void:
 		process_inputs(Network.get_input(owner_id),true)
 		simulate(delta)
 
+onready var bbox_params: PhysicsShapeQueryParameters = BoundingBox.setup_params([self],collision_shape)
+onready var collision_params: PhysicsShapeQueryParameters = Collision.setup_params([self],collision_shape,collision_mask,true,false)
 func simulate(delta: float) -> void:
 	position = global_transform.origin
+	for intersection in Collision.test(collision_params,900):
+		print(intersection.collider)
+		assert(intersection.collider is Spatial and not intersection.collider is Area)
+		on_body_entered(intersection.collider)
 
 func _process(delta: float) -> void:
 	tick(delta,Quack.interpfrac)
@@ -118,8 +130,52 @@ func is_owned_by_local_player() -> bool:
 func is_frame_after_created() -> bool:
 	return frame_created < Network.get_snap_building_signature()
 
-func on_body_entered(body: CollisionObject):
+func on_body_entered(body: Spatial):
 	if Collision.can_damage_happen(self,body):
-		pass
+		body.apply_damage(get_damage(body))
 	if Collision.can_knockback_happen(self,body):
-		pass
+		body.apply_knockback(get_knockback(body))
+
+func get_damage(body: Spatial) -> float:
+	assert_is_valid_method(damage_falloff_method)
+	match damage_falloff_method:
+		NONE:
+			return damage
+		LINEAR:
+			pass
+		SQUARED:
+			pass
+		STEPPED:
+			pass
+		CURVE:
+			pass
+	return damage
+
+static func get_distance(n1: Spatial, n2: Spatial) -> float:
+	return n1.global_transform.origin.distance_to(n2.global_transform.origin)
+
+static func get_size_normalized_distance(n1: Explosion, n2: Spatial) -> float:
+	return get_distance(n1,n2) / n1.size
+
+static func assert_is_valid_method(method: int) -> void:
+	assert(method >= NONE and method <= CURVE)
+
+func get_knockback(body: Spatial) -> Vector3:
+	assert_is_valid_method(knockback_falloff_method)
+#	var kb: float = knockback
+	match knockback_falloff_method:
+		NONE:
+			return get_knockback_from_relative(self,body,knockback)
+		LINEAR:
+			pass
+		SQUARED:
+			pass
+		STEPPED:
+			pass
+		CURVE:
+			pass
+	return get_knockback_from_relative(self,body,knockback)
+
+static func get_knockback_from_relative(n1: Spatial, n2: Spatial, amount: float) -> Vector3:
+	n1.look_at(n2.global_transform.origin,Vector3.UP)
+	return (-n1.global_transform.basis.z).normalized() * amount

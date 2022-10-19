@@ -7,7 +7,7 @@ static func assert_node_has_collision_layers(node: Spatial) -> void:
 enum {WORLD=1,DAMAGE=2,KNOCKBACK=4,NETWORK=8}
 static func is_damageable(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_layer && DAMAGE
+	return Quack.bit_has_flag(node.collision_layer,DAMAGE)
 
 static func accepts_damage(node: Spatial) -> bool:
 	return is_damageable(node)
@@ -16,18 +16,18 @@ static func can_be_damaged(node: Spatial) -> bool:
 	return is_damageable(node)
 
 static func can_damage_happen(from: Spatial, to: Spatial) -> bool:
-	return collision_damages(from) and is_damageable(to)
+	return can_node_damage(from) and is_damageable(to)
 
 static func collides_with_world(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_layer && WORLD # maybe change this to collision_layer and collision_mask?
+	return Quack.bit_has_flag(node.collision_layer,WORLD) # maybe change this to collision_layer and collision_mask?
 										 # maybe even just collision_mask? Because the mask is
 										 # what determines 'scanning' for collisions and layer is what
 										 # what determines 'recieving' collisions
 
 static func accepts_knockback(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_layer && KNOCKBACK
+	return Quack.bit_has_flag(node.collision_layer,KNOCKBACK)
 
 static func can_be_knocked_back(node: Spatial) -> bool:
 	return accepts_knockback(node)
@@ -37,18 +37,18 @@ static func can_knockback_happen(from: Spatial, to: Spatial) -> bool:
 
 static func network_collision(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_mask && NETWORK
+	return Quack.bit_has_flag(node.collision_mask,NETWORK)
 
 static func can_node_damage(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_mask && DAMAGE
+	return Quack.bit_has_flag(node.collision_mask,DAMAGE)
 
 static func collision_damages(node: Spatial) -> bool:
 	return can_node_damage(node)
 
 static func can_node_knockback(node: Spatial) -> bool:
 	assert_node_has_collision_layers(node)
-	return node.collision_mask && KNOCKBACK
+	return Quack.bit_has_flag(node.collision_mask,KNOCKBACK)
 
 static func collision_knockbacks(node: Spatial) -> bool:
 	return can_node_knockback(node)
@@ -74,3 +74,15 @@ static func get_collision_dimensions(collider: CollisionShape) -> Vector3:
 		return Vector3(shape.radius*2,shape.height,shape.radius*2)*scale
 	else:
 		return Vector3.ZERO
+
+static func test(params: PhysicsShapeQueryParameters,max_results: int = 32) -> Array:
+	return qNetwork.query.intersect_shape(params,max_results)
+
+static func setup_params(exclusions: Array, collider: CollisionShape, collision_mask: int, collide_with_bodies: bool, collide_with_areas: bool) -> PhysicsShapeQueryParameters:
+	var params := PhysicsShapeQueryParameters.new()
+	params.exclude = exclusions
+	params.set_shape(collider.shape)
+	params.collision_mask = collision_mask
+	params.collide_with_bodies = collide_with_bodies
+	params.collide_with_areas = collide_with_areas
+	return params
