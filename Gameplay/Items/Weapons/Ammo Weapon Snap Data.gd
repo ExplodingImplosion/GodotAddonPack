@@ -6,7 +6,7 @@ var equip_time_left: float
 var equipped: bool
 var sway: Vector3
 var fire_time_left: float
-var cycled: bool
+#var cycled: bool
 var can_fire: bool
 var trying_to_fire: bool
 var released_fire: bool
@@ -32,7 +32,7 @@ func make_correction_data() -> Dictionary:
 	equipped = equipped,
 	sway = sway,
 	fire_time_left = fire_time_left,
-	cycled = cycled,
+#	cycled = cycled,
 	can_fire = can_fire,
 	trying_to_fire = trying_to_fire,
 	released_fire = released_fire,
@@ -48,7 +48,7 @@ func get_vars(from: AmmoWeapon) -> void:
 	equipped = from.equipped
 	sway = from.sway
 	fire_time_left = from.fire_time_left
-	cycled = from.cycled
+#	cycled = from.cycled
 	can_fire = from.can_fire
 	trying_to_fire = from.trying_to_fire
 	released_fire = from.released_fire

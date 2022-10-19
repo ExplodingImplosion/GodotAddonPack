@@ -106,7 +106,7 @@ func physics_tick_client(delta: float) -> void:
 func physics_tick_server(delta: float) -> void:
 	# hacky and stupid. checks to delete every frame. should only happen when the player disconnects
 	if !Network.player_data.get_pnode(owner_id):
-		queue_free()
+		Entity.despawn(self,get_meta("uid"))
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)

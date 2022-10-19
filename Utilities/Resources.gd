@@ -21,17 +21,22 @@ const resource_list: Array = [
 	]),
 	# other scenes
 	[
-		
+		preload("res://Dev/Dev Box.tscn")
+	],
+	# other resources
+	[
+		preload("res://Dev/Dev Box.tres")
 	]
 ]
 
-enum {GAMEPLAYSCENES,CHASHES,SNAPSCRIPTS,MENU_NAMES,MAP_NAMES,OTHER_SCENES}
+enum {GAMEPLAYSCENES,CHASHES,SNAPSCRIPTS,MENU_NAMES,MAP_NAMES,OTHER_SCENES,OTHER_RESOURCES}
 enum gameplayscenes{PlayerCharacter,RocketLauncher,Rocket,RocketExplosion}
 enum chashes{}
 enum snapscripts{}
 enum menu_names{MainMenu}
 enum map_names{PLAYGROUND}
-enum other_scenes{}
+enum other_scenes{DEVBOX}
+enum other_resources{DEVBOX}
 
 static func get_gameplay_scene(idx: int) -> PackedScene:
 	return resource_list[GAMEPLAYSCENES][idx]
@@ -50,6 +55,9 @@ static func get_map_name(idx: int) -> String:
 
 static func get_other_scene(idx: int) -> PackedScene:
 	return resource_list[OTHER_SCENES][idx]
+
+static func get_other_resource(idx: int) -> Resource:
+	return resource_list[OTHER_RESOURCES][idx]
 
 static func build_chashes_and_snap_scripts() -> void:
 	print_debug("chashes gotta be a normal array because poolintarrays in 3.5 are limited to signed 32-bit")

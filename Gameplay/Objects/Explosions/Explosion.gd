@@ -52,14 +52,15 @@ func _physics_process(delta: float) -> void:
 	physics_tick_server(delta) if qNetwork.is_server() else physics_tick_client(delta)
 	# this is gonna bite me in the ass i know it
 	if is_frame_after_created():
-		queue_free()
+		prints("deleting explosion",self,frame_created,Network.get_snap_building_signature())
+		Entity.despawn(self,get_meta("uid"))
 	if !is_queued_for_deletion():
 		Network.snapshot_entity(generate_snap_entity())
 
 func physics_tick_server(delta: float) -> void:
 	# hacky and stupid. checks to delete every frame. should only happen when the player disconnects
 	if !Network.player_data.get_pnode(owner_id):
-		queue_free()
+		Entity.despawn(self,get_meta("uid"))
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
@@ -107,7 +108,9 @@ func process_inputs(inputs: InputData, auth: bool) -> void:
 func generate_snap_entity() -> SnapEntityBase:
 	var uid: int = get_meta("uid")
 	var chash: int = get_meta("chash")
-	return Network.create_snap_entity(snap_entity_script,uid,chash)
+	var data: SnapEntityBase = Network.create_snap_entity(snap_entity_script,uid,chash)
+	data.get_vars(self)
+	return data
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)

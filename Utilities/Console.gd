@@ -56,8 +56,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed(down):
 		if can_history_move():
 			move_in_history(DOWN)
-	if Input.is_action_just_pressed("ui_dev_pause") and OS.is_debug_build():
-		pause_cmd()
+	if OS.is_debug_build():
+		if Input.is_action_just_pressed("ui_dev_pause"):
+			pause_cmd()
+		elif Input.is_action_just_pressed("ui_dev_step"):
+			step_cmd()
 
 func _physics_process(delta: float) -> void:
 	pass
@@ -258,3 +261,11 @@ func unpause_cmd() -> void:
 
 func continue_cmd() -> void:
 	unpause_cmd()
+
+func show_bbox_cmd(filter: int) -> void:
+	Quack.show_debug_bounding_boxes = clamp(filter,Quack.OFF,Quack.OUTLINE)
+
+func step_cmd() -> void:
+	Quack.go_forward_1()
+	# after frame is over, update control snap is set to null, so gotta be .sig :P
+	write(str(Network._update_control.sig))

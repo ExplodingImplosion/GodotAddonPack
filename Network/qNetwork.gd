@@ -33,6 +33,7 @@ func start() -> void:
 	Inputs.register_custom_input_stuff()
 	register_all_spawners()
 	assign_local_player()
+	player_frame_delays[1] = 0
 	if is_client():
 		# maybe do on both?
 		Network.notify_ready()
@@ -52,7 +53,7 @@ func start() -> void:
 	#custom_property_changed
 
 func assign_local_player() -> void:
-	local_player = Network.player_data.get_pnode(Network.player_data.local_player.net_id)
+	local_player = Network.player_data.get_pnode(Network.get_local_id())
 
 func setup_connections() -> void:
 # warning-ignore:return_value_discarded
@@ -78,7 +79,7 @@ func _ready() -> void:
 # ////////////////////////////////////
 
 func register_all_spawners() -> void:
-	register_incrementing_id(1)
+#	register_incrementing_id(1)
 	register_spawner(PlayerSnapData, Resources.gameplayscenes.PlayerCharacter, "extra_player_setup")
 	register_spawner(AmmoWeaponSnapData,Resources.gameplayscenes.RocketLauncher,"extra_item_setup")
 	register_spawner(ProjectileSnapData,Resources.gameplayscenes.Rocket,"extra_object_setup")
@@ -100,6 +101,14 @@ static func extra_item_setup(ret) -> void:
 
 static func extra_object_setup(ret) -> void:
 	pass
+
+# to only be used when spawning entities during a "live" frame
+func get_player_current_snap_sig(player_id: int) -> int:
+	# this is really weird but basically because server doesnt have an input cache,
+	# this isnt gonna be a problem, and entity ids are set up properly (i think)
+	# and the problem probably wont come from input caching
+	# was originally Network._update_control.sig but changed for clarity
+	return Network.get_snap_building_signature() - get_cached_player_frame_delay(player_id) + Inputs.get_local_cached_input_count()
 
 # ////////////////////////////////////
 
@@ -145,7 +154,7 @@ func on_player_added(id: int) -> void:
 	print("Client %s added."%[id])
 	player_ids.append(id)
 	player_frame_delays[id] = 0
-	register_incrementing_id(id)
+#	register_incrementing_id(id)
 	prints("DEBUG",player_ids,Quack.tree.get_network_connected_peers())
 	rpc_id(id,"client_start",map_path)
 	print_debug("get rid of this after")
@@ -160,6 +169,8 @@ func on_player_removed(id: int) -> void:
 
 func on_connection_succeeded() -> void:
 	print("Connection succeeded!")
+	assert(Network.get_local_id() > 1)
+	player_frame_delays[Network.get_local_id()] = 0
 
 func on_connection_failed() -> void:
 	print("Connection failed.")

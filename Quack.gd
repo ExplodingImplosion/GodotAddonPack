@@ -16,6 +16,9 @@ var time_thread := Thread.new()
 onready var tree: SceneTree = get_tree()
 onready var root: Viewport = tree.get_root()
 
+enum {OFF,SOLID,OUTLINE}
+var show_debug_bounding_boxes: int
+
 func is_startup() -> bool:
 	return current_time == 0
 func do_time_thread(n = null) -> void:
@@ -283,3 +286,11 @@ func unpause_tree() -> void:
 
 func pause_unpause_tree() -> void:
 	tree.paused = !tree.paused
+
+func go_forward_1() -> void:
+	unpause_tree()
+	yield(tree.create_timer(get_physics_process_delta_time()),"timeout")
+	pause_tree()
+
+func workaround(idx: int) -> Resource:
+	return Resources.get_other_resource(idx)

@@ -115,6 +115,9 @@ class UpdateControl:
 	
 	func get_signature() -> int:
 		assert(snap)
+		# exploding did this assert, if this is working by november then its prolly
+		# totally chill to get rid of this
+		assert(snap.signature == sig)
 		return snap.signature
 	
 	func start(info: Dictionary) -> void:

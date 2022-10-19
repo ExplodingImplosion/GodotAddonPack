@@ -19,21 +19,22 @@ static func test(params: PhysicsShapeQueryParameters,max_results: int = 32) -> A
 
 var parent_size: Vector3
 onready var parent: Spatial = get_parent()
-var debug_mesh: MeshInstance
+onready var debug_mesh: MeshInstance
 var params: PhysicsShapeQueryParameters
 onready var collider: CollisionShape = $Area/CollisionShape
 onready var area: Area = $Area
 #const debug_mesh_scene: PackedScene = preload("res://Dev/Dev Box.tscn")
 
-#func enable_debug_mesh() -> void:
-#	if !debug_mesh:
-#		debug_mesh = debug_mesh_scene.instance()
-#		parent.add_child(debug_mesh)
-#
-#func disable_debug_mesh() -> void:
-#	if debug_mesh:
-#		debug_mesh.queue_free()
-#		debug_mesh = null
+func enable_debug_mesh(mesh: Mesh) -> void:
+	if !debug_mesh:
+		debug_mesh = MeshInstance.new()
+		debug_mesh.mesh = mesh
+		area.add_child(debug_mesh)
+
+func disable_debug_mesh() -> void:
+	if debug_mesh:
+		debug_mesh.queue_free()
+		debug_mesh = null
 
 #func set_size(size: Vector3) -> void:
 #	box.size = size
@@ -58,10 +59,36 @@ onready var area: Area = $Area
 #	else:
 #		free()
 
+var debug_mode: int
+func ensure_debug() -> void:
+	if OS.is_debug_build():
+		# bounding box is invisible
+		if debug_mode == Quack.OFF:
+			# bounding box needs to be made visible
+			if Quack.show_debug_bounding_boxes > Quack.OFF:
+				assert(Quack.show_debug_bounding_boxes <= Quack.OUTLINE)
+				if Quack.show_debug_bounding_boxes == Quack.SOLID:
+					enable_debug_mesh(Quack.workaround(0))#collider.shape.get_debug_mesh())
+				else:
+					enable_debug_mesh(collider.shape.get_debug_mesh())
+		# bounding box is visible
+		else:
+			# bounding box needs to be made invisible
+			if Quack.show_debug_bounding_boxes == Quack.OFF:
+				disable_debug_mesh()
+			elif Quack.show_debug_bounding_boxes != debug_mode:
+				if Quack.show_debug_bounding_boxes == Quack.SOLID:
+					debug_mesh.mesh = collider.shape.get_debug_mesh()#Resources.get_other_resource(Resources.other_resources.DEVBOX)
+				else:
+					debug_mesh.mesh = collider.shape.get_debug_mesh()
+	debug_mode = Quack.show_debug_bounding_boxes
+
 func _ready() -> void:
 	assert(parent and collider and collider.shape)
 	params = setup_params([parent],collider)
 	call_deferred("setup_parent_size")
+	ensure_debug()
+	print(debug_mode)
 
 func setup_parent_size() -> void:
 	parent_size = Collision.get_collision_dimensions(parent.collision_shape)
@@ -73,6 +100,7 @@ func setup_parent_size() -> void:
 func _physics_process(delta: float) -> void:
 	if qNetwork.is_server():
 		update_size_from_net_history_and_max_player_delay()
+		ensure_debug()
 
 func update_size_from_net_history_and_max_player_delay() -> void:
 	var history: Array = qNetwork.get_recent_snapshot_history()

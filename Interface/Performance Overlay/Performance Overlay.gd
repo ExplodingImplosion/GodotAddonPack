@@ -98,6 +98,6 @@ func _physics_process(delta: float) -> void:
 	if show_tickrate:
 		tickrate_readout.set_text(str(Quack.get_tickrate()))
 	if show_input_cache_size:
-		input_cache_size_readout.set_text(str(Inputs.get_local_cached_inputs().size()))
+		input_cache_size_readout.set_text(str(Inputs.get_local_cached_input_count()))
 	if show_ticks_behind:
 		ticks_behind_readout.set_text(str(int(last_ping/(delta * 1000))))

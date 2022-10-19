@@ -21,6 +21,8 @@ var trying_to_fire: bool
 var released_fire: bool
 var fired: bool
 
+var sim_authority: bool
+
 onready var fire_timer: CustomTimer = CustomTimer.new(fire_rate,false)
 #onready var cycle_timer: CustomTimer = CustomTimer.new(cycle_rate,false)
 
@@ -48,6 +50,7 @@ func try_fire() -> void:
 
 func process_inputs(inputs: InputData, auth: bool) -> void:
 	.process_inputs(inputs,auth)
+	sim_authority = auth
 	if !inputs.is_pressed("fire"):
 		released_fire = true
 		trying_to_fire = false
@@ -63,7 +66,8 @@ func fire() -> void:
 	if firing_sound:
 		pass
 		#Audio.play(firing_sound,volume,max_volume,pitch_scale)
-	try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
+	if sim_authority:
+		try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
 	fire_timer.start()
 
 func is_fireable() -> bool:

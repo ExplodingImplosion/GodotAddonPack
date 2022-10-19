@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 func physics_tick_server(delta: float) -> void:
 	# hacky and stupid. checks to delete every frame. should only happen when the player disconnects
 	if !Network.player_data.get_pnode(owner_id):
-		queue_free()
+		despawn(self,get_meta("uid"))
 		return
 	process_inputs(Network.get_input(owner_id),is_owned_by_local_player())
 	simulate(delta)
@@ -84,7 +84,9 @@ func process_inputs(inputs: InputData, auth: bool) -> void:
 func generate_snap_entity() -> SnapEntityBase:
 	var uid: int = get_meta("uid")
 	var chash: int = get_meta("chash")
-	return Network.create_snap_entity(snap_entity_script,uid,chash)
+	var data: SnapEntityBase = Network.create_snap_entity(snap_entity_script,uid,chash)
+	data.get_vars(self)
+	return data
 
 func is_owned_by_local_player() -> bool:
 	return Network.is_id_local(owner_id)
@@ -102,7 +104,7 @@ static func spawn_params_to_correction_data(entity: Spatial, params: Dictionary)
 
 static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_params: Dictionary, from: Spatial) -> void:
 	assert(_spawn_resource_index > -1)
-	var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,Network.get_incrementing_id(_owner_id))
+	var node: Node = qNetwork.spawn_node_by_resource_idx(_spawn_resource_index,qNetwork.get_player_current_snap_sig(_owner_id))
 	prints(node,node.get_meta("uid"))
 	var correction_data: Dictionary = spawn_params_to_correction_data(from,_spawn_params)
 	for key in correction_data.keys():
@@ -111,3 +113,6 @@ static func try_spawn_node(_spawn_resource_index: int, _owner_id: int, _spawn_pa
 		node.correction_data[key] = correction_data[key]
 	node.apply_corrections()
 	node._physics_process(node.get_physics_process_delta_time())
+
+static func despawn(node: Spatial,node_id: int) -> void:
+	Network.snapshot_data.despawn_node(node.snap_entity_script,node_id)
