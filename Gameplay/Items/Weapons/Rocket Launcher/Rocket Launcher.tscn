@@ -4,12 +4,11 @@
 [ext_resource path="res://Gameplay/Items/Held Item.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Snap Data.gd" type="Script" id=3]
 [ext_resource path="res://Gameplay/Items/Weapon Animation Tree.tres" type="AnimationNodeBlendTree" id=4]
+[ext_resource path="res://Gameplay/Items/Weapons/Ammo Weapon Animation Tree.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.025
 mid_height = 0.2
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
 [sub_resource type="Animation" id=3]
 resource_name = "Fire"
@@ -195,9 +194,14 @@ mesh = SubResource( 1 )
 
 [node name="AnimationTree" parent="." index="2"]
 tree_root = ExtResource( 4 )
-parameters/AddMovement/add_amount = 1.0
-parameters/Fire/active = false
-parameters/State/playback = SubResource( 2 )
+"parameters/Add Fire/active" = false
+"parameters/Add Movement/add_amount" = 1.0
+"parameters/Jump or Idle/active" = false
+"parameters/Jump or Walk/blend_amount" = 0.0
+"parameters/Reload Or Idle/active" = false
+"parameters/Time Scale/scale" = 1.0
+"parameters/Walk Seek/seek_position" = -1.0
+script = ExtResource( 5 )
 
 [node name="AnimationPlayer" parent="." index="3"]
 anims/Fire = SubResource( 3 )

@@ -69,6 +69,7 @@ func fire() -> void:
 	if sim_authority:
 		try_spawn_node(spawn_resource_index,owner_id,spawn_params,self)
 	fire_timer.start()
+	
 
 func is_fireable() -> bool:
 #	if firing_type == AUTO || released_fire:

@@ -22,7 +22,6 @@ onready var reload_timer: CustomTimer = CustomTimer.new(reload_time,false)
 onready var chamber_timer: CustomTimer = CustomTimer.new(chamber_time,false)
 
 func _ready() -> void:
-	._ready()
 	reload_timer.connect("finished",self,"on_reload_finished")
 	chamber_timer.connect("finished",self,"on_ammo_chambered")
 

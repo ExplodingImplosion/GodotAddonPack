@@ -11,6 +11,7 @@ var owner_id: int = 1
 var correction_data: Dictionary
 export var snap_entity_script: Script
 
+
 func _init() -> void:
 # warning-ignore:return_value_discarded
 	connect("tree_entered",self,"on_tree_entered")

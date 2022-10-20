@@ -1,28 +1,76 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=6 format=2]
+[gd_resource type="AnimationNodeBlendTree" load_steps=14 format=2]
 
-[sub_resource type="AnimationNodeAdd2" id=2]
+[sub_resource type="AnimationNodeOneShot" id=7]
+mix_mode = 1
+fadein_time = 0.0
+fadeout_time = 0.0
 sync = true
 
 [sub_resource type="AnimationNodeAdd2" id=3]
 sync = true
 
-[sub_resource type="AnimationNodeOneShot" id=7]
+[sub_resource type="AnimationNodeAnimation" id=8]
+animation = "Fire"
 
-[sub_resource type="AnimationNodeStateMachine" id=6]
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "RESET"
+
+[sub_resource type="AnimationNodeOneShot" id=11]
+fadein_time = 0.0
+fadeout_time = 0.05
+sync = true
+
+[sub_resource type="AnimationNodeBlend2" id=12]
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "Jump"
+
+[sub_resource type="AnimationNodeAnimation" id=16]
+animation = "RESET"
+
+[sub_resource type="AnimationNodeOneShot" id=18]
+fadein_time = 0.0
+fadeout_time = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id=19]
+animation = "Reload"
 
 [sub_resource type="AnimationNodeTimeScale" id=5]
 
+[sub_resource type="AnimationNodeTimeSeek" id=20]
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "Walk"
+
 [resource]
-graph_offset = Vector2( -411.628, -118.995 )
-nodes/AddFire/node = SubResource( 2 )
-nodes/AddFire/position = Vector2( 20, 140 )
-nodes/AddMovement/node = SubResource( 3 )
-nodes/AddMovement/position = Vector2( 180, 140 )
-nodes/Fire/node = SubResource( 7 )
-nodes/Fire/position = Vector2( -211.628, 369.005 )
-nodes/State/node = SubResource( 6 )
-nodes/State/position = Vector2( -200, 140 )
-nodes/TimeScale/node = SubResource( 5 )
-nodes/TimeScale/position = Vector2( 360, 140 )
+graph_offset = Vector2( -512.634, 375.073 )
+"nodes/Add Fire/node" = SubResource( 7 )
+"nodes/Add Fire/position" = Vector2( 0, 140 )
+"nodes/Add Movement/node" = SubResource( 3 )
+"nodes/Add Movement/position" = Vector2( 180, 140 )
+nodes/Fire/node = SubResource( 8 )
+nodes/Fire/position = Vector2( -240, 320 )
+nodes/Jump/node = SubResource( 13 )
+nodes/Jump/position = Vector2( -420, 700 )
+"nodes/Jump and Move Idle/node" = SubResource( 10 )
+"nodes/Jump and Move Idle/position" = Vector2( -420, 600 )
+"nodes/Jump or Idle/node" = SubResource( 11 )
+"nodes/Jump or Idle/position" = Vector2( -200, 620 )
+"nodes/Jump or Walk/node" = SubResource( 12 )
+"nodes/Jump or Walk/position" = Vector2( 20, 600 )
+nodes/Reload/node = SubResource( 19 )
+nodes/Reload/position = Vector2( -420, 260 )
+"nodes/Reload Idle/node" = SubResource( 16 )
+"nodes/Reload Idle/position" = Vector2( -420, 140 )
+"nodes/Reload Or Idle/node" = SubResource( 18 )
+"nodes/Reload Or Idle/position" = Vector2( -240, 140 )
+"nodes/Time Scale/node" = SubResource( 5 )
+"nodes/Time Scale/position" = Vector2( 360, 140 )
+nodes/Walk/node = SubResource( 14 )
+nodes/Walk/position = Vector2( -420, 800 )
+"nodes/Walk Seek/node" = SubResource( 20 )
+"nodes/Walk Seek/position" = Vector2( -140, 780 )
 nodes/output/position = Vector2( 520, 140 )
-node_connections = [ "AddFire", 0, "State", "AddFire", 1, "Fire", "TimeScale", 0, "AddMovement", "AddMovement", 0, "AddFire", "output", 0, "TimeScale" ]
+node_connections = [ "output", 0, "Time Scale", "Jump or Walk", 0, "Jump or Idle", "Jump or Walk", 1, "Walk Seek", "Jump or Idle", 0, "Jump and Move Idle", "Jump or Idle", 1, "Jump", "Walk Seek", 0, "Walk", "Reload Or Idle", 0, "Reload Idle", "Reload Or Idle", 1, "Reload", "Add Fire", 0, "Reload Or Idle", "Add Fire", 1, "Fire", "Time Scale", 0, "Add Movement", "Add Movement", 0, "Add Fire", "Add Movement", 1, "Jump or Walk" ]

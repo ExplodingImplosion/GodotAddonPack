@@ -24,14 +24,13 @@ onready var rotational_parent: Position3D = $"Rotational Parent"
 onready var offset: Position3D = $Offset
 onready var mesh: MeshInstance = $"Rotational Parent/Item Mesh"
 onready var equip_timer: CustomTimer = CustomTimer.new(equip_time,false)
-onready var animtree: AnimationTree = $AnimationTree
+onready var animtree: HeldAnimTree = $AnimationTree
 onready var animplayer: AnimationPlayer = $AnimationPlayer
 
 func _init() -> void:
-	._init()
+	pass
 
 func _ready() -> void:
-	._ready()
 	assert(equip_timer.max_time == equip_time and equip_time == equip_timer.time_left)
 	connect_sway_to_mouse_movement_if_local()
 	equip_timer.connect("finished",self,"on_equip_finished")
@@ -124,6 +123,15 @@ func simulate(delta: float) -> void:
 		tick_sway(delta)
 		if equipping:
 			equip_timer.tick(delta)
+		if player:
+			if player.is_on_floor():
+				if player.jumped:
+					animtree.jump()
+				else:
+					if Engine.get_physics_frames() % 12 == 0:
+						prints(Vector2(player.velocity.x,player.velocity.z).abs().length()/player.speed,abs(player.velocity.x)+abs(player.velocity.z)/player.speed)
+					assert(Vector2(player.velocity.x,player.velocity.z).abs().length()==Vector2(player.velocity.x,player.velocity.z).length())
+					animtree.set_walk_scale(Vector2(player.velocity.x,player.velocity.z).abs().length()/player.speed)
 	equip_time_left = equip_timer.time_left
 	equipping = equip_timer.is_running
 
@@ -134,3 +142,6 @@ func process_inputs(inputs: InputData, auth: bool) -> void:
 		input2()
 	if inputs.is_pressed("reload"):
 		input3()
+#	if player:
+#		if player.is_on_floor() and inputs.is_pressed("jump"):
+#				animtree.jump()
