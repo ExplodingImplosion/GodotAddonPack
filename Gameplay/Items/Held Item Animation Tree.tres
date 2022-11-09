@@ -10,7 +10,7 @@ sync = true
 [sub_resource type="AnimationNodeTimeScale" id=5]
 
 [resource]
-graph_offset = Vector2( -358.041, -215.859 )
+graph_offset = Vector2( -518.397, 36.9601 )
 nodes/AddFire/node = SubResource( 2 )
 nodes/AddFire/position = Vector2( 20, 140 )
 nodes/AddMovement/node = SubResource( 3 )

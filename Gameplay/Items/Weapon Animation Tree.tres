@@ -45,7 +45,7 @@ animation = "Reload"
 animation = "Walk"
 
 [resource]
-graph_offset = Vector2( -512.634, 375.073 )
+graph_offset = Vector2( -528.946, 589.605 )
 "nodes/Add Fire/node" = SubResource( 7 )
 "nodes/Add Fire/position" = Vector2( 0, 140 )
 "nodes/Add Movement/node" = SubResource( 3 )
@@ -73,4 +73,4 @@ nodes/Walk/position = Vector2( -420, 800 )
 "nodes/Walk Seek/node" = SubResource( 20 )
 "nodes/Walk Seek/position" = Vector2( -140, 780 )
 nodes/output/position = Vector2( 520, 140 )
-node_connections = [ "output", 0, "Time Scale", "Jump or Walk", 0, "Jump or Idle", "Jump or Walk", 1, "Walk Seek", "Jump or Idle", 0, "Jump and Move Idle", "Jump or Idle", 1, "Jump", "Walk Seek", 0, "Walk", "Reload Or Idle", 0, "Reload Idle", "Reload Or Idle", 1, "Reload", "Add Fire", 0, "Reload Or Idle", "Add Fire", 1, "Fire", "Time Scale", 0, "Add Movement", "Add Movement", 0, "Add Fire", "Add Movement", 1, "Jump or Walk" ]
+node_connections = [ "output", 0, "Time Scale", "Add Movement", 0, "Add Fire", "Add Movement", 1, "Jump or Walk", "Time Scale", 0, "Add Movement", "Walk Seek", 0, "Walk", "Reload Or Idle", 0, "Reload Idle", "Reload Or Idle", 1, "Reload", "Jump or Walk", 0, "Jump or Idle", "Jump or Walk", 1, "Walk Seek", "Add Fire", 0, "Reload Or Idle", "Add Fire", 1, "Fire", "Jump or Idle", 0, "Jump and Move Idle", "Jump or Idle", 1, "Jump" ]

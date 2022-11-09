@@ -72,9 +72,17 @@ func begin_reload() -> void:
 	can_fire = false
 	reload_timer.start()
 	chamber_timer.start()
+	assert(animtree is AmmoWeaponAnimTree)
+	animtree.reload()
 func try_reload() -> void:
 	if can_reload():
 		begin_reload()
+
+func cancel_reload() -> void:
+	reload_timer.stop()
+	chamber_timer.stop()
+	assert(animtree is AmmoWeaponAnimTree)
+	animtree.stop_reload()
 
 func on_ammo_chambered(time_remainder: float, interp_fraction: float) -> void:
 	current_ammo += ammo_per_load

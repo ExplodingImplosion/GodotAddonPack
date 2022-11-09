@@ -37,7 +37,8 @@ onready var third_person_meshes: Array = [bodymesh,beakmesh]
 export var speed: float = 7.0
 export var mod_movement_speed_factor: float = 1.2
 export var mod_movement_acceleration_factor: float = 0.7
-export var acceleration: float = 1.5
+export var acceleration: float = 52.0
+export var decceleration: float = 26.0
 export var friction: float = 26.0
 export var air_control: float = 7.0
 export var jump_strength: float = 10.0
@@ -134,11 +135,13 @@ func move(delta: float) -> void:
 	target = direction * speed
 	if is_on_floor():
 		if direction:
-			temp_accel = acceleration * friction
+			temp_accel = acceleration
 		else:
-			temp_accel = friction
+			temp_accel = decceleration
 		if jumped:
 			velocity.y += jump_strength
+			if current_item:
+				current_item.animtree.jump()
 	else:
 		if direction.dot(velocity) > 0:
 			temp_accel = air_control
@@ -151,6 +154,12 @@ func move(delta: float) -> void:
 	velocity.x = temp_vel.x
 	velocity.z = temp_vel.z
 	velocity = move_and_slide(velocity,Vector3.UP)
+	if current_item and is_on_floor() and direction:
+		current_item.animtree.set_walk_scale(get_player_influenced_movement_frac())
+
+func get_player_influenced_movement_frac() -> float:
+	assert(speed != 0)
+	return (velocity - get_floor_velocity()).length() / speed
 
 const max_vertical_aim_angle: float = 89.999
 const min_vertical_aim_angle: float = -max_vertical_aim_angle

@@ -195,7 +195,7 @@ mesh = SubResource( 1 )
 [node name="AnimationTree" parent="." index="2"]
 tree_root = ExtResource( 4 )
 "parameters/Add Fire/active" = false
-"parameters/Add Movement/add_amount" = 1.0
+"parameters/Add Movement/add_amount" = 0.5
 "parameters/Jump or Idle/active" = false
 "parameters/Jump or Walk/blend_amount" = 0.0
 "parameters/Reload Or Idle/active" = false
